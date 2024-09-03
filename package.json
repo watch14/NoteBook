@@ -14,7 +14,7 @@
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.19.2",
-    "kuroshiro": "~1.1.2",
+    "kuroshiro": "^1.1.2",
     "kuroshiro-enhance": "^1.3.1"
   }
 }
