@@ -14,19 +14,31 @@ const app = express();
 const port = 5000;
 
 dotenv.config();
+app.use(express.json());
 
 app.use(cors());
 
-app.use(express.json());
 swaggerSetup(app);
 
-// api links
+/////////    api paths    /////////////////////////////////////////////
 app.get("/", (req, res, next) => {
   res.send("<h1>Hello, this is JP_NoteBook!</h1>");
 });
 
 app.use("/api/users", userRouter);
 ///////////////////////////////////////////////////////////////////////
+
+// handle response
+app.use((obj, req, res, next) => {
+  const statusCode = obj.status || 500;
+  const message = obj.message || "Something went wrong!";
+  return res.status(statusCode).json({
+    success: [200, 201, 204].includes(obj.status),
+    status: statusCode,
+    message: message,
+    data: obj.data,
+  });
+});
 
 // mongodb
 const mongodb_url = process.env.MONGO_URL;
