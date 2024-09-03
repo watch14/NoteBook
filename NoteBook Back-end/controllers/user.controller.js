@@ -57,3 +57,59 @@ export const getAllUsers = async (req, res, next) => {
     );
   }
 };
+
+export const getUserById = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+    if (!user) {
+      return next(CreateError(404, "User not found"));
+    }
+    return next(CreateSuccess(200, "User fetched successfully", user));
+  } catch (err) {
+    return next(
+      CreateError(500, "Internal server error for fetching a user", err)
+    );
+  }
+};
+
+// Update user by ID
+export const updateUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return next(CreateError(404, "User Not Found!"));
+    }
+
+    const userData = await User.findByIdAndUpdate(
+      userId,
+      { $set: req.body },
+      { new: true }
+    );
+
+    return next(CreateSuccess(200, "User Updated!", userData));
+  } catch (err) {
+    return next(
+      CreateError(500, "Internal Server Error for Updating a User!", err)
+    );
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return next(CreateError(404, "User Not Found!"));
+    }
+    await User.findByIdAndDelete(userId);
+    return next(CreateSuccess(200, "User Deleted!", user));
+  } catch (err) {
+    return next(
+      CreateError(500, "Internal Server Error for Deleting a User!", err)
+    );
+  }
+};
