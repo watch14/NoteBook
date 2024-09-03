@@ -3,6 +3,7 @@ import { CreateSuccess } from "../utils/success.js";
 import { CreateError } from "../utils/error.js";
 import bcrypt from "bcryptjs";
 
+// Register user
 export const registerUser = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
@@ -24,6 +25,7 @@ export const registerUser = async (req, res, next) => {
   }
 };
 
+// Login user
 export const loginUser = async (req, res, next) => {
   try {
     const user = await User.findOne({ username: req.body.username });
@@ -47,6 +49,7 @@ export const loginUser = async (req, res, next) => {
   }
 };
 
+// Get all users
 export const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
@@ -58,6 +61,7 @@ export const getAllUsers = async (req, res, next) => {
   }
 };
 
+// Get user by ID
 export const getUserById = async (req, res, next) => {
   try {
     const userId = req.params.id;
@@ -97,6 +101,7 @@ export const updateUser = async (req, res, next) => {
   }
 };
 
+// Delete user by ID
 export const deleteUser = async (req, res, next) => {
   try {
     const userId = req.params.id;
