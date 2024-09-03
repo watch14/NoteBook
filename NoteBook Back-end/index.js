@@ -1,21 +1,34 @@
-import Kuroshiro from "kuroshiro";
-import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";
+import express from "express";
+import mongoose from "mongoose";
+import dotenv from "dotenv";
+import cors from "cors";
 
-const kuroshiro = new Kuroshiro();
+const app = express();
+const port = 5000;
 
-await kuroshiro.init(new KuromojiAnalyzer());
+dotenv.config();
+app.use(cors());
 
-const resultHiragana = await kuroshiro.convert("感じ取れたら手を繋ごう", {
-  to: "hiragana",
+const mongodb_url = process.env.MONGO_URL;
+const connectMongoDB = async () => {
+  try {
+    await mongoose.connect(mongodb_url);
+    console.log("MongoDB connected");
+  } catch (error) {
+    console.error("MongoDB connection error:", error.message);
+  }
+};
+
+app.get("/", (req, res, next) => {
+  res.send("<h1>Hello, this is JP_NoteBook!</h1>");
 });
-const resultKatakana = await kuroshiro.convert("感じ取れたら手を繋ごう", {
-  to: "katakana",
-});
-const resultRomaji = await kuroshiro.convert("感じ取れたら手を繋ごう", {
-  to: "romaji",
-  mode: "spaced",
-});
 
-console.log(resultHiragana);
-console.log(resultKatakana);
-console.log(resultRomaji);
+app.listen(port, async () => {
+  console.log(`App Connected to Back-end on port: ${port} 
+    http://localhost:${port}/`);
+  try {
+    await connectMongoDB();
+  } catch (error) {
+    console.error("Failed to connect to MongoDB:", error);
+  }
+});
