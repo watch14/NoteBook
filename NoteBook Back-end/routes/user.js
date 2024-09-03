@@ -3,6 +3,9 @@ import {
   registerUser,
   getAllUsers,
   loginUser,
+  updateUser,
+  deleteUser,
+  getUserById,
 } from "../controllers/user.controller.js";
 
 const router = express.Router();
@@ -129,6 +132,12 @@ router.post("/login", loginUser);
  *         description: Internal server error
  */
 router.get("/all", getAllUsers);
+
+router.get("/:id", getUserById);
+
+router.get("/update/:id", updateUser);
+
+router.get("/delete/:id", deleteUser);
 
 /**
  * @swagger
