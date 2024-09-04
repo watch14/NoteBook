@@ -57,7 +57,8 @@ const connectMongoDB = async () => {
 // server
 app.listen(port, async () => {
   console.log(`App Connected to Back-end on port: ${port} 
-    http://localhost:${port}/`);
+    http://localhost:${port}/
+    http://localhost:${port}/api-docs/`);
   try {
     await connectMongoDB();
   } catch (error) {
