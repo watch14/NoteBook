@@ -2,6 +2,7 @@ import User from "../models/User.js";
 import { CreateSuccess } from "../utils/success.js";
 import { CreateError } from "../utils/error.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
 
 // Register user
 export const registerUser = async (req, res, next) => {
@@ -37,11 +38,14 @@ export const loginUser = async (req, res, next) => {
       req.body.password,
       user.password
     );
+
+    const token = jwt.sign({ id: user._id }, process.env.JWT);
+
     if (!isPasswordCorrect) {
       return next(CreateError(400, "Wrong password or username"));
     }
 
-    return next(CreateSuccess(200, "User logged in successfully", user));
+    return next(CreateSuccess(200, "User logged in successfully", token));
   } catch (err) {
     return next(
       CreateError(500, "Internal server error for logging in a user", err)
