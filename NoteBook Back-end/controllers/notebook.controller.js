@@ -15,11 +15,12 @@ export const createNotebook = async (req, res, next) => {
       title: req.body.title,
       userId: req.body.userId,
     });
+
     await notebook.save();
     return next(CreateSuccess(200, "Notebook created successfully!", notebook));
   } catch (err) {
     return next(
-      CreateError(500, "Internal server error for creating a notebook!", err)
+      CreateError(500, "Internal server error for creating a notebook!")
     );
   }
 };
