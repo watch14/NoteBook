@@ -5,6 +5,7 @@ import cors from "cors";
 
 // routers import
 import userRouter from "./routes/user.js";
+import notebookRouter from "./routes/notebook.js";
 
 // swager import
 import swaggerSetup from "./utils/swagger.js";
@@ -26,6 +27,7 @@ app.get("/", (req, res, next) => {
 });
 
 app.use("/api/users", userRouter);
+app.use("/api/notebooks", notebookRouter);
 ///////////////////////////////////////////////////////////////////////
 
 // handle response
