@@ -4,10 +4,10 @@ const { Schema } = mongoose;
 
 const PageSchema = new Schema(
   {
-    order: {
-      type: Number,
+    notebookId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Notebook",
       required: true,
-      default: 0,
     },
     text: {
       type: String,
@@ -17,10 +17,10 @@ const PageSchema = new Schema(
       type: String,
       required: false,
     },
-    notebookId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Notebook",
+    order: {
+      type: Number,
       required: true,
+      default: 0,
     },
   },
   {

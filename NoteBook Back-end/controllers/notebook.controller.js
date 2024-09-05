@@ -10,6 +10,7 @@ export const createNotebook = async (req, res, next) => {
 
     // Check if the user exists
     const user = await User.findById(userId);
+
     if (!user) {
       return next(CreateError(404, "User not found!"));
     }
@@ -26,7 +27,6 @@ export const createNotebook = async (req, res, next) => {
     await notebook.save();
     return next(CreateSuccess(200, "Notebook created successfully!", notebook));
   } catch (err) {
-    console.log(err);
     return next(
       CreateError(500, "Internal server error for creating a notebook!")
     );
