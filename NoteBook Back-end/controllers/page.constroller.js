@@ -48,6 +48,7 @@ export const getAllPages = async (req, res, next) => {
     const pages = await Page.find();
     return next(CreateSuccess(200, "All pages fetched successfully", pages));
   } catch (err) {
+    console.log(err);
     return next(
       CreateError(500, "Internal Server Error for fetching all Pages!")
     );
