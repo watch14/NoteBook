@@ -11,6 +11,7 @@ const NotebookSchema = new Schema(
     theme: {
       type: String,
       required: false,
+      default: "blue",
     },
     userId: {
       type: mongoose.Schema.Types.ObjectId,

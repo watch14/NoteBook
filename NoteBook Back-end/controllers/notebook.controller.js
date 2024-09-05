@@ -1,11 +1,18 @@
 import Notebook from "../models/Notebook.js";
 import { CreateSuccess } from "../utils/success.js";
 import { CreateError } from "../utils/error.js";
+import User from "../models/User.js";
 
 // Create notebook
 export const createNotebook = async (req, res, next) => {
   try {
     const { title, userId } = req.body;
+
+    // Check if the user exists
+    const user = await User.findById(userId);
+    if (!user) {
+      return next(CreateError(404, "User not found!"));
+    }
 
     if (!title || !userId) {
       return next(CreateError(400, "title nad userId are required!"));
@@ -19,6 +26,7 @@ export const createNotebook = async (req, res, next) => {
     await notebook.save();
     return next(CreateSuccess(200, "Notebook created successfully!", notebook));
   } catch (err) {
+    console.log(err);
     return next(
       CreateError(500, "Internal server error for creating a notebook!")
     );
