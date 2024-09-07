@@ -39,13 +39,24 @@ export const loginUser = async (req, res, next) => {
       user.password
     );
 
-    const token = jwt.sign({ id: user._id }, process.env.JWT);
-
     if (!isPasswordCorrect) {
       return next(CreateError(400, "Wrong password or username"));
     }
+    const token = jwt.sign({ id: user._id }, process.env.JWT);
 
-    return next(CreateSuccess(200, "User logged in successfully", token));
+    res.cookie("access_token", token, { httpOnly: true }).status(200).json({
+      status: 200,
+      message: "login Success!",
+      data: user,
+      token: token,
+    });
+
+    const userData = {
+      user: user,
+      token: token,
+    };
+
+    return next(CreateSuccess(200, "User logged in successfully", userData));
   } catch (err) {
     return next(
       CreateError(500, "Internal server error for logging in a user", err)

@@ -6,6 +6,7 @@ import {
   getNotebookById,
   updateNotebook,
 } from "../controllers/notebook.controller.js";
+import { verifyToken } from "../utils/auth.js";
 
 const router = express.Router();
 
@@ -56,7 +57,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.post("/create", createNotebook);
+router.post("/create", verifyToken, createNotebook);
 
 /**
  * @swagger

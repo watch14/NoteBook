@@ -2,40 +2,30 @@ import jwt from "jsonwebtoken";
 import { CreateError } from "./error.js";
 
 export const verifyToken = (req, res, next) => {
-  const token = req.cookies.access_token;
-
-  if (!token) {
-    return next(CreateError(401, "Your are no Authenticated!"));
+  // Extract token from Authorization header
+  const authHeader = req.headers.authorization;
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return next(CreateError(401, "You are not authenticated!"));
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) {
-      return next(CreateError(403, "Token is not Valid!"));
-    }
-
+  // Extract token from the header
+  const token = authHeader.split(" ")[1];
+  decodeToken(token);
+  // Verify the token
+  jwt.verify(token, process.env.JWT, (err, user) => {
+    if (err) return next(CreateError(403, "Token is not valid!"));
     req.user = user;
     next();
   });
 };
 
-//if user
-export const verifyUser = (req, res, next) => {
-  verifyToken(req, res, () => {
-    if (req.user.id === req.params.id || req.user.isAdmin) {
-      next();
-    } else {
-      return next(CreateError(403, "You are not authorised!"));
-    }
-  });
-};
-
-//if admin
-export const verifyAdmin = (req, res, next) => {
-  verifyToken(req, res, () => {
-    if (req.user.isAdmin) {
-      next();
-    } else {
-      return next(CreateError(403, "You are not authorised!"));
-    }
-  });
+export const decodeToken = (token) => {
+  try {
+    // Decode the token without verification
+    const decoded = jwt.decode(token);
+    console.log(decoded);
+    return decoded;
+  } catch (error) {
+    throw new Error("Failed to decode token");
+  }
 };
