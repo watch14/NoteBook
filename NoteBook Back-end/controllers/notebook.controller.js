@@ -97,6 +97,7 @@ export const deleteNotebook = async (req, res, next) => {
       return next(CreateError(404, "Notebook Not Found!"));
     }
     await Notebook.findByIdAndDelete(notebookId);
+
     return next(CreateSuccess(200, "Notebook Deleted!", notebook));
   } catch (err) {
     return next(

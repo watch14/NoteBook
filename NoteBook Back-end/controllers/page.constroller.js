@@ -83,6 +83,13 @@ export const deletePage = async (req, res, next) => {
       return next(CreateError(404, "Page Not Found!"));
     }
     await Page.findByIdAndDelete(pageId);
+
+    // decrement the order of the pages after the deleted notebook
+    const pages = await Page.find({ notebookId: page.notebookId });
+    pages.forEach(async (page, index) => {
+      await Page.findByIdAndUpdate(page._id, { $set: { order: index + 1 } });
+    });
+
     return next(CreateSuccess(200, "Page Deleted!"));
   } catch (err) {
     return next(CreateError(500, "Internal Server Error for deleting a Page!"));
