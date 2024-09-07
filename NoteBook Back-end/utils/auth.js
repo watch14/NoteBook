@@ -10,7 +10,6 @@ export const verifyToken = (req, res, next) => {
 
   // Extract token from the header
   const token = authHeader.split(" ")[1];
-  decodeToken(token);
   // Verify the token
   jwt.verify(token, process.env.JWT, (err, user) => {
     if (err) return next(CreateError(403, "Token is not valid!"));
@@ -19,11 +18,12 @@ export const verifyToken = (req, res, next) => {
   });
 };
 
+//add verify token to all needed api /////////////////////////////////////////////
+
 export const decodeToken = (token) => {
   try {
     // Decode the token without verification
     const decoded = jwt.decode(token);
-    console.log(decoded);
     return decoded;
   } catch (error) {
     throw new Error("Failed to decode token");

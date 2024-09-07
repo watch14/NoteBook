@@ -4,9 +4,11 @@ import {
   deleteNotebook,
   getAllNotebooks,
   getNotebookById,
+  getUserNotebooks,
   updateNotebook,
 } from "../controllers/notebook.controller.js";
 import { verifyToken } from "../utils/auth.js";
+import { getUserById } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
@@ -57,7 +59,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.post("/create", verifyToken, createNotebook);
+router.post("/create", createNotebook);
 
 /**
  * @swagger
@@ -206,6 +208,59 @@ router.put("/update/:id", updateNotebook);
  *         description: Internal server error
  */
 router.delete("/delete/:id", deleteNotebook);
+
+/**
+ * @swagger
+ * /notebooks/user/{id}:
+ *   get:
+ *     summary: Get notebooks for a specific user by their ID
+ *     tags: [Notebooks]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: ID of the user whose notebooks are to be fetched
+ *         schema:
+ *           type: string
+ *           example: "60a770df03475b25c0b8c5ff"
+ *     responses:
+ *       200:
+ *         description: List of notebooks retrieved successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: "Notebooks fetched successfully"
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         example: "60a770df03475b25c0b8c5ff"
+ *                       title:
+ *                         type: string
+ *                         example: "My First Notebook"
+ *                       content:
+ *                         type: string
+ *                         example: "This is the content of the notebook"
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2024-09-07T12:34:56.789Z"
+ *       404:
+ *         description: No notebooks found for the given user
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/user/:id", getUserNotebooks);
 
 /**
  * @swagger

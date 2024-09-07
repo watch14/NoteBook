@@ -88,3 +88,17 @@ export const deletePage = async (req, res, next) => {
     return next(CreateError(500, "Internal Server Error for deleting a Page!"));
   }
 };
+
+// Get pages by notebook ID
+export const getPagesByNotebookId = async (req, res, next) => {
+  try {
+    const notebookId = req.params.id;
+    const pages = await Page.find({ notebookId: notebookId });
+    if (!pages) {
+      return next(CreateError(404, "Pages Not Found!"));
+    }
+    return next(CreateSuccess(200, "Pages fetched successfully", pages));
+  } catch (err) {
+    return next(CreateError(500, "Internal Server Error for fetching Pages!"));
+  }
+};

@@ -104,3 +104,24 @@ export const deleteNotebook = async (req, res, next) => {
     );
   }
 };
+
+// get user notebooks
+// get user notebooks
+export const getUserNotebooks = async (req, res, next) => {
+  try {
+    const userId = req.params.id;
+    const notebooks = await Notebook.find({ userId });
+
+    // Check if the array is empty
+    if (notebooks.length === 0) {
+      return next(CreateError(404, "This user has no notebooks!"));
+    }
+    return next(
+      CreateSuccess(200, "Notebooks fetched successfully", notebooks)
+    );
+  } catch (err) {
+    return next(
+      CreateError(500, "Internal Server Error for fetching all Notebooks!")
+    );
+  }
+};
