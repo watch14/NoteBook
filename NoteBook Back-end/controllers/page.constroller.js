@@ -94,6 +94,9 @@ export const getPagesByNotebookId = async (req, res, next) => {
   try {
     const notebookId = req.params.id;
     const pages = await Page.find({ notebookId: notebookId });
+    if (!pages.length) {
+      return next(CreateError(404, "This notebook has no pages!"));
+    }
     if (!pages) {
       return next(CreateError(404, "Pages Not Found!"));
     }

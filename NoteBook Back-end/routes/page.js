@@ -4,6 +4,7 @@ import {
   deletePage,
   getAllPages,
   getPageById,
+  getPagesByNotebookId,
   updatePage,
 } from "../controllers/page.constroller.js";
 
@@ -211,6 +212,59 @@ router.put("/update/:id", updatePage);
  *         description: Internal server error
  */
 router.delete("/delete/:id", deletePage);
+
+/**
+ * @swagger
+ * /pages/notebook/{id}:
+ *   get:
+ *     summary: Get pages by notebook ID
+ *     tags: [Pages]
+ *     parameters:
+ *       - name: id
+ *         in: path
+ *         required: true
+ *         description: The ID of the notebook to fetch pages for
+ *         schema:
+ *           type: string
+ *           example: "60a770df03475b25c0b8c5ff"
+ *     responses:
+ *       200:
+ *         description: Pages fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 200
+ *                 message:
+ *                   type: string
+ *                   example: "Pages fetched successfully"
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       id:
+ *                         type: string
+ *                         example: "612c7b8a1f09e8d5bcff87a2"
+ *                       title:
+ *                         type: string
+ *                         example: "Page 1"
+ *                       content:
+ *                         type: string
+ *                         example: "This is the content of the first page."
+ *                       createdAt:
+ *                         type: string
+ *                         format: date-time
+ *                         example: "2024-09-07T12:34:56.789Z"
+ *       404:
+ *         description: Pages not found for the specified notebook ID
+ *       500:
+ *         description: Internal server error
+ */
+router.get("/notebook/:id", getPagesByNotebookId);
 
 /**
  * @swagger
