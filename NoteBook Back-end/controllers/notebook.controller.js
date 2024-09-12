@@ -50,10 +50,42 @@ export const getNotebookById = async (req, res, next) => {
   }
 };
 
-// Get all notebooks
 export const getAllNotebooks = async (req, res, next) => {
   try {
-    const notebooks = await Notebook.find();
+    const {
+      title,
+      limit = 10,
+      skip = 0,
+      sortBy = "createdAt",
+      sortOrder = "asc",
+    } = req.query;
+
+    // Convert limit and skip to integers
+    const limitNumber = parseInt(limit, 10);
+    const skipNumber = parseInt(skip, 10);
+
+    // Determine sorting direction
+    const sortDirection = sortOrder === "desc" ? -1 : 1;
+
+    // Construct filter object
+    const filter = {};
+
+    if (title) {
+      filter.title = new RegExp(title, "i"); // Case-insensitive search
+    }
+
+    // Construct sort object
+    const sort = {};
+    if (sortBy === "createdAt" || sortBy === "updatedAt") {
+      sort[sortBy] = sortDirection;
+    }
+
+    // Fetch notebooks with filters, sorting, and pagination
+    const notebooks = await Notebook.find(filter)
+      .sort(sort)
+      .limit(limitNumber)
+      .skip(skipNumber);
+
     return next(
       CreateSuccess(200, "All notebooks fetched successfully", notebooks)
     );
@@ -106,17 +138,48 @@ export const deleteNotebook = async (req, res, next) => {
   }
 };
 
-// get user notebooks
-// get user notebooks
 export const getUserNotebooks = async (req, res, next) => {
   try {
     const userId = req.params.id;
-    const notebooks = await Notebook.find({ userId });
+    const {
+      title,
+      limit = 10,
+      skip = 0,
+      sortBy = "createdAt",
+      sortOrder = "asc",
+    } = req.query;
+
+    // Convert limit and skip to integers
+    const limitNumber = parseInt(limit, 10);
+    const skipNumber = parseInt(skip, 10);
+
+    // Determine sorting direction
+    const sortDirection = sortOrder === "desc" ? -1 : 1;
+
+    // Construct filter object
+    const filter = { userId };
+
+    if (title) {
+      filter.title = new RegExp(title, "i"); // Case-insensitive search
+    }
+
+    // Construct sort object
+    const sort = {};
+    if (sortBy === "createdAt" || sortBy === "updatedAt") {
+      sort[sortBy] = sortDirection;
+    }
+
+    // Fetch notebooks with filters, sorting, and pagination
+    const notebooks = await Notebook.find(filter)
+      .sort(sort)
+      .limit(limitNumber)
+      .skip(skipNumber);
 
     // Check if the array is empty
     if (notebooks.length === 0) {
       return next(CreateError(404, "This user has no notebooks!"));
     }
+
     return next(
       CreateSuccess(200, "Notebooks fetched successfully", notebooks)
     );

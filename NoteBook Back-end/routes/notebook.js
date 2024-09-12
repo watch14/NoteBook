@@ -103,6 +103,44 @@ router.get("/get/:id", getNotebookById);
  *   get:
  *     summary: Get all notebooks
  *     tags: [Notebooks]
+ *     parameters:
+ *       - name: title
+ *         in: query
+ *         description: Filter notebooks by title (case-insensitive)
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: limit
+ *         in: query
+ *         description: Number of notebooks to return (default is 10)
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *       - name: skip
+ *         in: query
+ *         description: Number of notebooks to skip (for pagination, default is 0)
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           example: 0
+ *       - name: sortBy
+ *         in: query
+ *         description: Field to sort the results by (e.g., createdAt or updatedAt). Default is createdAt.
+ *         required: false
+ *         schema:
+ *           type: string
+ *           example: createdAt
+ *       - name: sortOrder
+ *         in: query
+ *         description: Sort order, either 'asc' for ascending or 'desc' for descending. Default is 'asc'.
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - asc
+ *             - desc
+ *           example: asc
  *     responses:
  *       200:
  *         description: All notebooks fetched successfully
@@ -213,19 +251,56 @@ router.delete("/delete/:id", deleteNotebook);
  * @swagger
  * /notebooks/user/{id}:
  *   get:
- *     summary: Get notebooks for a specific user by their ID
+ *     summary: Get notebooks for a specific user
  *     tags: [Notebooks]
  *     parameters:
  *       - name: id
  *         in: path
- *         required: true
  *         description: ID of the user whose notebooks are to be fetched
+ *         required: true
  *         schema:
  *           type: string
- *           example: "60a770df03475b25c0b8c5ff"
+ *           example: 60c72b2f9b1e8d001f6475f3
+ *       - name: title
+ *         in: query
+ *         description: Filter notebooks by title (case-insensitive)
+ *         required: false
+ *         schema:
+ *           type: string
+ *       - name: limit
+ *         in: query
+ *         description: Number of notebooks to return (default is 10)
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           example: 10
+ *       - name: skip
+ *         in: query
+ *         description: Number of notebooks to skip (for pagination, default is 0)
+ *         required: false
+ *         schema:
+ *           type: integer
+ *           example: 0
+ *       - name: sortBy
+ *         in: query
+ *         description: Field to sort the results by (e.g., createdAt or updatedAt). Default is createdAt.
+ *         required: false
+ *         schema:
+ *           type: string
+ *           example: createdAt
+ *       - name: sortOrder
+ *         in: query
+ *         description: Sort order, either 'asc' for ascending or 'desc' for descending. Default is 'asc'.
+ *         required: false
+ *         schema:
+ *           type: string
+ *           enum:
+ *             - asc
+ *             - desc
+ *           example: asc
  *     responses:
  *       200:
- *         description: List of notebooks retrieved successfully
+ *         description: Notebooks fetched successfully
  *         content:
  *           application/json:
  *             schema:
@@ -236,27 +311,24 @@ router.delete("/delete/:id", deleteNotebook);
  *                   example: 200
  *                 message:
  *                   type: string
- *                   example: "Notebooks fetched successfully"
+ *                   example: Notebooks fetched successfully
  *                 data:
  *                   type: array
  *                   items:
- *                     type: object
- *                     properties:
- *                       id:
- *                         type: string
- *                         example: "60a770df03475b25c0b8c5ff"
- *                       title:
- *                         type: string
- *                         example: "My First Notebook"
- *                       content:
- *                         type: string
- *                         example: "This is the content of the notebook"
- *                       createdAt:
- *                         type: string
- *                         format: date-time
- *                         example: "2024-09-07T12:34:56.789Z"
+ *                     $ref: '#/components/schemas/Notebook'
  *       404:
- *         description: No notebooks found for the given user
+ *         description: No notebooks found for this user
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: integer
+ *                   example: 404
+ *                 message:
+ *                   type: string
+ *                   example: This user has no notebooks!
  *       500:
  *         description: Internal server error
  */
