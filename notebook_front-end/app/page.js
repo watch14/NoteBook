@@ -13,9 +13,10 @@ export default function Home() {
           height={38}
           priority
         />
+
         <ol>
           <li>
-            Get started by editing <code>app/page.js</code>.
+            Get started by editing <code>app/page.js</code>
           </li>
           <li>Save and see your changes instantly.</li>
         </ol>
@@ -34,7 +35,7 @@ export default function Home() {
               width={20}
               height={20}
             />
-            Deploy now
+            Deploy now. Deploy now
           </a>
           <a
             href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
