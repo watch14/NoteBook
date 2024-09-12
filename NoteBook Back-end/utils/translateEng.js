@@ -19,6 +19,7 @@ export default async function convertAndTranslate(text) {
   // Convert Japanese text to Hiragana, Katakana, and Romaji
   const resultHiragana = await kuroshiro.convert(text, { to: "hiragana" });
   const resultKatakana = await kuroshiro.convert(text, { to: "katakana" });
+
   const resultRomaji = await kuroshiro.convert(text, {
     to: "romaji",
     mode: "spaced",
@@ -40,6 +41,27 @@ export default async function convertAndTranslate(text) {
     console.error("Translation error:", err);
     throw err; // Re-throw error to handle it in the calling function
   }
+}
+
+// convert to kanji
+export async function toKanji(text) {
+  const api =
+    "https://jisho.org/api/v1/search/words?keyword=" + encodeURIComponent(text);
+  const response = await fetch(api);
+  const data = await response.json();
+
+  // Filter the results to return only those with a Kanji representation
+  if (data.data && data.data.length > 0) {
+    return data.data
+      .filter((entry) => entry.japanese[0].word) // Only include results that have a Kanji word
+      .map((entry) => ({
+        kanji: entry.japanese[0].word || null, // Kanji word
+        reading: entry.japanese[0].reading || null, // Kana reading
+        definition: entry.senses[0].english_definitions.join(", ") || null, // English definition
+      }));
+  }
+
+  return [];
 }
 
 export { convertAndTranslate };
