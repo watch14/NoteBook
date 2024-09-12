@@ -1,6 +1,6 @@
 import { CreateSuccess } from "../utils/success.js";
 import { CreateError } from "../utils/error.js";
-import convertAndTranslate from "../utils/translateEng.js";
+import { convertAndTranslate } from "../utils/translateEng.js";
 
 // Translate
 export const translate = async (req, res, next) => {
