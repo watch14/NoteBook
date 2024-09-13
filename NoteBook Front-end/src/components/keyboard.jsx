@@ -92,14 +92,17 @@ export default function KeyboardJP() {
     if (kanjiInput.trim().length > 0) {
       console.log(kanjiInput);
       try {
-        const response = await fetch('http://localhost:5000/api/translate/kanji', {
-          method: 'POST',
-          headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({ text: kanjiInput })
-        });
+        const response = await fetch(
+          "http://localhost:5000/api/translate/kanji",
+          {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ text: kanjiInput }),
+          }
+        );
         const data = await response.json();
         if (data.data) {
           setKanjiSuggestions(data.data);
