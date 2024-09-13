@@ -40,16 +40,19 @@ export const loginUser = async (req, res, next) => {
   try {
     const { userName, password } = req.body;
 
-    // Ensure both username and password are provided
+    // Ensure both username/email and password are provided
     if (!userName || !password) {
-      return next(CreateError(400, "Username and password are required"));
+      return next(CreateError(400, "Username/email and password are required"));
     }
 
-    // Find user by userName (updated to match your document field)
-    const user = await User.findOne({ userName });
+    // Find user by either userName or email
+    const user = await User.findOne({
+      $or: [{ userName }, { email: userName }],
+    });
+
     if (!user) {
       return next(
-        CreateError(404, "User not found with the provided username")
+        CreateError(404, "User not found with the provided username/email")
       );
     }
 
