@@ -26,40 +26,55 @@ export const registerUser = async (req, res, next) => {
   }
 };
 
+// res.cookie("access_token", token, { httpOnly: true }).status(200).json({
+//   status: 200,
+//   message: "login Success!",
+//   data: user,
+//   token: token,
+// });
+
 // Login user
 export const loginUser = async (req, res, next) => {
+  console.log("Request:", req.method, req.originalUrl, req.body);
+
   try {
-    const user = await User.findOne({ username: req.body.username });
-    if (!user) {
-      return next(CreateError(404, "User not found"));
+    const { userName, password } = req.body;
+
+    // Ensure both username and password are provided
+    if (!userName || !password) {
+      return next(CreateError(400, "Username and password are required"));
     }
 
-    const isPasswordCorrect = bcrypt.compareSync(
-      req.body.password,
-      user.password
-    );
+    // Find user by userName (updated to match your document field)
+    const user = await User.findOne({ userName });
+    if (!user) {
+      return next(
+        CreateError(404, "User not found with the provided username")
+      );
+    }
+
+    const isPasswordCorrect = bcrypt.compareSync(password, user.password);
 
     if (!isPasswordCorrect) {
-      return next(CreateError(400, "Wrong password or username"));
+      return next(CreateError(400, "Incorrect password"));
     }
+
     const token = jwt.sign({ id: user._id }, process.env.JWT);
 
-    res.cookie("access_token", token, { httpOnly: true }).status(200).json({
-      status: 200,
-      message: "login Success!",
-      data: user,
-      token: token,
-    });
-
     const userData = {
-      user: user,
-      token: token,
+      user,
+      token,
     };
 
-    return next(CreateSuccess(200, "User logged in successfully", userData));
+    return res.status(200).json({
+      status: 200,
+      message: "User logged in successfully",
+      data: userData,
+    });
   } catch (err) {
+    console.error("Login error:", err); // Log error for debugging
     return next(
-      CreateError(500, "Internal server error for logging in a user", err)
+      CreateError(500, "Internal server error during user login", err)
     );
   }
 };

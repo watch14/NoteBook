@@ -19,7 +19,13 @@ const port = 5000;
 dotenv.config();
 app.use(express.json());
 
-app.use(cors());
+app.use(
+  cors({
+    origin: "http://localhost:5173", // Your Vite frontend URL
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
 
 swaggerSetup(app);
 
