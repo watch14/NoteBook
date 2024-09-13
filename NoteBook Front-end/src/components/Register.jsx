@@ -36,9 +36,7 @@ const Register = () => {
         <input type="submit" />
       </form>
 
-      <br />
       <p>OR</p>
-      <br />
 
       <Link to="/login">login</Link>
     </div>

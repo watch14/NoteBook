@@ -64,7 +64,7 @@ export const loginUser = async (req, res, next) => {
 
     if (!user) {
       return next(
-        CreateError(404, "User not found with the provided username/email")
+        CreateError(404, "User not found with the provided username/email.")
       );
     }
 
