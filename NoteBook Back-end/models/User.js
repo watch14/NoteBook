@@ -7,10 +7,15 @@ const UserSchema = new Schema(
     userName: {
       type: String,
       required: true,
+      unique: true, // Ensure unique usernames
+      trim: true,
     },
     email: {
       type: String,
       required: true,
+      unique: true, // Ensure unique emails
+      trim: true,
+      lowercase: true,
     },
     password: {
       type: String,

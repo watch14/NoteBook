@@ -7,12 +7,30 @@ import jwt from "jsonwebtoken";
 // Register user
 export const registerUser = async (req, res, next) => {
   try {
+    const { userName, email, password } = req.body;
+
+    // Check if userName or email already exists
+    const existingUserName = await User.findOne({
+      $or: [{ userName }],
+    });
+
+    if (existingUserName) {
+      return next(CreateError(400, "Username already exists"));
+    }
+
+    const existingUserEmail = await User.findOne({
+      $or: [{ email }],
+    });
+    if (existingUserEmail) {
+      return next(CreateError(400, "Email already exists"));
+    }
+
     const salt = bcrypt.genSaltSync(10);
-    const hashPassword = bcrypt.hashSync(req.body.password, salt);
+    const hashPassword = bcrypt.hashSync(password, salt);
 
     const newUser = new User({
-      userName: req.body.userName,
-      email: req.body.email,
+      userName,
+      email,
       password: hashPassword,
     });
 
@@ -20,18 +38,12 @@ export const registerUser = async (req, res, next) => {
 
     return next(CreateSuccess(200, "User created successfully!", newUser));
   } catch (err) {
+    console.error("Error creating user:", err); // Log error for debugging
     return next(
       CreateError(500, "Internal server error for creating a user!", err)
     );
   }
 };
-
-// res.cookie("access_token", token, { httpOnly: true }).status(200).json({
-//   status: 200,
-//   message: "login Success!",
-//   data: user,
-//   token: token,
-// });
 
 // Login user
 export const loginUser = async (req, res, next) => {
@@ -63,6 +75,13 @@ export const loginUser = async (req, res, next) => {
     }
 
     const token = jwt.sign({ id: user._id }, process.env.JWT);
+
+    // res.cookie("access_token", token, { httpOnly: true }).status(200).json({
+    //   status: 200,
+    //   message: "login Success!",
+    //   data: user,
+    //   token: token,
+    // });
 
     const userData = {
       user,
