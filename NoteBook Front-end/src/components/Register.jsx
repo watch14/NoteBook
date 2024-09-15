@@ -8,9 +8,9 @@ function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState(""); // New state for confirm password
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
-  const [passwordError, setPasswordError] = useState(""); // State to handle real-time validation errors
+  const [passwordError, setPasswordError] = useState("");
 
   useEffect(() => {
     // Check if password is at least 6 characters
@@ -19,15 +19,14 @@ function Register() {
     } else if (password !== confirmPassword) {
       setPasswordError("Passwords do not match.");
     } else {
-      setPasswordError(""); // Clear error if both conditions are met
+      setPasswordError("");
     }
-  }, [password, confirmPassword]); // Run validation when password or confirmPassword changes
+  }, [password, confirmPassword]);
 
   async function register(e) {
     e.preventDefault();
     setError("");
 
-    // Ensure the password validation passes before submitting
     if (passwordError) {
       setError(passwordError);
       return;
@@ -43,8 +42,7 @@ function Register() {
       if (response.data.success) {
         console.log(response.data);
 
-        // Redirect to login page or handle success
-        // window.location.href = "/login";
+        window.location.href = "/login";
       } else {
         setError(response.data.message);
         alert(response.data.message);
@@ -90,7 +88,6 @@ function Register() {
         {/* Show password validation error dynamically */}
         {passwordError && <p className="error">{passwordError}</p>}
         {error && <p className="error">{error}</p>}{" "}
-        {/* Display API error message */}
         <input type="submit" value="Register" />
       </form>
 

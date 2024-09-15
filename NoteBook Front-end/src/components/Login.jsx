@@ -28,7 +28,7 @@ function Login() {
         saveUserToLocalStorage(user._id, token);
 
         //////////////////////////////////////
-        // window.location.href = "/";
+        window.location.href = "/";
       } else {
         // Display error message from API response
         setError(response.data.message);

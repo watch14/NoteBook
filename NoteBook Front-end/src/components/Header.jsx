@@ -1,17 +1,37 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { isUserLoggedIn, clearUserFromLocalStorage } from "../utils/auth"; // Import login utilities
 
-const Header = () => {
+import "../css/header.css";
+
+function Header() {
+  const handleLogout = () => {
+    clearUserFromLocalStorage(); // Clear user data from local storage
+    window.location.href = "/login"; // Redirect to login page
+  };
+
   return (
-    <div>
-      <Link to="/">Home</Link>
-      <Link to="/keyboard">keyboard</Link>
-      <Link to="/contact">contact</Link>
-      <p></p>
-      <Link to="/login">login</Link>
-      <Link to="/register">Regiser</Link>
-    </div>
+    <header>
+      <div>
+        <Link to="/">JP.NoteBook</Link>
+      </div>
+      <nav>
+        <Link to="/">Home</Link>
+        <Link to="/keyboard">Keyboard</Link>
+
+        <Link to="/about">About</Link>
+
+        {isUserLoggedIn() ? (
+          <button onClick={handleLogout}>Logout</button>
+        ) : (
+          <>
+            <Link to="/login">Login</Link>
+            <Link to="/register">Register</Link>
+          </>
+        )}
+      </nav>
+    </header>
   );
-};
+}
 
 export default Header;
