@@ -101,7 +101,7 @@ const EditorButtons = ({
           onInput={(event) =>
             editor.chain().focus().setColor(event.target.value).run()
           }
-          value={editor.getAttributes("textStyle").color}
+          value={editor.getAttributes("textStyle").color || "#000000"}
           data-testid="setColor"
         />
       </div>

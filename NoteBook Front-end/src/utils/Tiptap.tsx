@@ -1,32 +1,15 @@
 import React, { useState } from "react";
 import "../css/tiptap.css";
-import {
-  useEditor,
-  EditorContent,
-  FloatingMenu,
-  BubbleMenu,
-} from "@tiptap/react";
+import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import HorizontalRule from "@tiptap/extension-horizontal-rule";
-import Document from "@tiptap/extension-document";
-import Heading from "@tiptap/extension-heading";
-import Paragraph from "@tiptap/extension-paragraph";
-import Text from "@tiptap/extension-text";
 import TextStyle from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
-
-import Bold from "@tiptap/extension-bold";
-import Italic from "@tiptap/extension-italic";
 import TextAlign from "@tiptap/extension-text-align";
-
-import BulletList from "@tiptap/extension-bullet-list";
-import ListItem from "@tiptap/extension-list-item";
-import Dropcursor from "@tiptap/extension-dropcursor";
 
 import EditorButtons from "./EditorButtons";
 import EditorMenu from "./EditorMenu";
 
-const content = `
+const initialContent = `
 <h1 style="text-align: center"><em>Hello 
 </em><span style="color: rgb(119, 255, 153)">
 <strong>World</strong></span><span style="color: #fdf777">!
@@ -38,7 +21,7 @@ const content = `
 `;
 
 const Tiptap = () => {
-  const [editorContent, setEditorContent] = useState(content);
+  const [editorContent, setEditorContent] = useState(initialContent);
 
   const editor = useEditor({
     extensions: [
@@ -47,22 +30,13 @@ const Tiptap = () => {
           levels: [1, 2, 3], // Configure heading levels
         },
       }),
-      Bold,
-      Italic,
-      HorizontalRule,
-      BulletList,
-      ListItem,
-      Document,
-      Paragraph,
-      Text,
-      Dropcursor,
       TextStyle,
       Color,
       TextAlign.configure({
         types: ["heading", "paragraph"],
       }),
     ],
-    content: content,
+    content: initialContent,
     editorProps: {
       attributes: {
         class: "tiptap-editor",
