@@ -1,18 +1,23 @@
-// src/components/Tiptap.js
 import React, { useState } from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
+import "../css/tiptap.css";
+import {
+  useEditor,
+  EditorContent,
+  FloatingMenu,
+  BubbleMenu,
+} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Document from "@tiptap/extension-document";
+import Heading from "@tiptap/extension-heading";
+import Paragraph from "@tiptap/extension-paragraph";
+import Text from "@tiptap/extension-text";
+import HorizontalRule from "@tiptap/extension-horizontal-rule";
+
 import Bold from "@tiptap/extension-bold";
 import Italic from "@tiptap/extension-italic";
-import Heading from "@tiptap/extension-heading";
-import HorizontalRule from "@tiptap/extension-horizontal-rule";
+
 import BulletList from "@tiptap/extension-bullet-list";
 import ListItem from "@tiptap/extension-list-item";
-
-import EditorButtons from "./EditorButtons";
-import EditorMenu from "./EditorMenu";
-
-import "../css/tiptap.css";
 
 const content = `
     <p>Hello World!</p>
@@ -102,19 +107,73 @@ const Tiptap = () => {
 
   return (
     <div className="tiptap">
-      <EditorButtons
-        toggleHeadingLevel={toggleHeadingLevel}
-        toggleBold={toggleBold}
-        toggleItalic={toggleItalic}
-        setHorizontalRule={setHorizontalRule}
-        toggleBulletList={toggleBulletList}
-        splitListItem={splitListItem}
-        sinkListItem={sinkListItem}
-        liftListItem={liftListItem}
-        editor={editor}
-      />
+      <div className="control-group">
+        <div className="button-group">
+          <button
+            onClick={() => toggleHeadingLevel(1)}
+            className={
+              editor?.isActive("heading", { level: 1 }) ? "is-active" : ""
+            }
+          >
+            H1
+          </button>
+          <button
+            onClick={() => toggleHeadingLevel(2)}
+            className={
+              editor?.isActive("heading", { level: 2 }) ? "is-active" : ""
+            }
+          >
+            H2
+          </button>
+          <button
+            onClick={() => toggleHeadingLevel(3)}
+            className={
+              editor?.isActive("heading", { level: 3 }) ? "is-active" : ""
+            }
+          >
+            H3
+          </button>
+          <button
+            onClick={toggleBold}
+            className={editor?.isActive("bold") ? "is-active" : ""}
+          >
+            Bold
+          </button>
+          <button
+            onClick={toggleItalic}
+            className={editor?.isActive("italic") ? "is-active" : ""}
+          >
+            Italic
+          </button>
+          <button onClick={setHorizontalRule}>Set Horizontal Rule</button>
+          <button
+            onClick={toggleBulletList}
+            className={editor?.isActive("bulletList") ? "is-active" : ""}
+          >
+            Toggle Bullet List
+          </button>
+          <button
+            onClick={splitListItem}
+            disabled={!editor?.can().splitListItem("listItem")}
+          >
+            Split List Item
+          </button>
+          <button
+            onClick={sinkListItem}
+            disabled={!editor?.can().sinkListItem("listItem")}
+          >
+            Sink List Item
+          </button>
+          <button
+            onClick={liftListItem}
+            disabled={!editor?.can().liftListItem("listItem")}
+          >
+            Lift List Item
+          </button>
+        </div>
+      </div>
       <EditorContent editor={editor} />
-      <EditorMenu editor={editor} />
+      <FloatingMenu editor={editor}>This is the floating menu</FloatingMenu>
     </div>
   );
 };
