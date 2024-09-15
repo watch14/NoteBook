@@ -27,41 +27,81 @@ button {
 
 .button-group {
   display: flex;
-  gap: 10px;
+  /* height: 32px; */
+  padding: 10px 27px;
+  align-items: center;
+  justify-content: left;
+  gap: 8px;
+  align-self: stretch;
+  border-radius: 8px;
+  border: 1px solid #000;
+  background: #f9f9f9;
+}
+
+.dropdown {
+  background-color: aqua;
+  width: 50px;
+  color: bisque;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+}
+/* //////////////////////////////////////// */
+/* src/css/custom-dropdown.css */
+
+.dropdown,
+.control-group button,
+.control-group input {
+  width: 68px;
+  height: 56px;
+  border-radius: 4px;
+  background-color: white;
+  border-radius: 12px;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #333;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.dropdown .Dropdown-control {
+  background-color: #fff;
+  color: #333;
+  padding: 8px 12px;
+  border: none;
+  cursor: pointer;
+  display: flex;
   align-items: center;
 }
 
-button,
-select,
-input[type="color"] {
-  border: 1px solid transparent;
+.dropdown .Dropdown-control:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+.dropdown .Dropdown-menu {
   border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 14px;
   background-color: #fff;
-  transition: background-color 0.3s ease;
+  border: 1px solid #ddd;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
-button.is-active,
-select:focus {
-  background-color: #e0e0e0;
-}
-
-.editor-dropdown {
-  width: 120px;
-  height: 36px;
-}
-
-.color-picker {
-  width: 36px;
-  height: 36px;
-  padding: 0;
-  border: none;
+.dropdown .Dropdown-option {
+  padding: 8px 12px;
   cursor: pointer;
 }
 
-button:disabled {
-  cursor: not-allowed;
-  opacity: 0.6;
+.dropdown .Dropdown-option:hover {
+  background-color: #f1f1f1;
+}
+
+.dropdown .Dropdown-option--selected {
+  background-color: #007bff;
+  color: #fff;
+}
+.Dropdown {
+  color: #007bff;
 }

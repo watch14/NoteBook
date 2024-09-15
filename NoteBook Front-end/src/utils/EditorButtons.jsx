@@ -19,16 +19,16 @@ import {
 } from "lucide-react";
 
 const headingOptions = [
-  { value: 1, label: <Heading1 /> },
-  { value: 2, label: <Heading2 /> },
-  { value: 3, label: <Heading3 /> },
+  { value: 1, label: <Heading1 size={24} /> },
+  { value: 2, label: <Heading2 size={22} /> },
+  { value: 3, label: <Heading3 size={20} /> },
 ];
 
 const controlOptions = [
-  { value: "left", label: <AlignLeft /> },
-  { value: "center", label: <AlignCenter /> },
-  { value: "right", label: <AlignRight /> },
-  { value: "justify", label: <AlignJustify /> },
+  { value: "left", label: <AlignLeft size={24} /> },
+  { value: "center", label: <AlignCenter size={24} /> },
+  { value: "right", label: <AlignRight size={24} /> },
+  { value: "justify", label: <AlignJustify size={24} /> },
 ];
 
 const EditorButtons = ({
@@ -59,38 +59,40 @@ const EditorButtons = ({
     <div className="control-group">
       <div className="button-group">
         <Dropdown
+          className="dropdown"
           options={headingOptions}
           onChange={handleHeadingChange}
           value={selectedHeading}
-          placeholder=<Heading />
+          placeholder=<Heading size={24} />
         />
         <Dropdown
+          className="dropdown"
           options={controlOptions}
           onChange={handleTextAlignChange}
           value={selectedTextAlign}
-          placeholder=<AlignLeft />
+          placeholder=<AlignLeft size={24} />
         />
 
         <button
           onClick={toggleBold}
           className={editor?.isActive("bold") ? "is-active" : ""}
         >
-          <Bold />
+          <Bold size={24} />
         </button>
         <button
           onClick={toggleItalic}
           className={editor?.isActive("italic") ? "is-active" : ""}
         >
-          <Italic />
+          <Italic size={24} />
         </button>
         <button onClick={setHorizontalRule}>
-          <Minus />
+          <Minus size={24} />
         </button>
         <button
           onClick={toggleBulletList}
           className={editor?.isActive("bulletList") ? "is-active" : ""}
         >
-          <List />
+          <List size={24} />
         </button>
 
         <input

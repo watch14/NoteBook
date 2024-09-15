@@ -27,11 +27,14 @@ import EditorButtons from "./EditorButtons";
 import EditorMenu from "./EditorMenu";
 
 const content = `
-<h1 style="text-align: center">Hello <span style="color: rgb(119, 255, 153)">
-<strong>World</strong></span>!</h1><ul><li><p>A list item</p></li><li>
-<p style="text-align: center">And another one</p></li></ul><hr>
-<p>Some more text.</p><p></p><h1><span style="color: rgb(125, 213, 255)">
-どこ 勤め先 何 です か</span></h1><h2><span style="color: #ffff97">勤め先</span></h2>
+<h1 style="text-align: center"><em>Hello 
+</em><span style="color: rgb(119, 255, 153)">
+<strong>World</strong></span><span style="color: #fdf777">!
+</span></h1><ul><li><p>A list item</p></li><li>
+<p style="text-align: center">And another one</p>
+</li></ul><hr><p>Some more text.</p><p></p><h1
+><span style="color: rgb(125, 213, 255)">どこ 勤め先 何 です か
+</span></h1><h2><span style="color: rgb(255, 255, 151)">勤め先</span></h2>
 `;
 
 const Tiptap = () => {
