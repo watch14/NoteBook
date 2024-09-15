@@ -1,3 +1,7 @@
+* {
+  margin: 0;
+  padding: 0;
+}
 .tiptap-editor {
   min-height: 300px;
   height: 100%;
@@ -5,17 +9,59 @@
 
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: left;
+
+  text-align: justify;
+  padding: 24px;
+  margin: 2px 0;
+
+  font-size: 18px;
 }
 
-ul,
-ol {
-  padding: 0 1rem;
-  margin: 1.25rem 1rem 1.25rem 0.4rem;
+button {
+  color: #000000;
+}
+.control-group {
+  margin-bottom: 20px;
 }
 
-li p {
-  margin-top: 0.25em;
-  margin-bottom: 0.25em;
+.button-group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+button,
+select,
+input[type="color"] {
+  border: 1px solid transparent;
+  border-radius: 4px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  background-color: #fff;
+  transition: background-color 0.3s ease;
+}
+
+button.is-active,
+select:focus {
+  background-color: #e0e0e0;
+}
+
+.editor-dropdown {
+  width: 120px;
+  height: 36px;
+}
+
+.color-picker {
+  width: 36px;
+  height: 36px;
+  padding: 0;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
 }
