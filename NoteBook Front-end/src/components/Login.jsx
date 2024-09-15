@@ -1,18 +1,18 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
-import { saveUserToLocalStorage, isUserLoggedIn } from "../utils/auth"; // Import the utility function
+import { saveUserToLocalStorage, isUserLoggedIn } from "../utils/auth";
 
 const URL = "http://localhost:5000/api/";
 
 function Login() {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState(""); // State for handling error messages
+  const [error, setError] = useState("");
 
   async function login(e) {
     e.preventDefault();
-    setError(""); // Reset error message before each attempt
+    setError("");
 
     try {
       const response = await axios.post(URL + "users/login", {
@@ -27,14 +27,7 @@ function Login() {
         const { user, token } = response.data.data;
         saveUserToLocalStorage(user._id, token);
 
-        if (isUserLoggedIn()) {
-          alert("Login successful and user is logged in.");
-        } else {
-          alert("Login successful but user is not logged in.");
-        }
-
         //////////////////////////////////////
-        // Redirect or handle successful login
         // window.location.href = "/";
       } else {
         // Display error message from API response
@@ -70,9 +63,9 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
         />
+        {error && <p className="error">{error}</p>}
         <input type="submit" value="Login" />
       </form>
-      {error && <p className="error">{error}</p>} {/* Display error message */}
       <br />
       <p>OR</p>
       <br />
