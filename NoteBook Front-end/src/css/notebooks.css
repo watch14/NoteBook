@@ -1,9 +1,8 @@
 .notebook {
   color: blue;
-  background-color: aquamarine;
 }
 
-ul {
+.notebooks {
   list-style: none;
   display: flex;
   flex-direction: row;
@@ -14,7 +13,7 @@ ul {
   padding: 20px;
 }
 
-ul .add {
+.notebooks .add {
   background-color: rgb(80, 80, 80);
   color: white;
   height: 340px;
@@ -30,7 +29,7 @@ ul .add {
   cursor: pointer;
 }
 
-ul li {
+.notebooks li {
   background-color: aqua;
   color: white;
   border-radius: 16px;

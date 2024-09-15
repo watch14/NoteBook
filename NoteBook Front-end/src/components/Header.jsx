@@ -20,6 +20,7 @@ function Header() {
 
         <Link to="/notebooks">NoteBook</Link>
         <Link to="/keyboard">Keyboard</Link>
+        <Link to="/page">Page</Link>
 
         <Link to="/contact">Contact</Link>
 

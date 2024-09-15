@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@tiptap/extension-bullet-list": "^2.6.6",
+    "@tiptap/extension-heading": "^2.6.6",
+    "@tiptap/extension-horizontal-rule": "^2.6.6",
+    "@tiptap/extension-list-item": "^2.6.6",
     "@tiptap/pm": "^2.6.6",
     "@tiptap/react": "^2.6.6",
     "@tiptap/starter-kit": "^2.6.6",
