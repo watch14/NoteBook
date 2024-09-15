@@ -77,11 +77,10 @@ function Notebooks() {
         throw new Error(response.data.message);
       }
 
-      // Update state with the new notebook
       setNotebooks([...notebooks, response.data.data]);
-      setShowPopup(false); // Close the popup
+      setShowPopup(false);
     } catch (err) {
-      setError("Failed to add notebook. Please try again later.");
+      setError(`Failed to add notebook: ${err.message}`);
       console.error(err);
     }
   };

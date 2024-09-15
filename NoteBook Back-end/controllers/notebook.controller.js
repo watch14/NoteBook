@@ -22,6 +22,7 @@ export const createNotebook = async (req, res, next) => {
     const notebook = new Notebook({
       title: req.body.title,
       userId: req.body.userId,
+      theme: req.body.theme,
     });
 
     await notebook.save();
