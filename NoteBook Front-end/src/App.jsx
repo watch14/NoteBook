@@ -7,7 +7,7 @@ function App() {
   return (
     <>
       <Header />
-      <div className="content">
+      <div className="card">
         <Outlet />{" "}
       </div>
     </>
