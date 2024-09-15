@@ -139,6 +139,7 @@ export const deleteNotebook = async (req, res, next) => {
   }
 };
 
+// Get user notebooks
 export const getUserNotebooks = async (req, res, next) => {
   try {
     const userId = req.params.id;
@@ -176,13 +177,19 @@ export const getUserNotebooks = async (req, res, next) => {
       .limit(limitNumber)
       .skip(skipNumber);
 
+    const totalCount = await Notebook.countDocuments(filter);
+    const notebooksData = {
+      notebooks,
+      totalCount,
+    };
+
     // Check if the array is empty
     if (notebooks.length === 0) {
-      return next(CreateError(404, "This user has no notebooks!"));
+      return next(CreateSuccess(204, "No Notebooks Found!"));
     }
 
     return next(
-      CreateSuccess(200, "Notebooks fetched successfully", notebooks)
+      CreateSuccess(200, "Notebooks fetched successfully", notebooksData)
     );
   } catch (err) {
     return next(

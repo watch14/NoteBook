@@ -20,10 +20,15 @@ function Notebooks() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [showPopup, setShowPopup] = useState(false);
+  const [sortField, setSortField] = useState("createdAt");
+  const [sortOrder, setSortOrder] = useState("asc");
+  const [titleFilter, setTitleFilter] = useState(""); // New state for title filter
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const [itemsPerPage] = useState(20); // Limit per page set to 1 for testing
 
   useEffect(() => {
     async function fetchNotebooks() {
-      // Check if the user is logged in
       if (!isUserLoggedIn()) {
         window.location.href = "/login";
         return;
@@ -36,18 +41,30 @@ function Notebooks() {
       }
 
       try {
-        const response = await axios.get(`${Api}notebooks/user/${userId}`);
+        const response = await axios.get(`${Api}notebooks/user/${userId}`, {
+          params: {
+            title: titleFilter,
+            sortBy: sortField,
+            sortOrder: sortOrder,
+            limit: itemsPerPage,
+            skip: (currentPage - 1) * itemsPerPage,
+          },
+        });
 
-        if (!response.data.success) {
-          throw new Error(response.data.message);
+        if (response.data.error) {
+          throw new Error(response.data.error);
         }
 
-        const notebooksData = response.data.data;
-        console.log(notebooksData);
-
-        // Set notebooks
-        setNotebooks(notebooksData);
+        // Extract notebooks and totalCount from response
+        const { notebooks, totalCount } = response.data.data || {
+          notebooks: [],
+          totalCount: 0,
+        };
+        setNotebooks(notebooks);
+        setTotalPages(Math.ceil(totalCount / itemsPerPage));
+        setError(""); // Clear any previous errors
       } catch (err) {
+        setNotebooks([]);
         setError("Failed to load notebooks. Please try again later.");
         console.error(err);
       } finally {
@@ -56,7 +73,7 @@ function Notebooks() {
     }
 
     fetchNotebooks();
-  }, []); // Empty dependency array means this runs once on component mount
+  }, [sortField, sortOrder, titleFilter, currentPage]); // Include currentPage in dependencies
 
   const handleAddNotebook = async (newNotebook) => {
     const userId = getUserId();
@@ -73,15 +90,42 @@ function Notebooks() {
         theme: newNotebook.theme,
       });
 
-      if (!response.data.success) {
-        throw new Error(response.data.message);
+      if (response.data.error) {
+        throw new Error(response.data.error);
       }
 
-      setNotebooks([...notebooks, response.data.data]);
+      setNotebooks((prevNotebooks) => [...prevNotebooks, response.data.data]);
       setShowPopup(false);
     } catch (err) {
       setError(`Failed to add notebook: ${err.message}`);
       console.error(err);
+    }
+  };
+
+  const handleSortChange = (event) => {
+    const [field, order] = event.target.value.split("_");
+    setSortField(field);
+    setSortOrder(order);
+  };
+
+  const handleTitleFilterChange = (event) => {
+    setTitleFilter(event.target.value);
+    setCurrentPage(1); // Reset to first page when filtering
+  };
+
+  const goToPage = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  const handleNextPage = () => {
+    if (currentPage < totalPages) {
+      setCurrentPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPage > 1) {
+      setCurrentPage((prevPage) => prevPage - 1);
     }
   };
 
@@ -91,22 +135,35 @@ function Notebooks() {
   return (
     <div>
       <h1>Notebooks</h1>
-      <p>This is the Notebooks component.</p>
+
+      <div className="filters">
+        <input
+          type="text"
+          placeholder="Filter by title"
+          value={titleFilter}
+          onChange={handleTitleFilterChange}
+        />
+        <select onChange={handleSortChange} value={`${sortField}_${sortOrder}`}>
+          <option value="createdAt_asc">Oldest</option>
+          <option value="createdAt_desc">Newest</option>
+        </select>
+      </div>
+
+      {showPopup && (
+        <AddNotebook
+          onAdd={handleAddNotebook}
+          onClose={() => setShowPopup(false)}
+        />
+      )}
 
       {notebooks.length > 0 ? (
         <ul className="notebooks">
           <div className="add" onClick={() => setShowPopup(true)}>
             +
           </div>
-          {showPopup && (
-            <AddNotebook
-              onAdd={handleAddNotebook}
-              onClose={() => setShowPopup(false)}
-            />
-          )}
           {notebooks.map((notebook) => (
             <li key={notebook._id} style={{ background: notebook.theme }}>
-              <div className="title">Title: {notebook.title}</div>
+              <div className="title">{notebook.title}</div>
               <div className="date">{formatDate(notebook.createdAt)}</div>
             </li>
           ))}
@@ -114,6 +171,18 @@ function Notebooks() {
       ) : (
         <p>No notebooks available.</p>
       )}
+
+      <div className="pagination">
+        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+          Previous
+        </button>
+        <span>
+          Page {currentPage} of {totalPages}
+        </span>
+        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
+          Next
+        </button>
+      </div>
     </div>
   );
 }
