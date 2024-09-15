@@ -26,22 +26,22 @@ button {
 }
 
 .button-group {
+  /* height: 56px; */
   display: flex;
-  /* height: 32px; */
-  padding: 10px 27px;
+  padding: 10px 28px;
   align-items: center;
   justify-content: left;
   gap: 8px;
   align-self: stretch;
   border-radius: 8px;
   border: 1px solid #000;
-  background: #f9f9f9;
+  background: #fff;
 }
 
 .dropdown {
   background-color: aqua;
   width: 50px;
-  color: bisque;
+  color: rgb(255, 193, 117);
   border-radius: 8px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
@@ -50,21 +50,29 @@ button {
 /* src/css/custom-dropdown.css */
 
 .dropdown,
+.Dropdown-root,
+.Dropdown-control,
 .control-group button,
-.control-group input {
-  width: 68px;
-  height: 56px;
-  border-radius: 4px;
-  background-color: white;
-  border-radius: 12px;
+.control-group .color-input {
+  width: 60px;
+  height: 40px;
+  background-color: #fff;
+  border: none;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #333;
-  font-size: 14px;
+  color: #fff;
+  font-size: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
+}
+
+.control-group .color-input {
+  border: rgb(0, 0, 0) solid 1.2px;
+  height: 28px;
+  width: 28px;
+  margin-left: 12px;
 }
 
 .dropdown .Dropdown-control {
@@ -75,18 +83,25 @@ button {
   cursor: pointer;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+}
+
+.Dropdown-root:hover,
+.control-group button:hover,
+.control-group .color-input:hover {
+  background-color: #fff;
+  box-shadow: rgb(224, 224, 224) 0px 2px 5px;
 }
 
 .dropdown .Dropdown-control:focus {
-  outline: none;
   border-color: #007bff;
 }
 
 .dropdown .Dropdown-menu {
-  border-radius: 4px;
   background-color: #fff;
-  border: 1px solid #ddd;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
 .dropdown .Dropdown-option {
@@ -95,13 +110,5 @@ button {
 }
 
 .dropdown .Dropdown-option:hover {
-  background-color: #f1f1f1;
-}
-
-.dropdown .Dropdown-option--selected {
-  background-color: #007bff;
-  color: #fff;
-}
-.Dropdown {
-  color: #007bff;
+  background-color: #e0e0e0;
 }
