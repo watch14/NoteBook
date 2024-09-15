@@ -1,0 +1,57 @@
+import React, { useState } from "react";
+import "../css/addNotebook.css"; // Ensure this contains styles for gradients
+
+function AddNotebook({ onAdd, onClose }) {
+  const [title, setTitle] = useState("");
+  const [theme, setTheme] = useState("grey"); // Default theme
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onAdd({ title, theme });
+    setTitle(""); // Clear the form
+    setTheme("grey"); // Reset theme to default
+  };
+
+  return (
+    <div className="popup-overlay">
+      <div className="popup-content">
+        <h2>Add Notebook</h2>
+        <form onSubmit={handleSubmit}>
+          <label>
+            Title:
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Theme:
+            <select value={theme} onChange={(e) => setTheme(e.target.value)}>
+              <option value="blue">Blue</option>
+              <option value="red">Red</option>
+              <option value="green">Green</option>
+              <option value="linear-gradient(to right, #ff7e5f, #feb47b)">
+                Sunset
+              </option>
+              <option value="linear-gradient(to right, #00c6ff, #0072ff)">
+                Ocean
+              </option>
+              <option value="linear-gradient(to right, #ff0099, #493240)">
+                Purple
+              </option>
+              {/* Add more gradient options as needed */}
+            </select>
+          </label>
+          <button type="submit">Add</button>
+          <button type="button" onClick={onClose}>
+            Cancel
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+export default AddNotebook;

@@ -8,8 +8,7 @@ function App() {
     <>
       <Header />
       <div className="content">
-        <Outlet />
-        {" home"}
+        <Outlet />{" "}
       </div>
     </>
   );

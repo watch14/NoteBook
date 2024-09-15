@@ -1,0 +1,56 @@
+.notebook {
+  color: blue;
+  background-color: aquamarine;
+}
+
+ul {
+  list-style: none;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 60px;
+
+  padding: 20px;
+}
+
+ul .add {
+  background-color: rgb(80, 80, 80);
+  color: white;
+  height: 340px;
+  width: 245px;
+  border-radius: 16px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+ul li {
+  background-color: aqua;
+  color: white;
+  border-radius: 16px;
+  height: 340px;
+  width: 245px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 60px 10px;
+
+  font-size: 28px;
+  font-weight: bold;
+
+  cursor: pointer;
+}
+
+.date {
+  font-size: 16px;
+  font-weight: normal;
+}

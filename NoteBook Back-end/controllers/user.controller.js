@@ -135,9 +135,21 @@ export const updateUser = async (req, res, next) => {
       return next(CreateError(404, "User Not Found!"));
     }
 
+    // Extract the data to update
+    const updateData = req.body;
+
+    // Check if password is being updated
+    if (updateData.password) {
+      // Hash the new password
+      const salt = bcrypt.genSaltSync(10);
+      const hashedPassword = bcrypt.hashSync(updateData.password, salt);
+      updateData.password = hashedPassword; // Replace the plain password with hashed password
+    }
+
+    // Perform the update
     const userData = await User.findByIdAndUpdate(
       userId,
-      { $set: req.body },
+      { $set: updateData },
       { new: true }
     );
 
@@ -148,7 +160,6 @@ export const updateUser = async (req, res, next) => {
     );
   }
 };
-
 // Delete user by ID
 export const deleteUser = async (req, res, next) => {
   try {

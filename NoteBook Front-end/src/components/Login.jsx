@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { saveUserToLocalStorage, isUserLoggedIn } from "../utils/auth";
-
-const URL = "http://localhost:5000/api/";
+import { Api } from "../utils/api";
 
 function Login() {
   const [username, setUserName] = useState("");
@@ -15,7 +14,7 @@ function Login() {
     setError("");
 
     try {
-      const response = await axios.post(URL + "users/login", {
+      const response = await axios.post(Api + "users/login", {
         userName: username,
         password,
       });

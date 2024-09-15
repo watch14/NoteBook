@@ -17,9 +17,11 @@ function Header() {
       </div>
       <nav>
         <Link to="/">Home</Link>
+
+        <Link to="/notebooks">NoteBook</Link>
         <Link to="/keyboard">Keyboard</Link>
 
-        <Link to="/about">About</Link>
+        <Link to="/contact">Contact</Link>
 
         {isUserLoggedIn() ? (
           <button onClick={handleLogout}>Logout</button>

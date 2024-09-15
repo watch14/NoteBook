@@ -19,3 +19,11 @@ export function isUserLoggedIn() {
   const { userId, token } = getUserFromLocalStorage();
   return !!userId && !!token;
 }
+
+export function getToken() {
+  return getUserFromLocalStorage().token;
+}
+
+export function getUserId() {
+  return getUserFromLocalStorage().userId;
+}
