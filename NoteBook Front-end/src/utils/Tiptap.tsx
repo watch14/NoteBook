@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect } from "react";
 import "../css/tiptap.css";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
@@ -9,18 +9,7 @@ import TextAlign from "@tiptap/extension-text-align";
 import EditorButtons from "./EditorButtons";
 import EditorMenu from "./EditorMenu";
 
-const initialContent = `
-<h1 style="text-align: center"><em>Hello 
-</em><span style="color: rgb(119, 255, 153)">
-<strong>World</strong></span><span style="color: #fdf777">!
-</span></h1><ul><li><p>A list item</p></li><li>
-<p style="text-align: center">And another one</p>
-</li></ul><hr><p>Some more text.</p><p></p><h1
-><span style="color: rgb(125, 213, 255)">どこ 勤め先 何 です か
-</span></h1><h2><span style="color: rgb(255, 255, 151)">勤め先</span></h2>
-`;
-
-const Tiptap = ({ onContentChange }) => {
+const Tiptap = ({ onContentChange, textContent }) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -34,7 +23,7 @@ const Tiptap = ({ onContentChange }) => {
         types: ["heading", "paragraph"],
       }),
     ],
-    content: initialContent,
+    content: textContent || "", // Use textContent prop or default to an empty string
     editorProps: {
       attributes: {
         class: "tiptap-editor",
@@ -47,6 +36,13 @@ const Tiptap = ({ onContentChange }) => {
       }
     },
   });
+
+  // Update the editor content when textContent prop changes
+  useEffect(() => {
+    if (editor) {
+      editor.commands.setContent(textContent || "");
+    }
+  }, [textContent, editor]);
 
   const toggleHeadingLevel = (level) => {
     if (editor) {
@@ -97,7 +93,7 @@ const Tiptap = ({ onContentChange }) => {
   };
 
   return (
-    <div className="tiptape">
+    <div className="tiptap">
       <EditorButtons
         toggleHeadingLevel={toggleHeadingLevel}
         toggleBold={toggleBold}

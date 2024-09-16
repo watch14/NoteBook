@@ -22,10 +22,10 @@ function Notebooks() {
   const [showPopup, setShowPopup] = useState(false);
   const [sortField, setSortField] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("asc");
-  const [titleFilter, setTitleFilter] = useState(""); // New state for title filter
+  const [titleFilter, setTitleFilter] = useState(""); // State for title filter
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [itemsPerPage] = useState(20); // Limit per page set to 1 for testing
+  const [itemsPerPage] = useState(20); // Limit per page
 
   useEffect(() => {
     async function fetchNotebooks() {
@@ -73,7 +73,7 @@ function Notebooks() {
     }
 
     fetchNotebooks();
-  }, [sortField, sortOrder, titleFilter, currentPage]); // Include currentPage in dependencies
+  }, [sortField, sortOrder, titleFilter, currentPage]); // Dependencies include currentPage
 
   const handleAddNotebook = async (newNotebook) => {
     const userId = getUserId();
@@ -129,6 +129,10 @@ function Notebooks() {
     }
   };
 
+  const sendNoteBookId = (id) => {
+    window.location.href = `/page/${id}`;
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -162,7 +166,11 @@ function Notebooks() {
             +
           </div>
           {notebooks.map((notebook) => (
-            <li key={notebook._id} style={{ background: notebook.theme }}>
+            <li
+              key={notebook._id}
+              style={{ background: notebook.theme }}
+              onClick={() => sendNoteBookId(notebook._id)}
+            >
               <div className="title">{notebook.title}</div>
               <div className="date">{formatDate(notebook.createdAt)}</div>
             </li>
