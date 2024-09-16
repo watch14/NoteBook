@@ -72,6 +72,13 @@ const Sketch = ({ onElementsChange }) => {
           SKETCH_ELEMENTS_LOCAL_STORAGE_KEY,
           JSON.stringify(newElements)
         );
+        if (onElementsChange) {
+          console.log(
+            "Calling onElementsChange with new elements:",
+            newElements
+          );
+          onElementsChange(newElements); // Notify parent component
+        }
       }
       return newElements;
     });
