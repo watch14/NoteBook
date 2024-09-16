@@ -10,26 +10,22 @@ const Page = () => {
   const { id } = useParams();
   const [pages, setPages] = useState([]);
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
-  const [sketchElements, setSketchElements] = useState([]);
-  const [tiptapContent, setTiptapContent] = useState("");
   const [text, setText] = useState("");
   const [sketch, setSketch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const handleSketchElementsChange = (elements) => {
-    console.log("Sketch elements changed:", elements);
-    setSketchElements(elements);
+    setSketch(elements);
   };
 
   const handleTiptapContentChange = (content) => {
-    console.log("Tiptap content changed:", content);
-    setTiptapContent(content);
+    setText(content);
   };
 
   const printData = () => {
-    console.log("Sketch Elements:", sketchElements);
-    console.log("Tiptap Content HTML:", tiptapContent);
+    console.log("Sketch Elements:", sketch);
+    console.log("Tiptap Content HTML:", text);
   };
 
   useEffect(() => {
@@ -37,21 +33,17 @@ const Page = () => {
       setLoading(true);
       try {
         const data = await GetNotebookPages(id); // Fetch notebook pages
-        console.log("Fetched data:", data);
-
         if (data && data.length > 0) {
           setPages(data);
-          setText(data[currentPageIndex]?.text || "");
-
+          setText(data[currentPageIndex]?.text || "<p></p>"); // Set default content
           const sketchData = data[currentPageIndex]?.sketch;
 
-          // Only parse if sketchData exists and is valid JSON
           if (sketchData && sketchData.trim() !== "") {
             try {
               setSketch(JSON.parse(sketchData)); // Parse the sketch data
             } catch (error) {
               console.error("Error parsing sketch data:", error);
-              setSketch([]); // If parsing fails, set an empty sketch
+              setSketch([]); // Set an empty sketch
             }
           } else {
             setSketch([]); // If no sketch data, set an empty array
@@ -70,15 +62,16 @@ const Page = () => {
 
   const handleSavePage = async () => {
     const currentPage = pages[currentPageIndex];
+    console.log("Saving content:", text || "<empty>"); // Show if content is empty
+
     try {
-      // Ensure sketchElements is an array before saving
       await savePage(
         id,
         currentPage?._id,
-        Array.isArray(sketchElements) ? sketchElements : [],
-        tiptapContent
+        Array.isArray(sketch) ? sketch : [],
+        text || "<p></p>" // Ensure content is not empty
       );
-      console.log("Page saved successfully.");
+      console.log("Page saved successfully.✅");
     } catch (error) {
       console.error("Error saving page:", error);
     }

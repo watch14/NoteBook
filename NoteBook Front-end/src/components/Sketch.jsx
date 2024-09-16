@@ -59,21 +59,21 @@ const Sketch = ({ onElementsChange, sketchContent }) => {
     },
   };
 
-  // Log data periodically
-  const logData = useCallback(() => {
-    // Optional logging for debug purposes
-    console.log("Data logged at:", new Date().toLocaleTimeString());
-    console.log("Elements:", elements);
-  }, [elements]);
+  // // Log data periodically
+  // const logData = useCallback(() => {
+  //   // Optional logging for debug purposes
+  //   console.log("Data logged at:", new Date().toLocaleTimeString());
+  //   console.log("Elements:", elements);
+  // }, [elements]);
 
-  // Auto-save elements every 10 seconds
-  useEffect(() => {
-    const saveInterval = setInterval(() => {
-      logData();
-    }, 10000); // 10 seconds
+  // // Auto-save elements every 10 seconds
+  // useEffect(() => {
+  //   const saveInterval = setInterval(() => {
+  //     logData();
+  //   }, 10000); // 10 seconds
 
-    return () => clearInterval(saveInterval);
-  }, [logData]);
+  //   return () => clearInterval(saveInterval);
+  // }, [logData]);
 
   // Handle changes to the elements
   const handleChange = (newElements) => {

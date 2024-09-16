@@ -23,7 +23,7 @@ const Tiptap = ({ onContentChange, textContent }) => {
         types: ["heading", "paragraph"],
       }),
     ],
-    content: textContent || "", // Use textContent prop or default to an empty string
+    content: textContent || "<p></p>", // Set default content if empty
     editorProps: {
       attributes: {
         class: "tiptap-editor",
@@ -40,7 +40,11 @@ const Tiptap = ({ onContentChange, textContent }) => {
   // Update the editor content when textContent prop changes
   useEffect(() => {
     if (editor) {
-      editor.commands.setContent(textContent || "");
+      if (textContent === "") {
+        editor.commands.setContent("<p></p>"); // Ensure editor is not empty
+      } else {
+        editor.commands.setContent(textContent);
+      }
     }
   }, [textContent, editor]);
 
