@@ -5,24 +5,31 @@ import "../css/sketch.css";
 // Constants
 const SKETCH_ELEMENTS_LOCAL_STORAGE_KEY = "sketchElements";
 
-const Sketch = ({ onElementsChange }) => {
+const Sketch = ({ onElementsChange, sketchContent }) => {
   const [elements, setElements] = useState([]);
 
-  // Initialize elements from localStorage
+  // Initialize elements from localStorage or use sketchContent
   useEffect(() => {
-    const savedElements = localStorage.getItem(
-      SKETCH_ELEMENTS_LOCAL_STORAGE_KEY
-    );
-    if (savedElements) {
-      try {
-        const parsedElements = JSON.parse(savedElements);
-        console.log("Loaded elements from localStorage:", parsedElements);
-        setElements(parsedElements);
-      } catch (error) {
-        console.error("Error parsing saved elements from localStorage", error);
+    if (sketchContent) {
+      setElements(sketchContent); // Use sketchContent if provided
+    } else {
+      const savedElements = localStorage.getItem(
+        SKETCH_ELEMENTS_LOCAL_STORAGE_KEY
+      );
+      if (savedElements) {
+        try {
+          const parsedElements = JSON.parse(savedElements);
+          console.log("Loaded elements from localStorage:", parsedElements);
+          setElements(parsedElements);
+        } catch (error) {
+          console.error(
+            "Error parsing saved elements from localStorage",
+            error
+          );
+        }
       }
     }
-  }, []);
+  }, [sketchContent]);
 
   // UIOptions should not change on every render
   const UIOptions = {
@@ -85,7 +92,7 @@ const Sketch = ({ onElementsChange }) => {
   };
 
   return (
-    <div className="sktech">
+    <div className="sketch">
       <Excalidraw
         initialData={{ elements }} // Ensure this is the correct prop
         onChange={handleChange}

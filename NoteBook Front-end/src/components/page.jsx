@@ -8,9 +8,13 @@ import "../css/page.css";
 
 const Page = () => {
   const { id } = useParams(); // Access the dynamic id parameter
+  const [pages, setPages] = useState([]); // Array to hold all pages
+  const [currentPageIndex, setCurrentPageIndex] = useState(0); // Index of the current page
   const [sketchElements, setSketchElements] = useState([]);
   const [tiptapContent, setTiptapContent] = useState("");
   const [text, setText] = useState(""); // Ensure this is correctly named
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
   const handleSketchElementsChange = (elements) => {
     console.log("Sketch elements changed:", elements); // Debugging line
@@ -29,22 +33,41 @@ const Page = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       try {
-        const data = await GeNotebookPages(id); // Use dynamic id
+        const data = await GeNotebookPages(id); // Fetch all pages for the notebook
 
         console.log("data", data);
 
         if (data && data.length > 0) {
-          const textContent = data[0].text;
-          setText(textContent); // Update the state
+          setPages(data); // Set all pages data
+          setText(data[currentPageIndex].text); // Set text for the current page
         }
       } catch (error) {
+        setError("Error fetching notebook pages.");
         console.error("Error fetching notebook pages:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchData();
-  }, [id]); // Dependency on id
+  }, [id, currentPageIndex]); // Dependency on id and currentPageIndex
+
+  const handleNextPage = () => {
+    if (currentPageIndex < pages.length - 1) {
+      setCurrentPageIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPageIndex > 0) {
+      setCurrentPageIndex((prevIndex) => prevIndex - 1);
+    }
+  };
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <div>
@@ -60,6 +83,21 @@ const Page = () => {
         />
       </div>
       <button onClick={printData}>Print Data</button>
+
+      <div className="pagination">
+        <button onClick={handlePreviousPage} disabled={currentPageIndex === 0}>
+          Previous
+        </button>
+        <span>
+          Page {currentPageIndex + 1} of {pages.length}
+        </span>
+        <button
+          onClick={handleNextPage}
+          disabled={currentPageIndex === pages.length - 1}
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };
