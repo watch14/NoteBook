@@ -2,6 +2,13 @@
   margin: 0;
   padding: 0;
 }
+.tiptape {
+  height: 100%;
+  width: 100%;
+  max-width: 1280px;
+  margin-inline: auto;
+  border-radius: 8px;
+}
 .tiptap-editor {
   height: 100%;
   width: 100%;
@@ -15,10 +22,17 @@
   margin: 2px 0;
 
   font-size: 18px;
+  border: #000 2px solid;
+  border-radius: 8px;
+
+  /*   lighr theme
+  background-color: #fff;
+  color: #000; 
+  */
 }
 
 button {
-  color: #000000;
+  color: #000;
 }
 .control-group {
   margin-bottom: 20px;

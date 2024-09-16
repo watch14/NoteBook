@@ -97,7 +97,7 @@ const Tiptap = () => {
   };
 
   return (
-    <div className="tiptap">
+    <div className="tiptape">
       <EditorButtons
         toggleHeadingLevel={toggleHeadingLevel}
         toggleBold={toggleBold}
