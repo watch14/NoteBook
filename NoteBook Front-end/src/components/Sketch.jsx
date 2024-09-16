@@ -12,7 +12,6 @@ const Sketch = ({ onElementsChange, sketchContent }) => {
   useEffect(() => {
     if (Array.isArray(sketchContent)) {
       setElements(sketchContent); // Ensure sketchContent is an array
-      console.log("Sketch content before rendering Excalidraw:", sketchContent);
     } else {
       const savedElements = localStorage.getItem(
         SKETCH_ELEMENTS_LOCAL_STORAGE_KEY
@@ -21,7 +20,6 @@ const Sketch = ({ onElementsChange, sketchContent }) => {
         try {
           const parsedElements = JSON.parse(savedElements);
           if (Array.isArray(parsedElements)) {
-            console.log("Loaded elements from localStorage:", parsedElements);
             setElements(parsedElements);
           } else {
             console.error("Parsed elements are not an array.");
@@ -79,16 +77,11 @@ const Sketch = ({ onElementsChange, sketchContent }) => {
   const handleChange = (newElements) => {
     setElements((prevElements) => {
       if (JSON.stringify(prevElements) !== JSON.stringify(newElements)) {
-        console.log("Elements changed, saving to localStorage.");
         localStorage.setItem(
           SKETCH_ELEMENTS_LOCAL_STORAGE_KEY,
           JSON.stringify(newElements)
         );
         if (onElementsChange) {
-          console.log(
-            "Calling onElementsChange with new elements:",
-            newElements
-          );
           onElementsChange(newElements); // Notify parent component
         }
       }
