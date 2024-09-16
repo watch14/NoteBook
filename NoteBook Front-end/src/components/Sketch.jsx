@@ -8,10 +8,11 @@ const SKETCH_ELEMENTS_LOCAL_STORAGE_KEY = "sketchElements";
 const Sketch = ({ onElementsChange, sketchContent }) => {
   const [elements, setElements] = useState([]);
 
-  // Initialize elements from localStorage or use sketchContent
+  // Load elements from sketchContent prop or localStorage
   useEffect(() => {
-    if (sketchContent) {
-      setElements(sketchContent); // Use sketchContent if provided
+    if (Array.isArray(sketchContent)) {
+      setElements(sketchContent); // Ensure sketchContent is an array
+      console.log("Sketch content before rendering Excalidraw:", sketchContent);
     } else {
       const savedElements = localStorage.getItem(
         SKETCH_ELEMENTS_LOCAL_STORAGE_KEY
@@ -19,8 +20,12 @@ const Sketch = ({ onElementsChange, sketchContent }) => {
       if (savedElements) {
         try {
           const parsedElements = JSON.parse(savedElements);
-          console.log("Loaded elements from localStorage:", parsedElements);
-          setElements(parsedElements);
+          if (Array.isArray(parsedElements)) {
+            console.log("Loaded elements from localStorage:", parsedElements);
+            setElements(parsedElements);
+          } else {
+            console.error("Parsed elements are not an array.");
+          }
         } catch (error) {
           console.error(
             "Error parsing saved elements from localStorage",
@@ -31,7 +36,7 @@ const Sketch = ({ onElementsChange, sketchContent }) => {
     }
   }, [sketchContent]);
 
-  // UIOptions should not change on every render
+  // UI Options for Excalidraw
   const UIOptions = {
     canvasActions: {
       changeViewBackgroundColor: true,
@@ -54,23 +59,23 @@ const Sketch = ({ onElementsChange, sketchContent }) => {
     },
   };
 
-  // Function to log data at regular intervals
+  // Log data periodically
   const logData = useCallback(() => {
-    // console.log("Data logged at:", new Date().toLocaleTimeString());
-    // console.log("Elements:", elements);
+    // Optional logging for debug purposes
+    console.log("Data logged at:", new Date().toLocaleTimeString());
+    console.log("Elements:", elements);
   }, [elements]);
 
-  // Use effect to set up interval
+  // Auto-save elements every 10 seconds
   useEffect(() => {
     const saveInterval = setInterval(() => {
       logData();
     }, 10000); // 10 seconds
 
-    // Cleanup on unmount
     return () => clearInterval(saveInterval);
   }, [logData]);
 
-  // Update state only if new values are different
+  // Handle changes to the elements
   const handleChange = (newElements) => {
     setElements((prevElements) => {
       if (JSON.stringify(prevElements) !== JSON.stringify(newElements)) {
@@ -94,7 +99,9 @@ const Sketch = ({ onElementsChange, sketchContent }) => {
   return (
     <div className="sketch">
       <Excalidraw
-        initialData={{ elements }} // Ensure this is the correct prop
+        initialData={{
+          elements: Array.isArray(sketchContent) ? sketchContent : [],
+        }}
         onChange={handleChange}
         UIOptions={UIOptions}
         theme="dark"

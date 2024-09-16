@@ -36,12 +36,26 @@ const Page = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await GetNotebookPages(id);
+        const data = await GetNotebookPages(id); // Fetch notebook pages
         console.log("Fetched data:", data);
+
         if (data && data.length > 0) {
           setPages(data);
           setText(data[currentPageIndex]?.text || "");
-          setSketch(data[currentPageIndex]?.sketch || "");
+
+          const sketchData = data[currentPageIndex]?.sketch;
+
+          // Only parse if sketchData exists and is valid JSON
+          if (sketchData && sketchData.trim() !== "") {
+            try {
+              setSketch(JSON.parse(sketchData)); // Parse the sketch data
+            } catch (error) {
+              console.error("Error parsing sketch data:", error);
+              setSketch([]); // If parsing fails, set an empty sketch
+            }
+          } else {
+            setSketch([]); // If no sketch data, set an empty array
+          }
         }
       } catch (error) {
         setError("Error fetching notebook pages.");
@@ -57,7 +71,13 @@ const Page = () => {
   const handleSavePage = async () => {
     const currentPage = pages[currentPageIndex];
     try {
-      await savePage(id, currentPage?._id, sketchElements, tiptapContent);
+      // Ensure sketchElements is an array before saving
+      await savePage(
+        id,
+        currentPage?._id,
+        Array.isArray(sketchElements) ? sketchElements : [],
+        tiptapContent
+      );
       console.log("Page saved successfully.");
     } catch (error) {
       console.error("Error saving page:", error);
