@@ -1,28 +1,29 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom"; // Import useParams
-import Sketch from "./sketch.jsx";
+import { useParams } from "react-router-dom";
+import Sketch from "./sketch";
 import Tiptap from "../utils/Tiptap";
-import GeNotebookPages from "../utils/api.js";
+import GetNotebookPages, { savePage } from "../utils/api";
 
 import "../css/page.css";
 
 const Page = () => {
-  const { id } = useParams(); // Access the dynamic id parameter
-  const [pages, setPages] = useState([]); // Array to hold all pages
-  const [currentPageIndex, setCurrentPageIndex] = useState(0); // Index of the current page
+  const { id } = useParams();
+  const [pages, setPages] = useState([]);
+  const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [sketchElements, setSketchElements] = useState([]);
   const [tiptapContent, setTiptapContent] = useState("");
-  const [text, setText] = useState(""); // Ensure this is correctly named
+  const [text, setText] = useState("");
+  const [sketch, setSketch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   const handleSketchElementsChange = (elements) => {
-    console.log("Sketch elements changed:", elements); // Debugging line
+    console.log("Sketch elements changed:", elements);
     setSketchElements(elements);
   };
 
   const handleTiptapContentChange = (content) => {
-    console.log("Tiptap content changed:", content); // Debugging line
+    console.log("Tiptap content changed:", content);
     setTiptapContent(content);
   };
 
@@ -35,13 +36,12 @@ const Page = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await GeNotebookPages(id); // Fetch all pages for the notebook
-
-        console.log("data", data);
-
+        const data = await GetNotebookPages(id);
+        console.log("Fetched data:", data);
         if (data && data.length > 0) {
-          setPages(data); // Set all pages data
-          setText(data[currentPageIndex].text); // Set text for the current page
+          setPages(data);
+          setText(data[currentPageIndex]?.text || "");
+          setSketch(data[currentPageIndex]?.sketch || "");
         }
       } catch (error) {
         setError("Error fetching notebook pages.");
@@ -52,7 +52,17 @@ const Page = () => {
     };
 
     fetchData();
-  }, [id, currentPageIndex]); // Dependency on id and currentPageIndex
+  }, [id, currentPageIndex]);
+
+  const handleSavePage = async () => {
+    const currentPage = pages[currentPageIndex];
+    try {
+      await savePage(id, currentPage?._id, sketchElements, tiptapContent);
+      console.log("Page saved successfully.");
+    } catch (error) {
+      console.error("Error saving page:", error);
+    }
+  };
 
   const handleNextPage = () => {
     if (currentPageIndex < pages.length - 1) {
@@ -80,9 +90,11 @@ const Page = () => {
         <Sketch
           className="sketcher"
           onElementsChange={handleSketchElementsChange}
+          sketchContent={sketch} // Pass sketchContent to Sketch
         />
       </div>
       <button onClick={printData}>Print Data</button>
+      <button onClick={handleSavePage}>Save Page</button>
 
       <div className="pagination">
         <button onClick={handlePreviousPage} disabled={currentPageIndex === 0}>
