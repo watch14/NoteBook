@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import Sketch from "./sketch.jsx";
 import Tiptap from "../utils/Tiptap";
 
+import "../css/page.css";
+
 const Page = () => {
   const [sketchElements, setSketchElements] = useState([]);
   const [tiptapContent, setTiptapContent] = useState("");
@@ -24,9 +26,14 @@ const Page = () => {
   return (
     <div>
       <h1>Welcome to NoteBook</h1>
+      <div className="page">
+        <Sketch
+          className="sketcher"
+          onElementsChange={handleSketchElementsChange}
+        />
+        <Tiptap onContentChange={handleTiptapContentChange} />
+      </div>
       <button onClick={printData}>Print Data</button>
-      <Sketch onElementsChange={handleSketchElementsChange} />
-      <Tiptap onContentChange={handleTiptapContentChange} />
     </div>
   );
 };
