@@ -8,6 +8,7 @@ import Register from "./components/Register.jsx"; // Register Component
 import Notebooks from "./components/Notebooks.jsx";
 import KeyboardJP from "./components/Keyboard.jsx"; // Keyboard Component
 import TextPage from "./components/TextPage.jsx";
+import Sketch from "./components/sketch.jsx";
 
 const router = createBrowserRouter([
   {
@@ -18,7 +19,8 @@ const router = createBrowserRouter([
       { path: "/register", element: <Register /> },
       { path: "/notebooks", element: <Notebooks /> },
       { path: "/keyboard", element: <KeyboardJP /> },
-      { path: "/page", element: <TextPage /> },
+      { path: "/text", element: <TextPage /> },
+      { path: "/sketch", element: <Sketch /> },
     ],
   },
 ]);

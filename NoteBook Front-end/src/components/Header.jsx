@@ -20,7 +20,8 @@ function Header() {
 
         <Link to="/notebooks">NoteBook</Link>
         <Link to="/keyboard">Keyboard</Link>
-        <Link to="/page">Page</Link>
+        <Link to="/text">Text</Link>
+        <Link to="/sketch">Sketch</Link>
 
         {isUserLoggedIn() ? (
           <button onClick={handleLogout}>Logout</button>
