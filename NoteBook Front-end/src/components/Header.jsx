@@ -22,8 +22,6 @@ function Header() {
         <Link to="/keyboard">Keyboard</Link>
         <Link to="/page">Page</Link>
 
-        <Link to="/contact">Contact</Link>
-
         {isUserLoggedIn() ? (
           <button onClick={handleLogout}>Logout</button>
         ) : (

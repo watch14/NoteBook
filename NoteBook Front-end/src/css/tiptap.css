@@ -34,9 +34,6 @@
 button {
   color: #000;
 }
-.control-group {
-  margin-bottom: 20px;
-}
 
 .button-group {
   /* height: 56px; */
@@ -47,8 +44,9 @@ button {
   gap: 8px;
   align-self: stretch;
   border-radius: 8px;
-  border: 1px solid #000;
   background: #fff;
+  border: #000 2px solid;
+  margin: 0;
 }
 
 .dropdown {
@@ -65,8 +63,8 @@ button {
 .dropdown,
 .Dropdown-root,
 .Dropdown-control,
-.control-group button,
-.control-group .color-input {
+.button-group button,
+.button-group .color-input {
   width: 60px;
   height: 40px;
   background-color: #fff;
@@ -81,7 +79,7 @@ button {
   transition: all 0.3s ease;
 }
 
-.control-group .color-input {
+.button-group .color-input {
   border: rgb(0, 0, 0) solid 1.2px;
   height: 28px;
   width: 28px;
@@ -103,8 +101,8 @@ button {
 }
 
 .Dropdown-root:hover,
-.control-group button:hover,
-.control-group .color-input:hover {
+.button-group button:hover,
+.button-group .color-input:hover {
   background-color: #fff;
   box-shadow: rgb(224, 224, 224) 0px 2px 5px;
 }
