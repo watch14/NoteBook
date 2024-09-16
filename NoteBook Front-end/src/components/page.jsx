@@ -1,14 +1,32 @@
-import React from "react";
-import Sketch from "./sketch";
-import TextPage from "./TextPage";
+import React, { useState } from "react";
+import Sketch from "./sketch.jsx";
+import Tiptap from "../utils/Tiptap";
 
 const Page = () => {
+  const [sketchElements, setSketchElements] = useState([]);
+  const [tiptapContent, setTiptapContent] = useState("");
+
+  const handleSketchElementsChange = (elements) => {
+    console.log("Sketch elements changed:", elements); // Debugging line
+    setSketchElements(elements);
+  };
+
+  const handleTiptapContentChange = (content) => {
+    console.log("Tiptap content changed:", content); // Debugging line
+    setTiptapContent(content);
+  };
+
+  const printData = () => {
+    console.log("Sketch Elements:", sketchElements);
+    console.log("Tiptap Content HTML:", tiptapContent);
+  };
+
   return (
     <div>
       <h1>Welcome to NoteBook</h1>
-      <p>This is your personal notebook application.</p>
-      <Sketch />
-      <TextPage />
+      <button onClick={printData}>Print Data</button>
+      <Sketch onElementsChange={handleSketchElementsChange} />
+      <Tiptap onContentChange={handleTiptapContentChange} />
     </div>
   );
 };

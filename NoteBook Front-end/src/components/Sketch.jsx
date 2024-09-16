@@ -5,7 +5,7 @@ import "../css/sketch.css";
 // Constants
 const SKETCH_ELEMENTS_LOCAL_STORAGE_KEY = "sketchElements";
 
-const Sketch = () => {
+const Sketch = ({ onElementsChange }) => {
   const [elements, setElements] = useState([]);
 
   // Initialize elements from localStorage
@@ -49,8 +49,8 @@ const Sketch = () => {
 
   // Function to log data at regular intervals
   const logData = useCallback(() => {
-    console.log("Data logged at:", new Date().toLocaleTimeString());
-    console.log("Elements:", elements);
+    // console.log("Data logged at:", new Date().toLocaleTimeString());
+    // console.log("Elements:", elements);
   }, [elements]);
 
   // Use effect to set up interval

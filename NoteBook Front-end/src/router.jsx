@@ -9,6 +9,7 @@ import Notebooks from "./components/Notebooks.jsx";
 import KeyboardJP from "./components/Keyboard.jsx"; // Keyboard Component
 import TextPage from "./components/TextPage.jsx";
 import Sketch from "./components/sketch.jsx";
+import Page from "./components/page.jsx";
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,8 @@ const router = createBrowserRouter([
       { path: "/keyboard", element: <KeyboardJP /> },
       { path: "/text", element: <TextPage /> },
       { path: "/sketch", element: <Sketch /> },
+
+      { path: "/page", element: <Page /> },
     ],
   },
 ]);

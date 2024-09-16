@@ -22,6 +22,7 @@ function Header() {
         <Link to="/keyboard">Keyboard</Link>
         <Link to="/text">Text</Link>
         <Link to="/sketch">Sketch</Link>
+        <Link to="/page">Page</Link>
 
         {isUserLoggedIn() ? (
           <button onClick={handleLogout}>Logout</button>

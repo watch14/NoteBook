@@ -20,9 +20,7 @@ const initialContent = `
 </span></h1><h2><span style="color: rgb(255, 255, 151)">勤め先</span></h2>
 `;
 
-const Tiptap = () => {
-  const [editorContent, setEditorContent] = useState(initialContent);
-
+const Tiptap = ({ onContentChange }) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -43,8 +41,10 @@ const Tiptap = () => {
       },
     },
     onUpdate({ editor }) {
-      setEditorContent(editor.getHTML());
-      console.log(editor.getHTML());
+      const elhtml = editor.getHTML();
+      if (onContentChange) {
+        onContentChange(elhtml); // Notify parent
+      }
     },
   });
 
