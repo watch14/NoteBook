@@ -1,17 +1,15 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Excalidraw, WelcomeScreen } from "@excalidraw/excalidraw";
 import "../css/sketch.css";
 
-// Constants
 const SKETCH_ELEMENTS_LOCAL_STORAGE_KEY = "sketchElements";
 
 const Sketch = ({ onElementsChange, sketchContent }) => {
   const [elements, setElements] = useState([]);
 
-  // Load elements from sketchContent prop or localStorage
   useEffect(() => {
     if (Array.isArray(sketchContent)) {
-      setElements(sketchContent); // Ensure sketchContent is an array
+      setElements(sketchContent);
     } else {
       const savedElements = localStorage.getItem(
         SKETCH_ELEMENTS_LOCAL_STORAGE_KEY
@@ -34,7 +32,17 @@ const Sketch = ({ onElementsChange, sketchContent }) => {
     }
   }, [sketchContent]);
 
-  // UI Options for Excalidraw
+  const handleChange = (newElements) => {
+    setElements(newElements); // Update the local state
+    localStorage.setItem(
+      SKETCH_ELEMENTS_LOCAL_STORAGE_KEY,
+      JSON.stringify(newElements)
+    ); // Save to localStorage
+    if (onElementsChange) {
+      onElementsChange(newElements); // Notify parent component
+    }
+  };
+
   const UIOptions = {
     canvasActions: {
       changeViewBackgroundColor: true,
@@ -55,38 +63,6 @@ const Sketch = ({ onElementsChange, sketchContent }) => {
     tools: {
       image: true,
     },
-  };
-
-  // // Log data periodically
-  // const logData = useCallback(() => {
-  //   // Optional logging for debug purposes
-  //   console.log("Data logged at:", new Date().toLocaleTimeString());
-  //   console.log("Elements:", elements);
-  // }, [elements]);
-
-  // // Auto-save elements every 10 seconds
-  // useEffect(() => {
-  //   const saveInterval = setInterval(() => {
-  //     logData();
-  //   }, 10000); // 10 seconds
-
-  //   return () => clearInterval(saveInterval);
-  // }, [logData]);
-
-  // Handle changes to the elements
-  const handleChange = (newElements) => {
-    setElements((prevElements) => {
-      if (JSON.stringify(prevElements) !== JSON.stringify(newElements)) {
-        localStorage.setItem(
-          SKETCH_ELEMENTS_LOCAL_STORAGE_KEY,
-          JSON.stringify(newElements)
-        );
-        if (onElementsChange) {
-          onElementsChange(newElements); // Notify parent component
-        }
-      }
-      return newElements;
-    });
   };
 
   return (

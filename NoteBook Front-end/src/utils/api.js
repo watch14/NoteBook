@@ -3,6 +3,20 @@ import axios from "axios";
 
 export const Api = "http://localhost:5000/api/";
 
+export const getNotebook = async (id) => {
+  try {
+    const response = await axios.get(Api + `notebooks/get/${id}`);
+    if (response.data.success) {
+      return response.data.data; // Return the notebook data
+    } else {
+      throw new Error(response.data.message || "Error fetching notebook");
+    }
+  } catch (error) {
+    console.error("API Error:", error.message); // Improved error logging
+    throw new Error(error.message || "Error fetching notebook");
+  }
+};
+
 export default async function GetNotebookPages(id) {
   const res = await axios.get(Api + `pages/notebook/${id}`);
 

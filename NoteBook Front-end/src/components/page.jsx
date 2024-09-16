@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Sketch from "./sketch";
 import Tiptap from "../utils/Tiptap";
-import GetNotebookPages, { savePage } from "../utils/api";
+import GetNotebookPages, { savePage, getNotebook } from "../utils/api";
 
 import "../css/page.css";
 
@@ -14,6 +14,7 @@ const Page = () => {
   const [sketch, setSketch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+  const [title, setTitle] = useState(""); // State for notebook title
 
   const handleSketchElementsChange = (elements) => {
     setSketch(elements);
@@ -32,7 +33,12 @@ const Page = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        const data = await GetNotebookPages(id); // Fetch notebook pages
+        // Fetch notebook title
+        const notebookData = await getNotebook(id);
+        setTitle(notebookData.title); // Set notebook title
+
+        // Fetch notebook pages
+        const data = await GetNotebookPages(id);
         if (data && data.length > 0) {
           setPages(data);
           setText(data[currentPageIndex]?.text || "<p></p>"); // Set default content
@@ -50,8 +56,8 @@ const Page = () => {
           }
         }
       } catch (error) {
-        setError("Error fetching notebook pages.");
-        console.error("Error fetching notebook pages:", error);
+        setError("Error fetching notebook data.");
+        console.error("Error fetching notebook data:", error);
       } finally {
         setLoading(false);
       }
@@ -94,7 +100,7 @@ const Page = () => {
 
   return (
     <div>
-      <h1>Welcome to NoteBook</h1>
+      <h1>{title || "Loading Title..."}</h1> {/* Display the notebook title */}
       <div className="page">
         <Tiptap
           onContentChange={handleTiptapContentChange}
@@ -108,7 +114,6 @@ const Page = () => {
       </div>
       <button onClick={printData}>Print Data</button>
       <button onClick={handleSavePage}>Save Page</button>
-
       <div className="pagination">
         <button onClick={handlePreviousPage} disabled={currentPageIndex === 0}>
           Previous
