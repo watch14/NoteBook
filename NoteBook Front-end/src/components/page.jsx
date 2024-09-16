@@ -27,11 +27,11 @@ const Page = () => {
     <div>
       <h1>Welcome to NoteBook</h1>
       <div className="page">
+        <Tiptap onContentChange={handleTiptapContentChange} />
         <Sketch
           className="sketcher"
           onElementsChange={handleSketchElementsChange}
         />
-        <Tiptap onContentChange={handleTiptapContentChange} />
       </div>
       <button onClick={printData}>Print Data</button>
     </div>
