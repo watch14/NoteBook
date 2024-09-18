@@ -4,14 +4,10 @@
   --primary-color: #646cff;
   --primary-hover-color: #535bf2;
   --button-background: #1a1a1a;
+  --page-background: #121212;
 }
 
 .tiptap-editor {
-  background-color: var(--editor-background);
-  color: var(--editor-text-color);
-}
-
-.tiptap-editor {
-  background-color: var(--editor-background);
+  background-color: var(--page-background);
   color: var(--editor-text-color);
 }

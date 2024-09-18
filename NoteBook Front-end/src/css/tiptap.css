@@ -33,7 +33,7 @@
   background-color: #fff;
   color: #000; 
   */
-  background-color: var(--editor-background);
+  background-color: var(--page-background);
   color: var(--editor-text-color);
 }
 
@@ -54,7 +54,7 @@ button {
   border: #000 2px solid;
   margin: 0;
 
-  background-color: var(--editor-background);
+  background-color: var(--page-background);
   color: var(--editor-text-color);
 }
 
