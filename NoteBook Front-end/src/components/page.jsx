@@ -87,18 +87,6 @@ const Page = () => {
     }
   };
 
-  const handleNextPage = () => {
-    if (currentPageIndex < pages.length - 1) {
-      setCurrentPageIndex((prevIndex) => prevIndex + 1);
-    }
-  };
-
-  const handlePreviousPage = () => {
-    if (currentPageIndex > 0) {
-      setCurrentPageIndex((prevIndex) => prevIndex - 1);
-    }
-  };
-
   // Handle the creation of a new page
   const handleCreateNewPage = async () => {
     try {
@@ -110,6 +98,18 @@ const Page = () => {
       console.log("New page created successfully.");
     } catch (error) {
       console.error("Error creating new page:", error);
+    }
+  };
+
+  const handleNextPage = () => {
+    if (currentPageIndex < pages.length - 1) {
+      setCurrentPageIndex((prevIndex) => prevIndex + 1);
+    }
+  };
+
+  const handlePreviousPage = () => {
+    if (currentPageIndex > 0) {
+      setCurrentPageIndex((prevIndex) => prevIndex - 1);
     }
   };
 
