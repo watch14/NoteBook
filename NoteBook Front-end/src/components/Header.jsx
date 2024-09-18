@@ -1,8 +1,8 @@
-// src/components/Header.jsx
 import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 import { isUserLoggedIn, clearUserFromLocalStorage } from "../utils/auth";
+import { Sun, Moon } from "lucide-react"; // Import Sun and Moon icons
 import "../css/header.css"; // Import your header styles
 
 function Header() {
@@ -23,7 +23,6 @@ function Header() {
           <Link to="/">Home</Link>
           <Link to="/notebooks">NoteBook</Link>
           <Link to="/keyboard">Keyboard</Link>
-          <Link to="/traslate">Translate</Link>
 
           {isUserLoggedIn() ? (
             <button className="user" onClick={handleLogout}>
@@ -37,8 +36,12 @@ function Header() {
           )}
 
           {/* Theme toggle button */}
-          <button onClick={toggleTheme}>
-            {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+          <button className="theme" onClick={toggleTheme}>
+            {theme === "light" ? (
+              <Moon size={20} /> // Show moon icon for dark mode
+            ) : (
+              <Sun size={20} /> // Show sun icon for light mode
+            )}
           </button>
         </nav>
       </div>
