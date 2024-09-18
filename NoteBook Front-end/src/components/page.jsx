@@ -2,7 +2,11 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Sketch from "./sketch";
 import Tiptap from "../utils/Tiptap";
-import GetNotebookPages, { savePage, getNotebook } from "../utils/api";
+import GetNotebookPages, {
+  savePage,
+  getNotebook,
+  createPage,
+} from "../utils/api"; // Import createPage function
 
 import "../css/page.css";
 
@@ -95,6 +99,20 @@ const Page = () => {
     }
   };
 
+  // Handle the creation of a new page
+  const handleCreateNewPage = async () => {
+    try {
+      const newPage = await createPage(id, [], "<p></p>"); // Create new page with empty sketch and content
+      setPages([...pages, newPage]); // Add new page to the pages array
+      setCurrentPageIndex(pages.length); // Navigate to the new page
+      setText("<p></p>"); // Reset the editor content
+      setSketch([]); // Reset the sketch content
+      console.log("New page created successfully.");
+    } catch (error) {
+      console.error("Error creating new page:", error);
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -114,6 +132,8 @@ const Page = () => {
       </div>
       <button onClick={printData}>Print Data</button>
       <button onClick={handleSavePage}>Save Page</button>
+      <button onClick={handleCreateNewPage}>Create New Page</button>{" "}
+      {/* New button to create a page */}
       <div className="pagination">
         <button onClick={handlePreviousPage} disabled={currentPageIndex === 0}>
           Previous

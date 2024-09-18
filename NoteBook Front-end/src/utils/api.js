@@ -55,3 +55,30 @@ export const savePage = async (
     throw error;
   }
 };
+
+// Function to create a new page
+export const createPage = async (
+  notebookId,
+  sketchElements = "",
+  tiptapContent = ""
+) => {
+  const pageData = {
+    notebookId,
+    text: tiptapContent,
+    sketch: JSON.stringify(sketchElements),
+  };
+
+  try {
+    const response = await axios({
+      method: "post",
+      url: `${Api}pages/create`,
+      data: pageData,
+      headers: { "Content-Type": "application/json" },
+    });
+    console.log("New page created:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error("Error creating page:", error);
+    throw error;
+  }
+};
