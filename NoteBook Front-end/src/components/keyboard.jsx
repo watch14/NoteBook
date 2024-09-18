@@ -45,7 +45,7 @@ function convertRomajiToKana(input, type) {
   return val;
 }
 
-export default function KeyboardJP() {
+export default function Keyboard() {
   const [kanaInput, setKanaInput] = useState("");
   const [kanjiInput, setKanjiInput] = useState("");
   const [showDefinitions, setShowDefinitions] = useState(false);

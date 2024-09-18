@@ -6,7 +6,7 @@ import Login from "./components/Login.jsx"; // Login Component
 import Register from "./components/Register.jsx"; // Register Component
 
 import Notebooks from "./components/Notebooks.jsx";
-import KeyboardJP from "./components/Keyboard.jsx"; // Keyboard Component
+import Keyboard from "./components/Keyboard.jsx"; // Keyboard Component
 import TextPage from "./components/TextPage.jsx";
 import Sketch from "./components/sketch.jsx";
 import Page from "./components/page.jsx";
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
       { path: "/notebooks", element: <Notebooks /> },
-      { path: "/keyboard", element: <KeyboardJP /> },
+      { path: "/keyboard", element: <Keyboard /> },
       { path: "/traslate", element: <Translate /> },
 
       { path: "/text", element: <TextPage /> },

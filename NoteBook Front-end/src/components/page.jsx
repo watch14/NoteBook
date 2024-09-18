@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Sketch from "./sketch";
+import Keyboard from "./Keyboard"; // Import Keyboard component
 import Tiptap from "../utils/Tiptap";
 import GetNotebookPages, {
   savePage,
@@ -22,6 +23,7 @@ const Page = () => {
   const [title, setTitle] = useState(""); // State for notebook title
   const [isEditingTitle, setIsEditingTitle] = useState(false); // State to toggle title editing
   const [newTitle, setNewTitle] = useState(""); // State to hold the new title input value
+  const [showSketch, setShowSketch] = useState(true); // State to toggle between Sketch and Keyboard
 
   const handleSketchElementsChange = (elements) => {
     setSketch(elements);
@@ -153,6 +155,11 @@ const Page = () => {
     }
   };
 
+  // Handle toggling between Sketch and Keyboard components
+  const handleToggleView = () => {
+    setShowSketch((prev) => !prev);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -172,17 +179,30 @@ const Page = () => {
         <h1 onClick={handleTitleClick}>{title || "Loading Title..."}</h1> // Display title or "Loading..." if title is missing
       )}
 
+      {/* Buttons to toggle between Sketch and Keyboard */}
+      <div className="view-toggle-buttons">
+        <button onClick={handleToggleView}>
+          {showSketch ? "Show Keyboard" : "Show Sketch"}
+        </button>
+      </div>
+
       <div className="page">
         <Tiptap
           onContentChange={handleTiptapContentChange}
           textContent={text} // Pass textContent to Tiptap
         />
-        <Sketch
-          className="sketcher"
-          onElementsChange={handleSketchElementsChange}
-          sketchContent={sketch} // Pass sketchContent to Sketch
-        />
+
+        {showSketch ? (
+          <Sketch
+            className="sketcher"
+            onElementsChange={handleSketchElementsChange}
+            sketchContent={sketch} // Pass sketchContent to Sketch
+          />
+        ) : (
+          <Keyboard />
+        )}
       </div>
+
       <button onClick={printData}>Print Data</button>
       <button onClick={handleSavePage}>Save Page</button>
       <button onClick={handleCreateNewPage}>Create New Page</button>
