@@ -1,10 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Excalidraw, WelcomeScreen } from "@excalidraw/excalidraw";
 import "../css/sketch.css";
+import { ThemeContext } from "../context/ThemeContext"; // Import ThemeContext
 
 const SKETCH_ELEMENTS_LOCAL_STORAGE_KEY = "sketchElements";
 
 const Sketch = ({ onElementsChange, sketchContent }) => {
+  const { theme } = useContext(ThemeContext); // Get the current theme from context
   const [elements, setElements] = useState([]);
 
   useEffect(() => {
@@ -73,7 +75,7 @@ const Sketch = ({ onElementsChange, sketchContent }) => {
         }}
         onChange={handleChange}
         UIOptions={UIOptions}
-        theme="dark"
+        theme={theme === "dark" ? "dark" : "light"} // Set theme dynamically
       >
         <WelcomeScreen>
           <WelcomeScreen.Hints.ToolbarHint>
