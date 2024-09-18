@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { isUserLoggedIn, getUserId } from "../utils/auth";
 import { Api } from "../utils/api";
+import { Trash2 } from "lucide-react";
 import AddNotebook from "./AddNotebook";
 
 import "../css/notebooks.css";
@@ -221,15 +222,15 @@ function Notebooks() {
               <div className="date">{formatDate(notebook.createdAt)}</div>
 
               {/* Delete button */}
-              <button
+              <p
                 className="delete-button"
                 onClick={(e) => {
                   e.stopPropagation(); // Prevents triggering the notebook click event
                   handleDeleteNotebook(notebook._id);
                 }}
               >
-                Delete
-              </button>
+                <Trash2 color="white" />
+              </p>
             </li>
           ))}
         </ul>

@@ -22,8 +22,6 @@ const router = createBrowserRouter([
       { path: "/keyboard", element: <KeyboardJP /> },
       { path: "/text", element: <TextPage /> },
       { path: "/sketch", element: <Sketch /> },
-
-      { path: "/page/:id", element: <Page /> },
     ],
   },
 ]);
