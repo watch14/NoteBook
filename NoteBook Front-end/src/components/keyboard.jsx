@@ -145,7 +145,7 @@ export default function KeyboardJP() {
         {kanjiSuggestions.map((entry, index) => (
           <div key={index}>
             <button onClick={() => handleKanjiClick(entry.kanji)}>
-              {entry.kanji} - {entry.reading}
+              {entry.kanji}
             </button>
             {showDefinitions && (
               <div>

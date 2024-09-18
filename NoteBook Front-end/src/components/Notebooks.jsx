@@ -225,11 +225,10 @@ function Notebooks() {
               </div>
               <div className="date">{formatDate(notebook.createdAt)}</div>
 
-              {/* Delete button */}
               <p
                 className="delete-button"
                 onClick={(e) => {
-                  e.stopPropagation(); // Prevents triggering the notebook click event
+                  e.stopPropagation();
                   handleDeleteNotebook(notebook._id);
                 }}
               >
