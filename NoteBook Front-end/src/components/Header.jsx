@@ -12,29 +12,30 @@ function Header() {
 
   return (
     <header>
-      <div>
-        <Link to="/">JP.NoteBook</Link>
+      <div className="navi">
+        <div className="logo">
+          <Link to="/">JP.NoteBook</Link>
+        </div>
+        <nav className="navs">
+          <Link to="/">Home</Link>
+
+          <Link to="/notebooks">NoteBook</Link>
+
+          <Link to="/keyboard">Keyboard</Link>
+          <Link to="/traslate">Translate</Link>
+
+          {isUserLoggedIn() ? (
+            <button className="user" onClick={handleLogout}>
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link to="/login">Login</Link>
+              <Link to="/register">Register</Link>
+            </>
+          )}
+        </nav>
       </div>
-      <nav>
-        <Link to="/">Home</Link>
-
-        <Link to="/notebooks">NoteBook</Link>
-
-        <Link to="/keyboard">Keyboard</Link>
-        <Link to="/traslate">Translate</Link>
-
-        <Link to="/text">Text</Link>
-        <Link to="/sketch">Sketch</Link>
-
-        {isUserLoggedIn() ? (
-          <button onClick={handleLogout}>Logout</button>
-        ) : (
-          <>
-            <Link to="/login">Login</Link>
-            <Link to="/register">Register</Link>
-          </>
-        )}
-      </nav>
     </header>
   );
 }
