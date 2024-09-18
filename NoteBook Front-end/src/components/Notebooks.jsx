@@ -55,7 +55,6 @@ function Notebooks() {
           throw new Error(response.data.error);
         }
 
-        // Extract notebooks and totalCount from response
         const { notebooks, totalCount } = response.data.data || {
           notebooks: [],
           totalCount: 0,
@@ -155,6 +154,26 @@ function Notebooks() {
     }
   };
 
+  const handleDeleteNotebook = async (notebookId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this notebook? This action cannot be undone."
+    );
+
+    if (!confirmDelete) return;
+
+    try {
+      await axios.delete(`${Api}notebooks/delete/${notebookId}`);
+
+      // Update the state by filtering out the deleted notebook
+      setNotebooks((prevNotebooks) =>
+        prevNotebooks.filter((notebook) => notebook._id !== notebookId)
+      );
+    } catch (err) {
+      setError(`Failed to delete notebook: ${err.message}`);
+      console.error(err);
+    }
+  };
+
   const sendNoteBookId = (id) => {
     window.location.href = `/page/${id}`;
   };
@@ -192,13 +211,25 @@ function Notebooks() {
             +
           </div>
           {notebooks.map((notebook) => (
-            <li
-              key={notebook._id}
-              style={{ background: notebook.theme }}
-              onClick={() => sendNoteBookId(notebook._id)}
-            >
-              <div className="title">{notebook.title}</div>
+            <li key={notebook._id} style={{ background: notebook.theme }}>
+              <div
+                className="title"
+                onClick={() => sendNoteBookId(notebook._id)}
+              >
+                {notebook.title}
+              </div>
               <div className="date">{formatDate(notebook.createdAt)}</div>
+
+              {/* Delete button */}
+              <button
+                className="delete-button"
+                onClick={(e) => {
+                  e.stopPropagation(); // Prevents triggering the notebook click event
+                  handleDeleteNotebook(notebook._id);
+                }}
+              >
+                Delete
+              </button>
             </li>
           ))}
         </ul>

@@ -34,6 +34,27 @@ export const updateNotebook = async (notebookId, updatedData) => {
   }
 };
 
+// Function to delete a notebook
+const handleDeleteNotebook = async (notebookId) => {
+  const confirmDelete = window.confirm(
+    "Are you sure you want to delete this notebook? This action cannot be undone."
+  );
+
+  if (!confirmDelete) return;
+
+  try {
+    await axios.delete(`${Api}notebooks/delete/${notebookId}`);
+
+    // Update the state by filtering out the deleted notebook
+    setNotebooks((prevNotebooks) =>
+      prevNotebooks.filter((notebook) => notebook._id !== notebookId)
+    );
+  } catch (err) {
+    setError(`Failed to delete notebook: ${err.message}`);
+    console.error(err);
+  }
+};
+
 export default async function GetNotebookPages(id) {
   const res = await axios.get(Api + `pages/notebook/${id}`);
 
