@@ -1,16 +1,17 @@
-import { useState } from "react";
+// src/App.js
 import { Outlet } from "react-router-dom";
-import "./App.css";
 import Header from "./components/Header";
+import { ThemeProvider } from "./context/ThemeContext";
+import "./theme.css"; // Ensure the theme styles are loaded
 
 function App() {
   return (
-    <>
+    <ThemeProvider>
       <Header />
       <div className="card">
-        <Outlet />{" "}
+        <Outlet />
       </div>
-    </>
+    </ThemeProvider>
   );
 }
 

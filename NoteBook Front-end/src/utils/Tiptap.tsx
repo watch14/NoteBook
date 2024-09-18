@@ -5,7 +5,6 @@ import StarterKit from "@tiptap/starter-kit";
 import TextStyle from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import TextAlign from "@tiptap/extension-text-align";
-
 import EditorButtons from "./EditorButtons";
 import EditorMenu from "./EditorMenu";
 

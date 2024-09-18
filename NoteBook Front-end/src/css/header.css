@@ -1,9 +1,33 @@
+/* src/css/header.css */
+
+body {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+}
+
+a {
+  color: var(--link-color);
+}
+
+/* Button styling for theme toggle */
+button {
+  background-color: var(--bg-color);
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
 header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
+  align-items: flex-start;
 
   margin-inline: auto;
+
+  width: 100%;
+
+  top: 0;
 }
 
 .navi {
@@ -12,8 +36,6 @@ header {
   justify-content: space-between;
   align-items: flex-start;
   padding: 0 20px;
-
-  top: 0;
 }
 
 .logo {

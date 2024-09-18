@@ -33,6 +33,8 @@
   background-color: #fff;
   color: #000; 
   */
+  background-color: var(--editor-background);
+  color: var(--editor-text-color);
 }
 
 button {
@@ -48,9 +50,12 @@ button {
   gap: 8px;
   align-self: stretch;
   border-radius: 8px;
-  background: #fff;
+
   border: #000 2px solid;
   margin: 0;
+
+  background-color: var(--editor-background);
+  color: var(--editor-text-color);
 }
 
 .dropdown {
@@ -60,6 +65,9 @@ button {
   border-radius: 8px;
   background-color: #f9f9f9;
   border: 1px solid #ddd;
+
+  background-color: var(--editor-background);
+  color: var(--editor-text-color);
 }
 /* //////////////////////////////////////// */
 /* src/css/custom-dropdown.css */
@@ -71,16 +79,17 @@ button {
 .button-group .color-input {
   width: 60px;
   height: 40px;
-  background-color: #fff;
   border: none;
 
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #fff;
   font-size: 10px;
   cursor: pointer;
   transition: all 0.3s ease;
+
+  background-color: var(--editor-background);
+  color: var(--editor-text-color);
 }
 
 .button-group .color-input {
@@ -88,11 +97,12 @@ button {
   height: 28px;
   width: 28px;
   margin-left: 8px;
+
+  background-color: var(--editor-background);
+  color: var(--editor-text-color);
 }
 
 .dropdown .Dropdown-control {
-  background-color: #fff;
-  color: #333;
   padding: 8px 12px;
   border: none;
   cursor: pointer;
@@ -101,29 +111,32 @@ button {
   justify-content: space-between;
   width: 100%;
   height: 100%;
-  background-color: #fff;
+
+  background-color: var(--editor-background);
+  color: var(--editor-text-color);
 }
 
 .Dropdown-root:hover,
 .button-group button:hover,
 .button-group .color-input:hover {
-  background-color: #fff;
-  box-shadow: rgb(224, 224, 224) 0px 2px 5px;
-}
-
-.dropdown .Dropdown-control:focus {
-  border-color: #007bff;
+  background-color: var(--editor-background);
+  color: var(--editor-text-color);
 }
 
 .dropdown .Dropdown-menu {
-  background-color: #fff;
+  background-color: var(--editor-background);
+  color: var(--editor-text-color);
 }
 
 .dropdown .Dropdown-option {
   padding: 8px 12px;
   cursor: pointer;
+
+  background-color: var(--editor-background);
+  color: var(--editor-text-color);
 }
 
 .dropdown .Dropdown-option:hover {
-  background-color: #e0e0e0;
+  background-color: var(--editor-background);
+  color: var(--editor-text-color);
 }

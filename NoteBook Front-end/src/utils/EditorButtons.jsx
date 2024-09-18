@@ -70,29 +70,29 @@ const EditorButtons = ({
           options={controlOptions}
           onChange={handleTextAlignChange}
           value={selectedTextAlign}
-          placeholder=<AlignLeft size={24} color="black" />
+          placeholder=<AlignLeft size={24} />
         />
 
         <button
           onClick={toggleBold}
           className={editor?.isActive("bold") ? "is-active" : ""}
         >
-          <Bold size={24} color="black" />
+          <Bold size={24} />
         </button>
         <button
           onClick={toggleItalic}
           className={editor?.isActive("italic") ? "is-active" : ""}
         >
-          <Italic size={24} color="black" />
+          <Italic size={24} />
         </button>
         <button onClick={setHorizontalRule}>
-          <Minus size={24} color="black" />
+          <Minus size={24} />
         </button>
         <button
           onClick={toggleBulletList}
           className={editor?.isActive("bulletList") ? "is-active" : ""}
         >
-          <List size={24} color="black" />
+          <List size={24} />
         </button>
 
         <input

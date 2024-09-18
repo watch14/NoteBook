@@ -1,13 +1,16 @@
-import React from "react";
+// src/components/Header.jsx
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
-import { isUserLoggedIn, clearUserFromLocalStorage } from "../utils/auth"; // Import login utilities
-
-import "../css/header.css";
+import { ThemeContext } from "../context/ThemeContext";
+import { isUserLoggedIn, clearUserFromLocalStorage } from "../utils/auth";
+import "../css/header.css"; // Import your header styles
 
 function Header() {
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
   const handleLogout = () => {
-    clearUserFromLocalStorage(); // Clear user data from local storage
-    window.location.href = "/login"; // Redirect to login page
+    clearUserFromLocalStorage();
+    window.location.href = "/login";
   };
 
   return (
@@ -18,9 +21,7 @@ function Header() {
         </div>
         <nav className="navs">
           <Link to="/">Home</Link>
-
           <Link to="/notebooks">NoteBook</Link>
-
           <Link to="/keyboard">Keyboard</Link>
           <Link to="/traslate">Translate</Link>
 
@@ -34,6 +35,11 @@ function Header() {
               <Link to="/register">Register</Link>
             </>
           )}
+
+          {/* Theme toggle button */}
+          <button onClick={toggleTheme}>
+            {theme === "light" ? "Switch to Dark Mode" : "Switch to Light Mode"}
+          </button>
         </nav>
       </div>
     </header>
