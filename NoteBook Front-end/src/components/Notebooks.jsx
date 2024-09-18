@@ -212,7 +212,11 @@ function Notebooks() {
             +
           </div>
           {notebooks.map((notebook) => (
-            <li key={notebook._id} style={{ background: notebook.theme }}>
+            <li
+              key={notebook._id}
+              style={{ background: notebook.theme }}
+              onClick={() => sendNoteBookId(notebook._id)}
+            >
               <div
                 className="title"
                 onClick={() => sendNoteBookId(notebook._id)}
