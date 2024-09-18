@@ -113,6 +113,11 @@ const Page = () => {
     }
   };
 
+  // Handle navigating to a specific page by index
+  const handleGoToPage = (index) => {
+    setCurrentPageIndex(index);
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -134,6 +139,18 @@ const Page = () => {
       <button onClick={handleSavePage}>Save Page</button>
       <button onClick={handleCreateNewPage}>Create New Page</button>{" "}
       {/* New button to create a page */}
+      {/* Render page number buttons */}
+      <div className="page-buttons">
+        {pages.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => handleGoToPage(index)}
+            className={index === currentPageIndex ? "active" : ""}
+          >
+            Page {index + 1}
+          </button>
+        ))}
+      </div>
       <div className="pagination">
         <button onClick={handlePreviousPage} disabled={currentPageIndex === 0}>
           Previous
