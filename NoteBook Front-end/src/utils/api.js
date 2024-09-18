@@ -120,3 +120,22 @@ export const createPage = async (
     throw error;
   }
 };
+
+///////////////////////
+//////////////////////
+//translating
+export const translateText = async (text) => {
+  try {
+    const response = await axios.post(`${Api}translate`, { text });
+
+    // Check if the response contains the expected structure
+    if (response.data && response.data.success && response.data.data) {
+      return response.data.data; // Return the full data object
+    } else {
+      throw new Error(response.data.message || "Translation failed.");
+    }
+  } catch (error) {
+    console.error("Error translating text:", error.message);
+    throw new Error("Error translating text.");
+  }
+};

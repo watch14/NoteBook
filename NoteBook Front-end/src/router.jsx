@@ -10,6 +10,7 @@ import KeyboardJP from "./components/Keyboard.jsx"; // Keyboard Component
 import TextPage from "./components/TextPage.jsx";
 import Sketch from "./components/sketch.jsx";
 import Page from "./components/page.jsx";
+import Translate from "./components/Trasnlate.jsx";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,8 @@ const router = createBrowserRouter([
       { path: "/register", element: <Register /> },
       { path: "/notebooks", element: <Notebooks /> },
       { path: "/keyboard", element: <KeyboardJP /> },
+      { path: "/traslate", element: <Translate /> },
+
       { path: "/text", element: <TextPage /> },
       { path: "/sketch", element: <Sketch /> },
 

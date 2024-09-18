@@ -19,7 +19,10 @@ function Header() {
         <Link to="/">Home</Link>
 
         <Link to="/notebooks">NoteBook</Link>
+
         <Link to="/keyboard">Keyboard</Link>
+        <Link to="/traslate">Translate</Link>
+
         <Link to="/text">Text</Link>
         <Link to="/sketch">Sketch</Link>
 

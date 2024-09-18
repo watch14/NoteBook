@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { MAP_HIRA, MAP_KATA } from "../utils/maps";
+import { translateText } from "../utils/api"; // Import the translation function
 
 // Function to escape special characters in regex
 const escapeRegExp = (string) => {
@@ -49,6 +50,11 @@ export default function KeyboardJP() {
   const [kanjiInput, setKanjiInput] = useState("");
   const [showDefinitions, setShowDefinitions] = useState(false);
   const [kanjiSuggestions, setKanjiSuggestions] = useState([]);
+  const [translation, setTranslation] = useState(""); // State to hold translation result
+  const [hiragana, setHiragana] = useState(""); // State to hold Hiragana
+  const [katakana, setKatakana] = useState(""); // State to hold Katakana
+  const [romaji, setRomaji] = useState(""); // State to hold Romaji
+  const [translationError, setTranslationError] = useState(""); // State to hold translation error
 
   useEffect(() => {
     setKanaInput(sessionStorage.getItem("kanaString") || "");
@@ -120,6 +126,35 @@ export default function KeyboardJP() {
     setKanjiSuggestions([]);
   };
 
+  const handleTranslate = async () => {
+    try {
+      if (!kanaInput) {
+        throw new Error("No Kana input to translate.");
+      }
+
+      const result = await translateText(kanaInput);
+
+      if (
+        result &&
+        result.hiragana &&
+        result.katakana &&
+        result.romaji &&
+        result.translation
+      ) {
+        setHiragana(result.hiragana);
+        setKatakana(result.katakana);
+        setRomaji(result.romaji);
+        setTranslation(result.translation);
+        setTranslationError(""); // Clear any previous errors
+      } else {
+        throw new Error("Translation response is missing data.");
+      }
+    } catch (error) {
+      setTranslationError(`Error translating text: ${error.message}`);
+      console.error("Error translating text:", error.message);
+    }
+  };
+
   return (
     <div>
       <textarea
@@ -133,6 +168,7 @@ export default function KeyboardJP() {
         placeholder="Type Romaji here (Hiragana and Katakana)"
       />
       <button onClick={fetchKanjiSuggestionsData}>Get Kanji Suggestions</button>
+      <button onClick={handleTranslate}>Translate</button>
       <label>
         <input
           type="checkbox"
@@ -155,6 +191,24 @@ export default function KeyboardJP() {
           </div>
         ))}
       </div>
+      {translation && (
+        <div>
+          <h2>Translation Result</h2>
+          <p>
+            <strong>Hiragana:</strong> {hiragana}
+          </p>
+          <p>
+            <strong>Katakana:</strong> {katakana}
+          </p>
+          <p>
+            <strong>Romaji:</strong> {romaji}
+          </p>
+          <p>
+            <strong>Translation:</strong> {translation}
+          </p>
+        </div>
+      )}
+      {translationError && <p style={{ color: "red" }}>{translationError}</p>}
     </div>
   );
 }
