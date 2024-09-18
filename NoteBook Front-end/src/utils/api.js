@@ -82,3 +82,11 @@ export const createPage = async (
     throw error;
   }
 };
+
+export const updateNotebook = async (notebookId, updatedData) => {
+  const response = await axios.put(
+    `${Api}notebooks/update/${notebookId}`,
+    updatedData
+  );
+  return response.data;
+};

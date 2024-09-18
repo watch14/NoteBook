@@ -6,7 +6,8 @@ import GetNotebookPages, {
   savePage,
   getNotebook,
   createPage,
-} from "../utils/api"; // Import createPage function
+  updateNotebook, // Import updateNotebook function
+} from "../utils/api";
 
 import "../css/page.css";
 
@@ -19,6 +20,8 @@ const Page = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [title, setTitle] = useState(""); // State for notebook title
+  const [isEditingTitle, setIsEditingTitle] = useState(false); // State to toggle title editing
+  const [newTitle, setNewTitle] = useState(""); // State to hold the new title input value
 
   const handleSketchElementsChange = (elements) => {
     setSketch(elements);
@@ -40,6 +43,7 @@ const Page = () => {
         // Fetch notebook title
         const notebookData = await getNotebook(id);
         setTitle(notebookData.title); // Set notebook title
+        setNewTitle(notebookData.title); // Set new title for editing
 
         // Fetch notebook pages
         const data = await GetNotebookPages(id);
@@ -118,12 +122,56 @@ const Page = () => {
     setCurrentPageIndex(index);
   };
 
+  // Handle title click to enable editing
+  const handleTitleClick = () => {
+    setIsEditingTitle(true);
+  };
+
+  // Handle title input change
+  const handleTitleChange = (event) => {
+    setNewTitle(event.target.value);
+  };
+
+  // Handle updating the title
+  const handleTitleUpdate = async () => {
+    if (newTitle !== title) {
+      try {
+        await updateNotebook(id, { title: newTitle });
+        setTitle(newTitle); // Update the displayed title
+      } catch (error) {
+        console.error("Error updating notebook title:", error);
+        setError("Failed to update title.");
+      }
+    }
+    setIsEditingTitle(false); // Exit editing mode
+  };
+
+  // Handle key press in the title input field (e.g., Enter key to save)
+  const handleTitleKeyPress = (event) => {
+    if (event.key === "Enter") {
+      handleTitleUpdate();
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
     <div>
-      <h1>{title || "Loading Title..."}</h1> {/* Display the notebook title */}
+      {/* Render editable title */}
+      {isEditingTitle ? (
+        <input
+          type="text"
+          value={newTitle}
+          onChange={handleTitleChange}
+          onBlur={handleTitleUpdate} // Save when input loses focus
+          onKeyPress={handleTitleKeyPress} // Save on Enter press
+          autoFocus
+        />
+      ) : (
+        <h1 onClick={handleTitleClick}>{title || "Loading Title..."}</h1> // Display title or "Loading..." if title is missing
+      )}
+
       <div className="page">
         <Tiptap
           onContentChange={handleTiptapContentChange}
@@ -137,8 +185,8 @@ const Page = () => {
       </div>
       <button onClick={printData}>Print Data</button>
       <button onClick={handleSavePage}>Save Page</button>
-      <button onClick={handleCreateNewPage}>Create New Page</button>{" "}
-      {/* New button to create a page */}
+      <button onClick={handleCreateNewPage}>Create New Page</button>
+
       {/* Render page number buttons */}
       <div className="page-buttons">
         {pages.map((_, index) => (
@@ -151,6 +199,7 @@ const Page = () => {
           </button>
         ))}
       </div>
+
       <div className="pagination">
         <button onClick={handlePreviousPage} disabled={currentPageIndex === 0}>
           Previous
