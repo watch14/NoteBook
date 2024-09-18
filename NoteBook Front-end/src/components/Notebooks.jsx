@@ -75,6 +75,26 @@ function Notebooks() {
     fetchNotebooks();
   }, [sortField, sortOrder, titleFilter, currentPage]); // Dependencies include currentPage
 
+  // Function to create a new page after notebook creation
+  const createPageForNotebook = async (notebookId) => {
+    try {
+      const response = await axios.post(`${Api}pages/create`, {
+        notebookId: notebookId,
+        text: "<p></p>", // Default empty content for new page
+        sketch: "[]", // Default empty sketch content
+      });
+
+      if (response.data.error) {
+        throw new Error(response.data.error);
+      }
+
+      console.log("New page created for notebook:", notebookId);
+    } catch (error) {
+      console.error("Failed to create a new page:", error);
+      setError(`Failed to create a new page: ${error.message}`);
+    }
+  };
+
   const handleAddNotebook = async (newNotebook) => {
     const userId = getUserId();
 
@@ -94,7 +114,13 @@ function Notebooks() {
         throw new Error(response.data.error);
       }
 
-      setNotebooks((prevNotebooks) => [...prevNotebooks, response.data.data]);
+      const createdNotebook = response.data.data;
+
+      // After notebook creation, create the first page for it
+      await createPageForNotebook(createdNotebook._id);
+
+      // Update the notebook list
+      setNotebooks((prevNotebooks) => [...prevNotebooks, createdNotebook]);
       setShowPopup(false);
     } catch (err) {
       setError(`Failed to add notebook: ${err.message}`);
