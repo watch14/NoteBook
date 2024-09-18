@@ -96,7 +96,6 @@ export default function KeyboardJP() {
 
   const fetchKanjiSuggestionsData = async () => {
     if (kanjiInput.trim().length > 0) {
-      console.log(kanjiInput);
       try {
         const response = await fetch(
           "http://localhost:5000/api/translate/kanji",
@@ -112,7 +111,6 @@ export default function KeyboardJP() {
         const data = await response.json();
         if (data.data) {
           setKanjiSuggestions(data.data);
-          console.log(data.data);
         }
       } catch (error) {
         console.error("Error fetching Kanji suggestions:", error.message);
