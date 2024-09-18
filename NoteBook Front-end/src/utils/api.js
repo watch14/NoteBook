@@ -17,6 +17,23 @@ export const getNotebook = async (id) => {
   }
 };
 
+export const updateNotebook = async (notebookId, updatedData) => {
+  try {
+    const response = await axios.put(
+      Api + `notebooks/update/${notebookId}`,
+      updatedData
+    );
+    if (response.data.success) {
+      return response.data.data; // Return the updated notebook data
+    } else {
+      throw new Error(response.data.message || "Error updating notebook");
+    }
+  } catch (error) {
+    console.error("API Error:", error.message); // Improved error logging
+    throw new Error(error.message || "Error updating notebook");
+  }
+};
+
 export default async function GetNotebookPages(id) {
   const res = await axios.get(Api + `pages/notebook/${id}`);
 
@@ -81,12 +98,4 @@ export const createPage = async (
     console.error("Error creating page:", error);
     throw error;
   }
-};
-
-export const updateNotebook = async (notebookId, updatedData) => {
-  const response = await axios.put(
-    `${Api}notebooks/update/${notebookId}`,
-    updatedData
-  );
-  return response.data;
 };
