@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { isUserLoggedIn, getUserId } from "../utils/auth";
-import { Api } from "../utils/api";
-import { Trash2 } from "lucide-react";
+import { Api, updateNotebook, getNotebook } from "../utils/api"; // Import API functions
+import { Trash2, Pencil } from "lucide-react";
 import AddNotebook from "./AddNotebook";
+import UpdateNotebook from "./UpdateNotebook"; // Import UpdateNotebook component
 
 import "../css/notebooks.css";
 
@@ -20,7 +21,9 @@ function Notebooks() {
   const [notebooks, setNotebooks] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [showPopup, setShowPopup] = useState(false);
+  const [showAddPopup, setShowAddPopup] = useState(false);
+  const [showUpdatePopup, setShowUpdatePopup] = useState(false); // State for UpdateNotebook popup
+  const [selectedNotebookId, setSelectedNotebookId] = useState(null); // State for selected notebook ID
   const [sortField, setSortField] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("asc");
   const [titleFilter, setTitleFilter] = useState(""); // State for title filter
@@ -121,7 +124,7 @@ function Notebooks() {
 
       // Update the notebook list
       setNotebooks((prevNotebooks) => [...prevNotebooks, createdNotebook]);
-      setShowPopup(false);
+      setShowAddPopup(false);
     } catch (err) {
       setError(`Failed to add notebook: ${err.message}`);
       console.error(err);
@@ -179,6 +182,30 @@ function Notebooks() {
     window.location.href = `/page/${id}`;
   };
 
+  const handleEditNotebook = (notebookId) => {
+    setSelectedNotebookId(notebookId);
+    setShowUpdatePopup(true); // Show the update popup
+  };
+
+  const handleUpdate = (updatedNotebook) => {
+    setNotebooks((prevNotebooks) =>
+      prevNotebooks.map((notebook) =>
+        notebook._id === updatedNotebook._id ? updatedNotebook : notebook
+      )
+    );
+  };
+
+  const handleUpdateNotebook = async (updatedNotebook) => {
+    try {
+      await updateNotebook(updatedNotebook._id, updatedNotebook);
+      handleUpdate(updatedNotebook); // Ensure this is called after a successful update
+      setShowUpdatePopup(false); // Close the popup
+    } catch (err) {
+      console.error("Failed to update notebook:", err);
+      setError(`Failed to update notebook: ${err.message}`);
+    }
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
@@ -199,16 +226,24 @@ function Notebooks() {
         </select>
       </div>
 
-      {showPopup && (
+      {showAddPopup && (
         <AddNotebook
           onAdd={handleAddNotebook}
-          onClose={() => setShowPopup(false)}
+          onClose={() => setShowAddPopup(false)}
+        />
+      )}
+
+      {showUpdatePopup && (
+        <UpdateNotebook
+          notebookId={selectedNotebookId}
+          onUpdate={handleUpdateNotebook} // Pass the handler function correctly
+          onClose={() => setShowUpdatePopup(false)}
         />
       )}
 
       {notebooks.length > 0 ? (
         <ul className="notebooks">
-          <div className="add" onClick={() => setShowPopup(true)}>
+          <div className="add" onClick={() => setShowAddPopup(true)}>
             +
           </div>
           {notebooks.map((notebook) => (
@@ -233,6 +268,15 @@ function Notebooks() {
                 }}
               >
                 <Trash2 color="white" />
+              </p>
+              <p
+                className="edit-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleEditNotebook(notebook._id);
+                }}
+              >
+                <Pencil color="white" />
               </p>
             </li>
           ))}
