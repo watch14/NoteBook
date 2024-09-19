@@ -50,7 +50,10 @@
 
   color: var(--text-color);
 
-  font-size: 16px;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: normal;
 }
 .filters input::placeholder {
   color: var(--text-color);
@@ -71,13 +74,14 @@
 
   color: var(--text-color);
 
-  font-size: 16px;
+  font-size: 14px;
   font-style: normal;
-  font-weight: 400;
+  font-weight: 500;
   line-height: normal;
 }
 .filters select option {
   color: var(--text-color);
+  border-radius: 12px;
 }
 
 .notebooks {
