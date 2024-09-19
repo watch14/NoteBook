@@ -39,42 +39,11 @@
   margin-top: 10px;
 }
 
-:root {
-  /* Theme variables */
-
-  --sakura-theme: linear-gradient(to right, #fbd3e9, #bb377d);
-  --mountFuji-theme: linear-gradient(to right, #e0eafc, #cfdef3);
-  --bambooForest-theme: linear-gradient(to right, #8dc26f, #76b852);
-  --koiFish-theme: linear-gradient(to right, #ffecd2, #fcb69f);
-  --washiPaper-theme: linear-gradient(to right, #f5f5f5, #dbdbdb);
-  --templeRed-theme: linear-gradient(to right, #ff6f61, #d32f2f);
-  --zenGarden-theme: linear-gradient(to right, #dad299, #b0dab9);
-  --plumBlossom-theme: linear-gradient(to right, #ffe0e0, #ff9999);
-}
-
 .theme-preview {
-  transition: background 0.3s ease;
+  margin-top: 10px;
+  height: 100px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-size: cover;
+  background-position: center;
 }
-
-/* Example CSS for specific themes */
-.theme-sakura {
-  background-image: url("/path/to/sakura.jpg");
-}
-
-.theme-mountFuji {
-  background-image: url("/path/to/mount-fuji.jpg");
-}
-
-.theme-bambooForest {
-  background-image: url("/path/to/bamboo-forest.jpg");
-}
-
-.theme-koiFish {
-  background-image: url("/path/to/koi-fish.jpg");
-}
-
-.theme-washiPaper {
-  background-image: url("/path/to/washi-paper.jpg");
-}
-
-/* Add more styles for each theme */

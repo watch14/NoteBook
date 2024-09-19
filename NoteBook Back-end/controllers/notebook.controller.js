@@ -134,15 +134,12 @@ export const deleteNotebook = async (req, res, next) => {
     }
 
     // Log the notebook that is being deleted
-    console.log(`Deleting notebook: ${notebookId}`);
 
     // Find and delete all pages associated with the notebook
     const deletedPages = await Page.deleteMany({ notebookId: notebookId });
-    console.log(`${deletedPages.deletedCount} pages deleted`);
 
     // Delete the notebook itself
     await Notebook.findByIdAndDelete(notebookId);
-    console.log(`Notebook ${notebookId} deleted`);
 
     // Send success response
     return next(
