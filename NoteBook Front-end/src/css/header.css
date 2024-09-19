@@ -34,8 +34,9 @@ header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  padding: 0 20px;
+  margin: 0 20px;
   gap: 60px;
+  position: relative;
 }
 
 .logo {
@@ -67,11 +68,14 @@ header {
   line-height: normal;
 }
 
-nav {
+.navs {
   display: flex;
   gap: 20px;
   align-items: flex-start;
   border: none;
+
+  position: absolute;
+  right: 0;
 }
 
 .navs a,
@@ -130,13 +134,11 @@ nav {
 
 header:hover {
   transition: 0.5s;
-  padding-bottom: 0px;
 }
 
-.logo:hover,
 .navs a:hover,
 .user:hover,
 .theme:hover {
-  transition: 0.5s;
+  transition: 0.5s ease;
   padding-top: 34px;
 }

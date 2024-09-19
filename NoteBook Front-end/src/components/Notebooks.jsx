@@ -212,20 +212,25 @@ function Notebooks() {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      <h1>Notebooks</h1>
+    <div className="notebook-page-container">
+      <div className="toptitle">
+        <h1>Notebooks</h1>
 
-      <div className="filters">
-        <input
-          type="text"
-          placeholder="Filter by title"
-          value={titleFilter}
-          onChange={handleTitleFilterChange}
-        />
-        <select onChange={handleSortChange} value={`${sortField}_${sortOrder}`}>
-          <option value="createdAt_asc">Oldest</option>
-          <option value="createdAt_desc">Newest</option>
-        </select>
+        <div className="filters">
+          <input
+            type="text"
+            placeholder="Search"
+            value={titleFilter}
+            onChange={handleTitleFilterChange}
+          />
+          <select
+            onChange={handleSortChange}
+            value={`${sortField}_${sortOrder}`}
+          >
+            <option value="createdAt_asc">Oldest</option>
+            <option value="createdAt_desc">Newest</option>
+          </select>
+        </div>
       </div>
 
       {showAddPopup && (
@@ -286,18 +291,22 @@ function Notebooks() {
       ) : (
         <p>No notebooks available.</p>
       )}
-
-      <div className="pagination">
-        <button onClick={handlePreviousPage} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <span>
-          Page {currentPage} of {totalPages}
-        </span>
-        <button onClick={handleNextPage} disabled={currentPage === totalPages}>
-          Next
-        </button>
-      </div>
+      {notebooks.length > 0 && (
+        <div className="pagination">
+          <button onClick={handlePreviousPage} disabled={currentPage === 1}>
+            Prev
+          </button>
+          <span>
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={handleNextPage}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
     </div>
   );
 }

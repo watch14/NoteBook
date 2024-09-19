@@ -14,26 +14,10 @@
 
 /* Define Theme Variables */
 :root {
-  --primary-color: #333;
-  --primary-hover-color: #f25353;
-  --background-color: #242424;
-  --text-color: rgba(255, 255, 255, 0.87);
-  --button-background: #1a1a1a;
-  --button-hover-border-color: #333;
-
   /* Transition for smooth theme change */
   transition: background-color 0.3s, color 0.3s;
 
   margin-inline: auto;
-}
-
-/* Light Theme Variables */
-body.light {
-  --background-color: #ffffff;
-  --text-color: #333;
-  --primary-color: #646cff;
-  --primary-hover-color: #f25353;
-  --button-background: #f9f9f9;
 }
 
 /* Global Styles */

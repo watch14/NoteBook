@@ -3,7 +3,7 @@
   --background-color2: #5c5c5c;
   --background-color3: #808080;
 
-  --text-color: rgba(255, 255, 255, 0.87);
+  --text-color: rgb(255, 255, 255);
   --primary-color: #e60012;
   --primary-hover-color: #1a1a1a;
   --button-background: #1a1a1a;
