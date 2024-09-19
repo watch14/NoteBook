@@ -1,8 +1,11 @@
 :root {
   --background-color: #ffffff;
+  --background-color2: #dbdbdb;
+  --background-color3: rgb(199, 199, 199);
+
   --text-color: #333;
-  --primary-color: #646cff;
-  --primary-hover-color: #747bff;
+  --primary-color: #e60012;
+  --primary-hover-color: #f9f9f9;
   --button-background: #f9f9f9;
   --page-background: #f9f9f9;
 }

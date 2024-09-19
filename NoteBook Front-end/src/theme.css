@@ -15,7 +15,7 @@
 /* Define Theme Variables */
 :root {
   --primary-color: #333;
-  --primary-hover-color: #535bf2;
+  --primary-hover-color: #f25353;
   --background-color: #242424;
   --text-color: rgba(255, 255, 255, 0.87);
   --button-background: #1a1a1a;
@@ -32,7 +32,7 @@ body.light {
   --background-color: #ffffff;
   --text-color: #333;
   --primary-color: #646cff;
-  --primary-hover-color: #747bff;
+  --primary-hover-color: #f25353;
   --button-background: #f9f9f9;
 }
 
@@ -70,19 +70,19 @@ h1 {
 /* Button styling */
 button {
   border-radius: 8px;
-  border: 1px solid transparent;
+  border: none;
   padding: 0.6em 1.2em;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
-  background-color: var(--button-background);
+  background-color: var(--background-color2);
   color: var(--text-color);
   cursor: pointer;
   transition: border-color 0.25s ease, background-color 0.3s ease;
 }
 
 button:hover {
-  border-color: var(--button-hover-border-color);
+  background-color: var(--background-color3);
 }
 
 button:focus,
