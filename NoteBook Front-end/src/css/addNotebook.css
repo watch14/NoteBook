@@ -38,3 +38,7 @@
 .popup-content button {
   margin-top: 10px;
 }
+
+.theme-preview {
+  transition: background 0.3s ease;
+}

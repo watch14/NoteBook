@@ -26,9 +26,13 @@ function AddNotebook({ onAdd, onClose }) {
               required
             />
           </label>
+
           <label>
             Theme:
-            <select value={theme} onChange={(e) => setTheme(e.target.value)}>
+            <select
+              value={theme}
+              onChange={(e) => setTheme(e.target.value)} // Update theme on selection
+            >
               <option value="blue">Blue</option>
               <option value="red">Red</option>
               <option value="green">Green</option>
@@ -44,6 +48,20 @@ function AddNotebook({ onAdd, onClose }) {
               {/* Add more gradient options as needed */}
             </select>
           </label>
+
+          {/* Live preview box */}
+          <div
+            className="theme-preview"
+            style={{
+              background: theme, // Dynamic background based on selected theme
+              width: "100%",
+              height: "50px",
+              marginTop: "10px",
+              borderRadius: "8px",
+              border: "1px solid #ccc",
+            }}
+          ></div>
+
           <button type="submit">Add</button>
           <button type="button" onClick={onClose}>
             Cancel

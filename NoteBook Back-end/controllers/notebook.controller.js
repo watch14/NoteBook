@@ -2,6 +2,7 @@ import Notebook from "../models/Notebook.js";
 import { CreateSuccess } from "../utils/success.js";
 import { CreateError } from "../utils/error.js";
 import User from "../models/User.js";
+import Page from "../models/Page.js"; // Ensure Page model is imported correctly
 
 // Create notebook
 export const createNotebook = async (req, res, next) => {
@@ -121,20 +122,38 @@ export const updateNotebook = async (req, res, next) => {
   }
 };
 
-// Delete notebook
+// Delete notebook and its pages
 export const deleteNotebook = async (req, res, next) => {
   try {
     const notebookId = req.params.id;
+
+    // Find the notebook
     const notebook = await Notebook.findById(notebookId);
     if (!notebook) {
       return next(CreateError(404, "Notebook Not Found!"));
     }
-    await Notebook.findByIdAndDelete(notebookId);
 
-    return next(CreateSuccess(200, "Notebook Deleted!", notebook));
-  } catch (err) {
+    // Log the notebook that is being deleted
+    console.log(`Deleting notebook: ${notebookId}`);
+
+    // Find and delete all pages associated with the notebook
+    const deletedPages = await Page.deleteMany({ notebookId: notebookId });
+    console.log(`${deletedPages.deletedCount} pages deleted`);
+
+    // Delete the notebook itself
+    await Notebook.findByIdAndDelete(notebookId);
+    console.log(`Notebook ${notebookId} deleted`);
+
+    // Send success response
     return next(
-      CreateError(500, "Internal Server Error for Deleting a Notebook!")
+      CreateSuccess(200, "Notebook and its pages deleted!", notebook)
+    );
+  } catch (err) {
+    // Log the error for debugging
+    console.error("Error during notebook deletion:", err);
+
+    return next(
+      CreateError(500, "Internal Server Error while deleting the notebook!")
     );
   }
 };
