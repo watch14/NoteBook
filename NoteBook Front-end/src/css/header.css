@@ -59,7 +59,6 @@ header {
 .logo a {
   color: #fff;
   text-decoration: none;
-  color: #faf3e0;
 
   font-family: "Open Sans";
   font-size: 20px;
@@ -80,7 +79,6 @@ header {
 
 .navs a,
 .user {
-  color: #fff;
   text-decoration: none;
   display: flex;
   width: 116px;
