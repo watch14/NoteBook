@@ -198,8 +198,10 @@ function Notebooks() {
   const handleUpdateNotebook = async (updatedNotebook) => {
     try {
       await updateNotebook(updatedNotebook._id, updatedNotebook);
-      handleUpdate(updatedNotebook); // Ensure this is called after a successful update
+      // handleUpdate(updatedNotebook); // Ensure this is called after a successful update
       setShowUpdatePopup(false); // Close the popup
+
+      window.location.reload(); // Refreshes the page
     } catch (err) {
       console.error("Failed to update notebook:", err);
       setError(`Failed to update notebook: ${err.message}`);
