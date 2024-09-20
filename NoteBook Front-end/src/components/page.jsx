@@ -164,21 +164,25 @@ const Page = () => {
   if (error) return <p>{error}</p>;
 
   return (
-    <div>
-      {/* Render editable title */}
-      {isEditingTitle ? (
-        <input
-          type="text"
-          value={newTitle}
-          onChange={handleTitleChange}
-          onBlur={handleTitleUpdate} // Save when input loses focus
-          onKeyPress={handleTitleKeyPress} // Save on Enter press
-          autoFocus
-        />
-      ) : (
-        <h1 onClick={handleTitleClick}>{title || "Loading Title..."}</h1> // Display title or "Loading..." if title is missing
-      )}
-
+    <div className="page-cont">
+      <div className="page-title-bg">
+        {/* Render editable title */}
+        {isEditingTitle ? (
+          <input
+            className="page-title"
+            type="text"
+            value={newTitle}
+            onChange={handleTitleChange}
+            onBlur={handleTitleUpdate} // Save when input loses focus
+            onKeyPress={handleTitleKeyPress} // Save on Enter press
+            autoFocus
+          />
+        ) : (
+          <h1 className="page-title" onClick={handleTitleClick}>
+            {title || "Loading Title..."}
+          </h1> // Display title or "Loading..." if title is missing
+        )}
+      </div>
       {/* Buttons to toggle between Sketch and Keyboard */}
       <div className="view-toggle-buttons">
         <button onClick={handleToggleView}>

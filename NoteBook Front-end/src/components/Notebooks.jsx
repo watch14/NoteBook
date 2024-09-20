@@ -198,7 +198,6 @@ function Notebooks() {
   const handleUpdateNotebook = async (updatedNotebook) => {
     try {
       await updateNotebook(updatedNotebook._id, updatedNotebook);
-      // handleUpdate(updatedNotebook); // Ensure this is called after a successful update
       setShowUpdatePopup(false); // Close the popup
 
       window.location.reload(); // Refreshes the page
@@ -206,6 +205,27 @@ function Notebooks() {
       console.error("Failed to update notebook:", err);
       setError(`Failed to update notebook: ${err.message}`);
     }
+  };
+
+  const getPlaceholders = () => {
+    const containerWidth = document.getElementById("root")?.clientWidth || 1680;
+    const notebookWidth = 236; // width of each notebook
+    const gap = 40; // gap between notebooks
+    const totalNotebookSpace = notebookWidth + gap;
+
+    // Calculate how many full notebooks fit in the container
+    const columns = Math.floor(containerWidth / totalNotebookSpace);
+
+    // Calculate remaining items in the last row
+    const remainingItems = notebooks.length % columns;
+
+    // Calculate how many placeholders are needed to fill the row
+    const placeholdersNeeded =
+      remainingItems === 0 ? 0 : columns - remainingItems;
+
+    return Array.from({ length: placeholdersNeeded }, (_, index) => (
+      <li key={`placeholder-${index}`} className="placeholder"></li>
+    ));
   };
 
   if (loading) return <p>Loading...</p>;
@@ -287,6 +307,8 @@ function Notebooks() {
               </p>
             </li>
           ))}
+          {/* Render placeholders */}
+          {getPlaceholders()}
         </ul>
       ) : (
         <p>No notebooks available.</p>
