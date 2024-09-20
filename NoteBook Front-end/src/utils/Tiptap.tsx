@@ -39,10 +39,14 @@ const Tiptap = ({ onContentChange, textContent }) => {
   // Update the editor content when textContent prop changes
   useEffect(() => {
     if (editor) {
-      if (textContent === "") {
-        editor.commands.setContent("<p></p>"); // Ensure editor is not empty
-      } else {
-        editor.commands.setContent(textContent);
+      const currentContent = editor.getHTML();
+      // Only update if the content is different
+      if (textContent !== currentContent) {
+        if (textContent === "") {
+          editor.commands.setContent("<p></p>"); // Ensure editor is not empty
+        } else {
+          editor.commands.setContent(textContent);
+        }
       }
     }
   }, [textContent, editor]);
