@@ -207,8 +207,19 @@ function Notebooks() {
     }
   };
 
-  const getPlaceholders = () => {
-    const containerWidth = document.getElementById("root")?.clientWidth || 1680;
+  const getPlaceholders = (notebooks, currentPage, totalPages) => {
+    // Only apply placeholders if on the last page
+    if (currentPage !== totalPages) {
+      return [];
+    }
+
+    const container = document.getElementById("root");
+
+    if (!container) {
+      return [];
+    }
+
+    const containerWidth = container.clientWidth;
     const notebookWidth = 236; // width of each notebook
     const gap = 40; // gap between notebooks
     const totalNotebookSpace = notebookWidth + gap;
@@ -216,10 +227,14 @@ function Notebooks() {
     // Calculate how many full notebooks fit in the container
     const columns = Math.floor(containerWidth / totalNotebookSpace);
 
+    if (columns === 0) {
+      return [];
+    }
+
     // Calculate remaining items in the last row
     const remainingItems = notebooks.length % columns;
 
-    // Calculate how many placeholders are needed to fill the row
+    // Calculate how many placeholders are needed to fill the last row
     const placeholdersNeeded =
       remainingItems === 0 ? 0 : columns - remainingItems;
 
@@ -279,12 +294,7 @@ function Notebooks() {
               style={{ background: notebook.theme }}
               onClick={() => sendNoteBookId(notebook._id)}
             >
-              <div
-                className="title"
-                onClick={() => sendNoteBookId(notebook._id)}
-              >
-                {notebook.title}
-              </div>
+              <div className="title">{notebook.title}</div>
               <div className="date">{formatDate(notebook.createdAt)}</div>
 
               <p
@@ -307,12 +317,14 @@ function Notebooks() {
               </p>
             </li>
           ))}
-          {/* Render placeholders */}
-          {getPlaceholders()}
+          {/* Render placeholders on the last page */}
+          {getPlaceholders(notebooks, currentPage, totalPages)}
         </ul>
       ) : (
         <p>No notebooks available.</p>
       )}
+
+      {/* Pagination controls */}
       {notebooks.length > 0 && (
         <div className="pagination">
           <button onClick={handlePreviousPage} disabled={currentPage === 1}>
