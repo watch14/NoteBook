@@ -32,9 +32,9 @@
 }
 
 .page {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr 24px 1fr;
+  width: 100%;
 }
 
 .page-text,
@@ -47,7 +47,7 @@
   background-color: var(--background-color2);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   border: #000 2px solid;
-  width: 100%;
+  width: 500px;
   height: 100%;
 }
 

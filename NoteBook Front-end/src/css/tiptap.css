@@ -46,6 +46,7 @@ button {
   padding: 10px 28px;
   align-items: center;
   justify-content: left;
+  flex: wrap;
   gap: 8px;
   align-self: stretch;
   border-radius: 8px;
@@ -55,6 +56,7 @@ button {
 
   background-color: var(--page-background);
   color: var(--editor-text-color);
+  width: 100%;
 }
 
 .dropdown {
