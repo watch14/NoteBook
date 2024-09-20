@@ -2,7 +2,7 @@
   margin: 0;
   padding: 0;
 }
-.tiptape {
+.tiptap {
   height: 100%;
   width: 100%;
 
@@ -46,7 +46,7 @@ button {
   padding: 10px 28px;
   align-items: center;
   justify-content: left;
-  flex: wrap;
+  flex-wrap: wrap;
   gap: 8px;
   align-self: stretch;
   border-radius: 8px;
