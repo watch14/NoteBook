@@ -192,20 +192,25 @@ const Page = () => {
       </div>
 
       <div className="page">
-        <Tiptap
-          onContentChange={handleTiptapContentChange}
-          textContent={text} // Pass textContent to Tiptap
-        />
-        <div className="mid-page"></div>
-        {showSketch ? (
-          <Sketch
-            className="sketcher"
-            onElementsChange={handleSketchElementsChange}
-            sketchContent={sketch} // Pass sketchContent to Sketch
+        <div className="page-text">
+          <Tiptap
+            onContentChange={handleTiptapContentChange}
+            textContent={text} // Pass textContent to Tiptap
           />
-        ) : (
-          <Keyboard />
-        )}
+        </div>
+
+        <div className="mid-page"></div>
+        <div className="page-right">
+          {showSketch ? (
+            <Sketch
+              className="sketcher"
+              onElementsChange={handleSketchElementsChange}
+              sketchContent={sketch} // Pass sketchContent to Sketch
+            />
+          ) : (
+            <Keyboard />
+          )}
+        </div>
       </div>
 
       <button onClick={printData}>Print Data</button>
