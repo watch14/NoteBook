@@ -2,7 +2,7 @@
 import { Outlet } from "react-router-dom";
 import Header from "./components/header";
 import { ThemeProvider } from "./context/ThemeContext";
-import "./theme.css"; // Ensure the theme styles are loaded
+import "./App.css"; // Ensure the theme styles are loaded
 
 function App() {
   return (

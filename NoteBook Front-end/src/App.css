@@ -1,5 +1,89 @@
+/* Global Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  border: none;
+}
+
 #root {
   width: 100%;
+  max-width: 1690px;
   margin: 0 auto;
   text-align: center;
+}
+
+/* Define Theme Variables */
+:root {
+  /* Transition for smooth theme change */
+  transition: background-color 0.3s, color 0.3s;
+
+  margin-inline: auto;
+}
+
+/* Global Styles */
+body {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 320px;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+a {
+  font-weight: 500;
+  color: var(--primary-color);
+  text-decoration: inherit;
+  transition: color 0.3s ease;
+}
+
+a:hover {
+  color: var(--primary-hover-color);
+}
+
+/* Header styling for large titles */
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
+
+/* Button styling */
+button {
+  border-radius: 8px;
+  border: none;
+  padding: 0.6em 1.2em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  background-color: var(--background-color2);
+  color: var(--text-color);
+  cursor: pointer;
+  transition: border-color 0.25s ease, background-color 0.3s ease;
+}
+
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
+/* Responsive and Media Queries */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background-color: #242424;
+    --text-color: rgba(255, 255, 255, 0.87);
+    --button-background: #1a1a1a;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    --background-color: #ffffff;
+    --text-color: #213547;
+    --button-background: #f9f9f9;
+  }
 }
