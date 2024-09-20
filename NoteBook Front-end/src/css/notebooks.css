@@ -85,6 +85,8 @@
 }
 
 .notebooks {
+  padding: 0 20px;
+
   list-style: none;
   width: 100%;
   display: grid;
@@ -111,6 +113,8 @@
   font-weight: bold;
   cursor: pointer;
   margin-inline: auto;
+
+  border: 1.5px solid var(--background-color3);
 }
 
 .notebooks li {
@@ -131,6 +135,7 @@
   font-weight: bold;
 
   cursor: pointer;
+  border: 1.5px solid var(--background-color3);
 }
 
 .date {
