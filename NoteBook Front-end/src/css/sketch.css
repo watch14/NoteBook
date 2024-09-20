@@ -1,8 +1,12 @@
+.sketch {
+  height: 100%;
+  width: 100%;
+}
+
 .sketch .excalidraw {
   height: 100%;
-  min-height: 680px;
-  width: 100%;
-  min-width: 580px;
+  height: 680px;
+  min-width: 100%;
 
   border: 2px solid black;
   border-radius: 8px;

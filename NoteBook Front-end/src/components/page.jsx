@@ -183,6 +183,7 @@ const Page = () => {
           </h1> // Display title or "Loading..." if title is missing
         )}
       </div>
+
       {/* Buttons to toggle between Sketch and Keyboard */}
       <div className="view-toggle-buttons">
         <button onClick={handleToggleView}>
@@ -195,7 +196,7 @@ const Page = () => {
           onContentChange={handleTiptapContentChange}
           textContent={text} // Pass textContent to Tiptap
         />
-
+        <div className="mid-page"></div>
         {showSketch ? (
           <Sketch
             className="sketcher"
