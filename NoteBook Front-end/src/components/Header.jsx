@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 import { isUserLoggedIn, clearUserFromLocalStorage } from "../utils/auth";
-import { Sun, Moon } from "lucide-react"; // Import Sun and Moon icons
+import { Sun, Moon, LogOut } from "lucide-react"; // Import Sun and Moon icons
 import "../css/header.css"; // Import your header styles
 
 function Header() {
@@ -20,14 +20,15 @@ function Header() {
           <Link to="/">JP.NoteBook</Link>
         </div>
         <nav className="navs">
-          <Link to="/">Home</Link>
-          <Link to="/notebooks">NoteBook</Link>
-          <Link to="/keyboard">Keyboard</Link>
-
           {isUserLoggedIn() ? (
-            <button className="user" onClick={handleLogout}>
-              Logout
-            </button>
+            <>
+              <Link to="/">Home</Link>
+              <Link to="/notebooks">NoteBook</Link>
+              <Link to="/keyboard">Keyboard</Link>
+              <button className="user" onClick={handleLogout}>
+                <LogOut />
+              </button>
+            </>
           ) : (
             <>
               <Link to="/login">Login</Link>
