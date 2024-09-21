@@ -2,6 +2,8 @@ import { useState, useEffect } from "react";
 import { MAP_HIRA, MAP_KATA } from "../utils/maps";
 import { translateText } from "../utils/api"; // Import the translation function
 
+import "../css/keyboard.css";
+
 // Function to escape special characters in regex
 const escapeRegExp = (string) => {
   return string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
@@ -154,59 +156,95 @@ export default function Keyboard() {
   };
 
   return (
-    <div>
-      <textarea
-        value={kanaInput}
-        onChange={handleKanaChange}
-        placeholder="Type Romaji here (Hiragana and Katakana)"
-      />
-      <textarea
-        value={kanjiInput}
-        onChange={handleKanjiChange}
-        placeholder="Type Romaji here (Hiragana and Katakana)"
-      />
-      <button onClick={fetchKanjiSuggestionsData}>Get Kanji Suggestions</button>
-      <button onClick={handleTranslate}>Translate</button>
-      <label>
-        <input
-          type="checkbox"
-          checked={showDefinitions}
-          onChange={() => setShowDefinitions((prev) => !prev)}
-        />
-        Show Definitions
-      </label>
-      <div>
-        {kanjiSuggestions.map((entry, index) => (
-          <div key={index}>
-            <button onClick={() => handleKanjiClick(entry.kanji)}>
-              {entry.kanji}
-            </button>
-            {showDefinitions && (
-              <div>
-                <p>{entry.definition}</p>
-              </div>
-            )}
-          </div>
-        ))}
+    <div className="k-cont">
+      <div className="k-title-bg">
+        <h1 className="k-title">Japanese Keyboard</h1>
       </div>
-      {translation && (
-        <div>
-          <h2>Translation Result</h2>
-          <p>
-            <strong>Hiragana:</strong> {hiragana}
-          </p>
-          <p>
-            <strong>Katakana:</strong> {katakana}
-          </p>
-          <p>
-            <strong>Romaji:</strong> {romaji}
-          </p>
-          <p>
-            <strong>Translation:</strong> {translation}
-          </p>
+
+      <div className="t-instruction">
+        <p>
+          Type in English letters, and we'll convert them into Japanese
+          characters (Hiragana or Katakana).
+        </p>
+        <p>
+          ▬ <strong>lowercase</strong> Hiragana: "<strong>ひらがな</strong>" ▬{" "}
+          <strong>UPPERCASE</strong>
+          Katakana: "<strong>カタカナ</strong>" ▬
+        </p>
+      </div>
+      <div className="t-main">
+        <div className="t-tra">
+          <textarea
+            className="text-1"
+            value={kanaInput}
+            onChange={handleKanaChange}
+            placeholder="Type Romaji here (Hiragana and Katakana)"
+          />
+          <button onClick={handleTranslate}>Translate</button>
+          {translation && (
+            <div className="t-resault">
+              <h2>Translation Result</h2>
+              <div className="res-block">
+                <p>{hiragana}</p>
+                <p className="res-right">Hiragana</p>
+              </div>
+
+              <div className="res-block">
+                <p>{katakana}</p>
+                <p className="res-right">Katakana</p>
+              </div>
+
+              <div className="res-block">
+                <p>{romaji}</p>
+                <p className="res-right">Romaji</p>
+              </div>
+
+              <div className="res-block">
+                <p>{translation}</p>
+                <p className="res-right">Translation</p>
+              </div>
+            </div>
+          )}
+          {translationError && (
+            <p style={{ color: "red" }}>{translationError}</p>
+          )}
         </div>
-      )}
-      {translationError && <p style={{ color: "red" }}>{translationError}</p>}
+
+        <div className="t-kan">
+          {" "}
+          <textarea
+            className="text-2"
+            value={kanjiInput}
+            onChange={handleKanjiChange}
+            placeholder="Type Romaji here (Hiragana and Katakana)"
+          />
+          <button onClick={fetchKanjiSuggestionsData}>
+            Get Kanji Suggestions
+          </button>
+          <label>
+            <input
+              type="checkbox"
+              checked={showDefinitions}
+              onChange={() => setShowDefinitions((prev) => !prev)}
+            />
+            Show Definitions
+          </label>
+          <div>
+            {kanjiSuggestions.map((entry, index) => (
+              <div key={index}>
+                <button onClick={() => handleKanjiClick(entry.kanji)}>
+                  {entry.kanji}
+                </button>
+                {showDefinitions && (
+                  <div>
+                    <p>{entry.definition}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
