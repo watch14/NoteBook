@@ -46,11 +46,11 @@ button {
 .button-group {
   /* height: 56px; */
   display: flex;
-  padding: 10px 28px;
+  padding: 10px 20px;
   align-items: center;
   justify-content: left;
   flex-wrap: wrap;
-  gap: 8px;
+  gap: 16px;
   align-self: stretch;
   border-radius: 8px;
 

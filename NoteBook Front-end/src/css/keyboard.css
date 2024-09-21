@@ -1,0 +1,31 @@
+.t-cont {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 40px;
+  padding: 60px 20px;
+}
+
+.t-title-bg {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 60px;
+  padding: 11px 199px;
+  border-radius: 12px;
+  background-color: var(--text-color);
+}
+
+.t-title {
+  color: var(--background-color);
+  background-color: var(--text-color);
+
+  text-align: center;
+
+  font-size: 32px;
+  font-style: normal;
+  font-weight: 800;
+  border: none;
+  border-radius: 12px;
+}

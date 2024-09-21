@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { translateText } from "../utils/api"; // Ensure correct import path
+import "../css/translate.css";
 
 const Translate = () => {
   const [text, setText] = useState(""); // Text to translate
@@ -27,8 +28,10 @@ const Translate = () => {
   };
 
   return (
-    <div>
-      <h1>Translate</h1>
+    <div className="t-cont">
+      <div className="t-title-bg">
+        <h1 className="t-title">Translate</h1>
+      </div>
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
