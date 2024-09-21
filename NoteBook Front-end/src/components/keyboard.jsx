@@ -57,6 +57,7 @@ export default function Keyboard() {
   const [katakana, setKatakana] = useState(""); // State to hold Katakana
   const [romaji, setRomaji] = useState(""); // State to hold Romaji
   const [translationError, setTranslationError] = useState(""); // State to hold translation error
+  const [showTranslation, setShowTranslation] = useState(true); // NEW STATE to toggle translation visibility
 
   useEffect(() => {
     setKanaInput(sessionStorage.getItem("kanaString") || "");
@@ -172,6 +173,7 @@ export default function Keyboard() {
           Katakana: "<strong>カタカナ</strong>" ▬
         </p>
       </div>
+
       <div className="t-main">
         <div className="t-tra">
           <textarea
@@ -180,10 +182,34 @@ export default function Keyboard() {
             onChange={handleKanaChange}
             placeholder="Type Romaji here (Hiragana and Katakana)"
           />
-          <button onClick={handleTranslate}>Translate</button>
-          {translation && (
+          <div className="t-butt">
+            {" "}
+            <button onClick={handleTranslate}>Translate</button>
+            {/* NEW BUTTON TO TOGGLE TRANSLATION VISIBILITY */}
+            {translation && (
+              <label
+                className="t-show-tra"
+                onClick={() => setShowTranslation((prev) => !prev)}
+              >
+                {showTranslation ? "Hide" : "Show"}
+              </label>
+            )}
+          </div>
+
+          {showTranslation && translation && (
             <div className="t-resault">
               <h2>Translation Result</h2>
+
+              <div className="res-block">
+                <p>{translation}</p>
+                <p className="res-right">Translation</p>
+              </div>
+
+              <div className="res-block">
+                <p>{romaji}</p>
+                <p className="res-right">Romaji</p>
+              </div>
+
               <div className="res-block">
                 <p>{hiragana}</p>
                 <p className="res-right">Hiragana</p>
@@ -193,45 +219,36 @@ export default function Keyboard() {
                 <p>{katakana}</p>
                 <p className="res-right">Katakana</p>
               </div>
-
-              <div className="res-block">
-                <p>{romaji}</p>
-                <p className="res-right">Romaji</p>
-              </div>
-
-              <div className="res-block">
-                <p>{translation}</p>
-                <p className="res-right">Translation</p>
-              </div>
             </div>
           )}
+
           {translationError && (
             <p style={{ color: "red" }}>{translationError}</p>
           )}
         </div>
 
         <div className="t-kan">
-          {" "}
           <textarea
             className="text-2"
             value={kanjiInput}
             onChange={handleKanjiChange}
             placeholder="Type Romaji here (Hiragana and Katakana)"
           />
-          <button onClick={fetchKanjiSuggestionsData}>
-            Get Kanji Suggestions
-          </button>
-          <label>
-            <input
-              type="checkbox"
-              checked={showDefinitions}
-              onChange={() => setShowDefinitions((prev) => !prev)}
-            />
-            Show Definitions
-          </label>
-          <div>
+          <div className="t-translate-k">
+            <button onClick={fetchKanjiSuggestionsData}>Get Kanji</button>
+            <label>
+              <input
+                type="checkbox"
+                checked={showDefinitions}
+                onChange={() => setShowDefinitions((prev) => !prev)}
+              />
+              Definitions
+            </label>
+          </div>
+
+          <div className="t-kanji-cont">
             {kanjiSuggestions.map((entry, index) => (
-              <div key={index}>
+              <div className="t-kanji" key={index}>
                 <button onClick={() => handleKanjiClick(entry.kanji)}>
                   {entry.kanji}
                 </button>
