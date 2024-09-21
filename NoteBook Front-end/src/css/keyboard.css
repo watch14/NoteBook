@@ -77,7 +77,8 @@
 }
 .t-butt {
   display: flex;
-  justify-content: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   align-items: center;
   gap: 20px;
 }
@@ -96,16 +97,14 @@
   text-align: center;
   font-size: 18px;
   font-weight: 600;
-  margin-inline: auto;
   background: var(--background-color3);
   color: var(--text-color);
 }
 
 .t-tra button {
   display: flex;
-  width: 177px;
   height: 54px;
-  padding: 12px 20px;
+  padding: 12px 60px;
   justify-content: center;
   align-items: center;
   gap: 10px;
@@ -116,7 +115,6 @@
   text-align: center;
   font-size: 18px;
   font-weight: 600;
-  margin-inline: auto;
 }
 
 .t-resault {
@@ -156,7 +154,7 @@
 .t-translate-k {
   display: flex;
   flex-direction: row;
-  justify-content: space-around;
+  justify-content: flex-end;
   align-items: center;
   width: 100%;
   gap: 20px;
@@ -177,7 +175,6 @@
   text-align: center;
   font-size: 18px;
   font-weight: 600;
-  margin-inline: auto;
 }
 
 .t-translate-k label {

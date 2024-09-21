@@ -123,8 +123,16 @@ export default function Keyboard() {
 
   const handleKanjiClick = (kanji) => {
     setKanaInput((prev) => prev + kanji);
-    setKanjiInput("");
-    setKanjiSuggestions([]);
+    setKanjiInput((prev) => prev + kanji);
+
+    navigator.clipboard
+      .writeText(kanji)
+      .then(() => {
+        alert(`Kanji "${kanji}" copied to clipboard!`);
+      })
+      .catch((err) => {
+        console.error("Failed to copy Kanji to clipboard: ", err);
+      });
   };
 
   const handleTranslate = async () => {
@@ -184,16 +192,16 @@ export default function Keyboard() {
           />
           <div className="t-butt">
             {" "}
-            <button onClick={handleTranslate}>Translate</button>
             {/* NEW BUTTON TO TOGGLE TRANSLATION VISIBILITY */}
             {translation && (
               <label
                 className="t-show-tra"
                 onClick={() => setShowTranslation((prev) => !prev)}
               >
-                {showTranslation ? "Hide" : "Show"}
+                {showTranslation ? "Hide Trasnlation" : "Show Trasnlation"}
               </label>
             )}
+            <button onClick={handleTranslate}>Translate</button>
           </div>
 
           {showTranslation && translation && (
@@ -235,16 +243,21 @@ export default function Keyboard() {
             placeholder="Type Romaji here (Hiragana and Katakana)"
           />
           <div className="t-translate-k">
+            {kanjiSuggestions.length > 0 && (
+              <label>
+                <input
+                  type="checkbox"
+                  checked={showDefinitions}
+                  onChange={() => setShowDefinitions((prev) => !prev)}
+                />
+                Definitions
+              </label>
+            )}
+
             <button onClick={fetchKanjiSuggestionsData}>Get Kanji</button>
-            <label>
-              <input
-                type="checkbox"
-                checked={showDefinitions}
-                onChange={() => setShowDefinitions((prev) => !prev)}
-              />
-              Definitions
-            </label>
           </div>
+
+          {kanjiSuggestions.length > 0 && <h2>Kanji Resault</h2>}
 
           <div className="t-kanji-cont">
             {kanjiSuggestions.map((entry, index) => (
