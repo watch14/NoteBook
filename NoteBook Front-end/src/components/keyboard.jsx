@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { MAP_HIRA, MAP_KATA } from "../utils/maps";
 import { translateText } from "../utils/api"; // Import the translation function
+import { PuffLoader } from "react-spinners";
 
 import "../css/keyboard.css";
 
@@ -125,14 +126,9 @@ export default function Keyboard() {
     setKanaInput((prev) => prev + kanji);
     setKanjiInput((prev) => prev + kanji);
 
-    navigator.clipboard
-      .writeText(kanji)
-      .then(() => {
-        alert(`Kanji "${kanji}" copied to clipboard!`);
-      })
-      .catch((err) => {
-        console.error("Failed to copy Kanji to clipboard: ", err);
-      });
+    navigator.clipboard.writeText(kanji);
+
+    setKanjiSuggestions([]);
   };
 
   const handleTranslate = async () => {
@@ -166,10 +162,10 @@ export default function Keyboard() {
 
   return (
     <div className="k-cont">
+      <PuffLoader color="#E60012" size={100} />
       <div className="k-title-bg">
         <h1 className="k-title">Japanese Keyboard</h1>
       </div>
-
       <div className="t-instruction">
         <p>
           Type in English letters, and we'll convert them into Japanese
@@ -181,7 +177,6 @@ export default function Keyboard() {
           Katakana: "<strong>カタカナ</strong>" ▬
         </p>
       </div>
-
       <div className="t-main">
         <div className="t-tra">
           <textarea
