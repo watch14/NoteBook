@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { MAP_HIRA, MAP_KATA } from "../utils/maps";
 import { translateText } from "../utils/api";
-import { PuffLoader } from "react-spinners";
+import { PuffLoader, BounceLoader } from "react-spinners";
 import "../css/keyboard.css";
 
 // Function to escape special characters in regex
@@ -165,7 +165,7 @@ export default function Keyboard() {
     <div className="k-cont">
       {(loading || kanjiLoading) && (
         <div className="loader">
-          <PuffLoader color="#E60012" size={100} />
+          <BounceLoader color="#E60012" size={100} />
         </div>
       )}
       <div className="k-title-bg">

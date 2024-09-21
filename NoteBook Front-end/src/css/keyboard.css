@@ -243,3 +243,9 @@
 .loader-overlay {
   margin: 60px auto;
 }
+
+@media (max-width: 1024px) {
+  .t-main {
+    flex-wrap: wrap;
+  }
+}

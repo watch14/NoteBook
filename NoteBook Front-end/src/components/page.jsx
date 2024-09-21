@@ -9,7 +9,7 @@ import GetNotebookPages, {
   createPage,
   updateNotebook,
 } from "../utils/api";
-import { PuffLoader } from "react-spinners"; // Import loader
+import { PuffLoader, BounceLoader } from "react-spinners";
 import "../css/page.css";
 
 const Page = () => {
@@ -157,8 +157,8 @@ const Page = () => {
 
   if (loading)
     return (
-      <div className="loader-overlay">
-        <PuffLoader color="#E60012" size={100} />
+      <div className="loader">
+        <BounceLoader color="#E60012" size={100} />
       </div>
     );
   if (error) return <p>{error}</p>;
