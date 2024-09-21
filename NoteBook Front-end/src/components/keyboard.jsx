@@ -1,8 +1,7 @@
 import { useState, useEffect } from "react";
 import { MAP_HIRA, MAP_KATA } from "../utils/maps";
-import { translateText } from "../utils/api"; // Import the translation function
+import { translateText } from "../utils/api";
 import { PuffLoader } from "react-spinners";
-
 import "../css/keyboard.css";
 
 // Function to escape special characters in regex
@@ -16,13 +15,11 @@ function convertRomajiToKana(input, type) {
   let val = "";
   let tempInput = input;
 
-  // Handle each character in the input string
   while (tempInput.length > 0) {
     const char = tempInput[0];
     const isUpper = char === char.toUpperCase() && char !== char.toLowerCase();
     const mapToUse = isUpper ? MAP_KATA : MAP_HIRA;
 
-    // Try to match the longest possible Romaji
     let matched = false;
     for (const [romaji, kana] of mapToUse.sort(
       ([a], [b]) => b.length - a.length
@@ -32,14 +29,13 @@ function convertRomajiToKana(input, type) {
 
       if (regex.test(tempInput)) {
         val += kana;
-        tempInput = tempInput.substring(romaji.length); // Remove matched part
+        tempInput = tempInput.substring(romaji.length);
         matched = true;
         break;
       }
     }
 
     if (!matched) {
-      // If no match, add the current character as is
       val += char;
       tempInput = tempInput.substring(1);
     }
@@ -53,12 +49,14 @@ export default function Keyboard() {
   const [kanjiInput, setKanjiInput] = useState("");
   const [showDefinitions, setShowDefinitions] = useState(false);
   const [kanjiSuggestions, setKanjiSuggestions] = useState([]);
-  const [translation, setTranslation] = useState(""); // State to hold translation result
-  const [hiragana, setHiragana] = useState(""); // State to hold Hiragana
-  const [katakana, setKatakana] = useState(""); // State to hold Katakana
-  const [romaji, setRomaji] = useState(""); // State to hold Romaji
-  const [translationError, setTranslationError] = useState(""); // State to hold translation error
-  const [showTranslation, setShowTranslation] = useState(true); // NEW STATE to toggle translation visibility
+  const [translation, setTranslation] = useState("");
+  const [hiragana, setHiragana] = useState("");
+  const [katakana, setKatakana] = useState("");
+  const [romaji, setRomaji] = useState("");
+  const [translationError, setTranslationError] = useState("");
+  const [showTranslation, setShowTranslation] = useState(true);
+  const [loading, setLoading] = useState(false); // Overall loading state
+  const [kanjiLoading, setKanjiLoading] = useState(false); // Separate loading state for Kanji
 
   useEffect(() => {
     setKanaInput(sessionStorage.getItem("kanaString") || "");
@@ -100,6 +98,7 @@ export default function Keyboard() {
 
   const fetchKanjiSuggestionsData = async () => {
     if (kanjiInput.trim().length > 0) {
+      setKanjiLoading(true); // Start Kanji loading
       try {
         const response = await fetch(
           "http://localhost:5000/api/translate/kanji",
@@ -118,6 +117,8 @@ export default function Keyboard() {
         }
       } catch (error) {
         console.error("Error fetching Kanji suggestions:", error.message);
+      } finally {
+        setKanjiLoading(false); // End Kanji loading
       }
     }
   };
@@ -125,9 +126,7 @@ export default function Keyboard() {
   const handleKanjiClick = (kanji) => {
     setKanaInput((prev) => prev + kanji);
     setKanjiInput((prev) => prev + kanji);
-
     navigator.clipboard.writeText(kanji);
-
     setKanjiSuggestions([]);
   };
 
@@ -136,7 +135,7 @@ export default function Keyboard() {
       if (!kanaInput) {
         throw new Error("No Kana input to translate.");
       }
-
+      setLoading(true); // Start loading for translation
       const result = await translateText(kanaInput);
 
       if (
@@ -157,12 +156,18 @@ export default function Keyboard() {
     } catch (error) {
       setTranslationError(`Error translating text: ${error.message}`);
       console.error("Error translating text:", error.message);
+    } finally {
+      setLoading(false); // End loading for translation
     }
   };
 
   return (
     <div className="k-cont">
-      <PuffLoader color="#E60012" size={100} />
+      {(loading || kanjiLoading) && (
+        <div className="loader">
+          <PuffLoader color="#E60012" size={100} />
+        </div>
+      )}
       <div className="k-title-bg">
         <h1 className="k-title">Japanese Keyboard</h1>
       </div>
@@ -186,43 +191,48 @@ export default function Keyboard() {
             placeholder="Type Romaji here (Hiragana and Katakana)"
           />
           <div className="t-butt">
-            {" "}
-            {/* NEW BUTTON TO TOGGLE TRANSLATION VISIBILITY */}
             {translation && (
               <label
                 className="t-show-tra"
                 onClick={() => setShowTranslation((prev) => !prev)}
               >
-                {showTranslation ? "Hide Trasnlation" : "Show Trasnlation"}
+                {showTranslation ? "Hide Translation" : "Show Translation"}
               </label>
             )}
             <button onClick={handleTranslate}>Translate</button>
           </div>
 
-          {showTranslation && translation && (
-            <div className="t-resault">
-              <h2>Translation Result</h2>
-
-              <div className="res-block">
-                <p>{translation}</p>
-                <p className="res-right">Translation</p>
-              </div>
-
-              <div className="res-block">
-                <p>{romaji}</p>
-                <p className="res-right">Romaji</p>
-              </div>
-
-              <div className="res-block">
-                <p>{hiragana}</p>
-                <p className="res-right">Hiragana</p>
-              </div>
-
-              <div className="res-block">
-                <p>{katakana}</p>
-                <p className="res-right">Katakana</p>
-              </div>
+          {loading ? (
+            <div className="loader-overlay">
+              <PuffLoader color="#E60012" size={100} />
             </div>
+          ) : (
+            showTranslation &&
+            translation && (
+              <div className="t-resault">
+                <h2>Translation Result</h2>
+
+                <div className="res-block">
+                  <p>{translation}</p>
+                  <p className="res-right">Translation</p>
+                </div>
+
+                <div className="res-block">
+                  <p>{romaji}</p>
+                  <p className="res-right">Romaji</p>
+                </div>
+
+                <div className="res-block">
+                  <p>{hiragana}</p>
+                  <p className="res-right">Hiragana</p>
+                </div>
+
+                <div className="res-block">
+                  <p>{katakana}</p>
+                  <p className="res-right">Katakana</p>
+                </div>
+              </div>
+            )
           )}
 
           {translationError && (
@@ -248,11 +258,16 @@ export default function Keyboard() {
                 Definitions
               </label>
             )}
-
             <button onClick={fetchKanjiSuggestionsData}>Get Kanji</button>
           </div>
 
-          {kanjiSuggestions.length > 0 && <h2>Kanji Resault</h2>}
+          {kanjiLoading && (
+            <div className="loader-overlay">
+              <PuffLoader color="#E60012" size={100} />
+            </div>
+          )}
+
+          {kanjiSuggestions.length > 0 && <h2>Kanji Result</h2>}
 
           <div className="t-kanji-cont">
             {kanjiSuggestions.map((entry, index) => (

@@ -7,9 +7,9 @@ import GetNotebookPages, {
   savePage,
   getNotebook,
   createPage,
-  updateNotebook, // Import updateNotebook function
+  updateNotebook,
 } from "../utils/api";
-
+import { PuffLoader } from "react-spinners"; // Import loader
 import "../css/page.css";
 
 const Page = () => {
@@ -20,10 +20,11 @@ const Page = () => {
   const [sketch, setSketch] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [title, setTitle] = useState(""); // State for notebook title
-  const [isEditingTitle, setIsEditingTitle] = useState(false); // State to toggle title editing
-  const [newTitle, setNewTitle] = useState(""); // State to hold the new title input value
-  const [showSketch, setShowSketch] = useState(true); // State to toggle between Sketch and Keyboard
+  const [title, setTitle] = useState("");
+  const [isEditingTitle, setIsEditingTitle] = useState(false);
+  const [newTitle, setNewTitle] = useState("");
+  const [showSketch, setShowSketch] = useState(true);
+  const [saving, setSaving] = useState(false); // State for saving loader
 
   const handleSketchElementsChange = (elements) => {
     setSketch(elements);
@@ -42,27 +43,25 @@ const Page = () => {
     const fetchData = async () => {
       setLoading(true);
       try {
-        // Fetch notebook title
         const notebookData = await getNotebook(id);
-        setTitle(notebookData.title); // Set notebook title
-        setNewTitle(notebookData.title); // Set new title for editing
+        setTitle(notebookData.title);
+        setNewTitle(notebookData.title);
 
-        // Fetch notebook pages
         const data = await GetNotebookPages(id);
         if (data && data.length > 0) {
           setPages(data);
-          setText(data[currentPageIndex]?.text || "<p></p>"); // Set default content
+          setText(data[currentPageIndex]?.text || "<p></p>");
           const sketchData = data[currentPageIndex]?.sketch;
 
           if (sketchData && sketchData.trim() !== "") {
             try {
-              setSketch(JSON.parse(sketchData)); // Parse the sketch data
+              setSketch(JSON.parse(sketchData));
             } catch (error) {
               console.error("Error parsing sketch data:", error);
-              setSketch([]); // Set an empty sketch
+              setSketch([]);
             }
           } else {
-            setSketch([]); // If no sketch data, set an empty array
+            setSketch([]);
           }
         }
       } catch (error) {
@@ -78,29 +77,31 @@ const Page = () => {
 
   const handleSavePage = async () => {
     const currentPage = pages[currentPageIndex];
-    console.log("Saving content:", text || "<empty>"); // Show if content is empty
+    console.log("Saving content:", text || "<empty>");
+    setSaving(true); // Start saving loader
 
     try {
       await savePage(
         id,
         currentPage?._id,
         Array.isArray(sketch) ? sketch : [],
-        text || "<p></p>" // Ensure content is not empty
+        text || "<p></p>"
       );
       console.log("Page saved successfully.✅");
     } catch (error) {
       console.error("Error saving page:", error);
+    } finally {
+      setSaving(false); // End saving loader
     }
   };
 
-  // Handle the creation of a new page
   const handleCreateNewPage = async () => {
     try {
-      const newPage = await createPage(id, [], "<p></p>"); // Create new page with empty sketch and content
-      setPages([...pages, newPage]); // Add new page to the pages array
-      setCurrentPageIndex(pages.length); // Navigate to the new page
-      setText("<p></p>"); // Reset the editor content
-      setSketch([]); // Reset the sketch content
+      const newPage = await createPage(id, [], "<p></p>");
+      setPages([...pages, newPage]);
+      setCurrentPageIndex(pages.length);
+      setText("<p></p>");
+      setSketch([]);
       console.log("New page created successfully.");
     } catch (error) {
       console.error("Error creating new page:", error);
@@ -119,72 +120,69 @@ const Page = () => {
     }
   };
 
-  // Handle navigating to a specific page by index
   const handleGoToPage = (index) => {
     setCurrentPageIndex(index);
   };
 
-  // Handle title click to enable editing
   const handleTitleClick = () => {
     setIsEditingTitle(true);
   };
 
-  // Handle title input change
   const handleTitleChange = (event) => {
     setNewTitle(event.target.value);
   };
 
-  // Handle updating the title
   const handleTitleUpdate = async () => {
     if (newTitle !== title) {
       try {
         await updateNotebook(id, { title: newTitle });
-        setTitle(newTitle); // Update the displayed title
+        setTitle(newTitle);
       } catch (error) {
         console.error("Error updating notebook title:", error);
         setError("Failed to update title.");
       }
     }
-    setIsEditingTitle(false); // Exit editing mode
+    setIsEditingTitle(false);
   };
 
-  // Handle key press in the title input field (e.g., Enter key to save)
   const handleTitleKeyPress = (event) => {
     if (event.key === "Enter") {
       handleTitleUpdate();
     }
   };
 
-  // Handle toggling between Sketch and Keyboard components
   const handleToggleView = () => {
     setShowSketch((prev) => !prev);
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="loader-overlay">
+        <PuffLoader color="#E60012" size={100} />
+      </div>
+    );
   if (error) return <p>{error}</p>;
 
   return (
     <div className="page-cont">
       <div className="page-title-bg">
-        {/* Render editable title */}
         {isEditingTitle ? (
           <input
             className="page-title"
             type="text"
             value={newTitle}
             onChange={handleTitleChange}
-            onBlur={handleTitleUpdate} // Save when input loses focus
-            onKeyPress={handleTitleKeyPress} // Save on Enter press
+            onBlur={handleTitleUpdate}
+            onKeyPress={handleTitleKeyPress}
             autoFocus
           />
         ) : (
           <h1 className="page-title" onClick={handleTitleClick}>
             {title || "Loading Title..."}
-          </h1> // Display title or "Loading..." if title is missing
+          </h1>
         )}
       </div>
 
-      {/* Buttons to toggle between Sketch and Keyboard */}
       <div className="view-toggle-buttons">
         <button onClick={handleToggleView}>
           {showSketch ? "Show Keyboard" : "Show Sketch"}
@@ -195,29 +193,32 @@ const Page = () => {
         <div className="page-text">
           <Tiptap
             onContentChange={handleTiptapContentChange}
-            textContent={text} // Pass textContent to Tiptap
+            textContent={text}
           />
         </div>
 
         <div className="mid-page"></div>
         <div className="page-right">
-          {showSketch ? (
-            <Sketch
-              className="sketcher"
-              onElementsChange={handleSketchElementsChange}
-              sketchContent={sketch} // Pass sketchContent to Sketch
-            />
-          ) : (
-            <Keyboard />
-          )}
+          <div className="p-right-in">
+            {showSketch ? (
+              <Sketch
+                className="sketcher"
+                onElementsChange={handleSketchElementsChange}
+                sketchContent={sketch}
+              />
+            ) : (
+              <Keyboard />
+            )}
+          </div>
         </div>
       </div>
 
       <button onClick={printData}>Print Data</button>
-      <button onClick={handleSavePage}>Save Page</button>
+      <button onClick={handleSavePage} disabled={saving}>
+        {saving ? "Saving..." : "Save Page"}
+      </button>
       <button onClick={handleCreateNewPage}>Create New Page</button>
 
-      {/* Render page number buttons */}
       <div className="page-buttons">
         {pages.map((_, index) => (
           <button
