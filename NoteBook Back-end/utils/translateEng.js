@@ -13,7 +13,7 @@ async function initKuroshiro() {
   }
 }
 // translate
-export async function convertAndTranslate(text, targetLanguages) {
+export async function convertAndTranslate(text, targetLanguages = [en]) {
   await initKuroshiro(); // Ensure Kuroshiro is initialized
 
   // Convert Japanese text to Hiragana, Katakana, and Romaji
@@ -29,15 +29,34 @@ export async function convertAndTranslate(text, targetLanguages) {
 
   // Loop through each target language and translate
   for (const lang of targetLanguages) {
-    try {
-      const { text: translatedText } = await translate.translate(text, {
-        from: "ja",
-        to: lang,
-      });
-      translations[lang] = translatedText; // Store the translation with the language key
-    } catch (err) {
-      console.error(`Translation error for ${lang}:`, err);
-      translations[lang] = `Error translating to ${lang}`; // Handle error gracefully
+    let attempts = 0;
+    const maxAttempts = 3; // Max retry attempts
+    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+    while (attempts < maxAttempts) {
+      try {
+        const { text: translatedText } = await translate.translate(text, {
+          from: "ja",
+          to: lang,
+        });
+        translations[lang] = translatedText; // Store the translation with the language key
+        break; // Break out of the retry loop on success
+      } catch (err) {
+        console.error(`Translation error for ${lang}:`, err);
+        translations[lang] = `Error translating to ${lang}`; // Handle error gracefully
+
+        if (err.message.includes("Too Many Requests")) {
+          attempts++;
+          if (attempts < maxAttempts) {
+            await delay(1000 * attempts); // Exponential backoff
+          } else {
+            translations[lang] = `Too many requests for ${lang}`; // Final error message after retries
+          }
+        } else {
+          // If it's a different error, break out of the loop
+          break;
+        }
+      }
     }
   }
 

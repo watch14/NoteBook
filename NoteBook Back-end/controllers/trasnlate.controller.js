@@ -7,8 +7,8 @@ import { toKanji } from "../utils/translateEng.js";
 export const translate = async (req, res, next) => {
   try {
     const { text, languages } = req.body; // Expecting languages as an array
-    if (!text || !languages || !Array.isArray(languages)) {
-      return next(CreateError(400, "text and languages are required!"));
+    if (!text) {
+      return next(CreateError(400, "text is required!"));
     }
 
     const result = await convertAndTranslate(text, languages);

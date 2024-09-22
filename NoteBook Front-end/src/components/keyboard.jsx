@@ -49,14 +49,12 @@ export default function Keyboard() {
   const [kanjiInput, setKanjiInput] = useState("");
   const [showDefinitions, setShowDefinitions] = useState(false);
   const [kanjiSuggestions, setKanjiSuggestions] = useState([]);
-  const [translation, setTranslation] = useState("");
-  const [hiragana, setHiragana] = useState("");
-  const [katakana, setKatakana] = useState("");
-  const [romaji, setRomaji] = useState("");
+  const [translationResults, setTranslationResults] = useState({});
   const [translationError, setTranslationError] = useState("");
   const [showTranslation, setShowTranslation] = useState(true);
-  const [loading, setLoading] = useState(false); // Overall loading state
-  const [kanjiLoading, setKanjiLoading] = useState(false); // Separate loading state for Kanji
+  const [loading, setLoading] = useState(false);
+  const [kanjiLoading, setKanjiLoading] = useState(false);
+  const [targetLanguages, setTargetLanguages] = useState(["en"]); // Default target languages
 
   useEffect(() => {
     setKanaInput(sessionStorage.getItem("kanaString") || "");
@@ -98,7 +96,7 @@ export default function Keyboard() {
 
   const fetchKanjiSuggestionsData = async () => {
     if (kanjiInput.trim().length > 0) {
-      setKanjiLoading(true); // Start Kanji loading
+      setKanjiLoading(true);
       try {
         const response = await fetch(
           "http://localhost:5000/api/translate/kanji",
@@ -118,7 +116,7 @@ export default function Keyboard() {
       } catch (error) {
         console.error("Error fetching Kanji suggestions:", error.message);
       } finally {
-        setKanjiLoading(false); // End Kanji loading
+        setKanjiLoading(false);
       }
     }
   };
@@ -135,21 +133,28 @@ export default function Keyboard() {
       if (!kanaInput) {
         throw new Error("No Kana input to translate.");
       }
-      setLoading(true); // Start loading for translation
-      const result = await translateText(kanaInput);
+      setLoading(true);
+      const result = await translateText(kanaInput, targetLanguages);
 
-      if (
-        result &&
-        result.hiragana &&
-        result.katakana &&
-        result.romaji &&
-        result.translation
-      ) {
-        setHiragana(result.hiragana);
-        setKatakana(result.katakana);
-        setRomaji(result.romaji);
-        setTranslation(result.translation);
-        setTranslationError(""); // Clear any previous errors
+      console.log("API Response:", result); // Log the response
+
+      if (result && result.data) {
+        const {
+          hiragana = "N/A",
+          katakana = "N/A",
+          romaji = "N/A",
+          translations = {},
+        } = result.data;
+
+        // Update translation results
+        setTranslationResults({
+          hiragana,
+          katakana,
+          romaji,
+          translations,
+        });
+        setTranslationError(""); // Reset any previous error
+        setShowTranslation(true);
       } else {
         throw new Error("Translation response is missing data.");
       }
@@ -157,8 +162,14 @@ export default function Keyboard() {
       setTranslationError(`Error translating text: ${error.message}`);
       console.error("Error translating text:", error.message);
     } finally {
-      setLoading(false); // End loading for translation
+      setLoading(false);
     }
+  };
+
+  const handleLanguageChange = (lang) => {
+    setTargetLanguages((prev) =>
+      prev.includes(lang) ? prev.filter((l) => l !== lang) : [...prev, lang]
+    );
   };
 
   return (
@@ -182,6 +193,19 @@ export default function Keyboard() {
           Katakana: "<strong>カタカナ</strong>" ▬
         </p>
       </div>
+      <div className="language-selection">
+        <h3>Select Languages:</h3>
+        {["en", "ar", "es", "fr"].map((lang) => (
+          <label key={lang}>
+            <input
+              type="checkbox"
+              checked={targetLanguages.includes(lang)}
+              onChange={() => handleLanguageChange(lang)}
+            />
+            {lang.toUpperCase()}
+          </label>
+        ))}
+      </div>
       <div className="t-main">
         <div className="t-tra">
           <textarea
@@ -191,7 +215,7 @@ export default function Keyboard() {
             placeholder="Type Romaji here (Hiragana and Katakana)"
           />
           <div className="t-butt">
-            {translation && (
+            {Object.keys(translationResults).length > 0 && (
               <label
                 className="t-show-tra"
                 onClick={() => setShowTranslation((prev) => !prev)}
@@ -207,26 +231,34 @@ export default function Keyboard() {
               <PuffLoader color="#E60012" size={100} />
             </div>
           ) : (
-            showTranslation &&
-            translation && (
-              <div className="t-resault">
-                <h2>Translation Result</h2>
+            <>
+              {showTranslation && (
+                <div className="t-resault">
+                  <h2>Translation Result</h2>
+                  <p>Hiragana: {translationResults.hiragana}</p>
+                  <p>Katakana: {translationResults.katakana}</p>
+                  <p>Romaji: {translationResults.romaji}</p>
 
-                {Object.entries({
-                  translation,
-                  romaji,
-                  hiragana,
-                  katakana,
-                }).map(([key, value]) => (
-                  <div className="res-block" key={key}>
-                    <p>{value}</p>
-                    <p className="res-right">
-                      {key.charAt(0).toUpperCase() + key.slice(1)}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            )
+                  <h3>Translations:</h3>
+                  {translationResults.translations &&
+                  Object.entries(translationResults.translations).length > 0 ? (
+                    Object.entries(translationResults.translations).map(
+                      ([lang, value]) => (
+                        <div className="res-block" key={lang}>
+                          <p>{value}</p>
+                          <p className="res-right">{lang.toUpperCase()}</p>
+                        </div>
+                      )
+                    )
+                  ) : (
+                    <p>No translations available.</p>
+                  )}
+
+                  {/* Display the entire translation results for debugging */}
+                  <pre>{JSON.stringify(translationResults, null, 2)}</pre>
+                </div>
+              )}
+            </>
           )}
 
           {translationError && (
