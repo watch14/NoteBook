@@ -9,5 +9,7 @@
   --button-background: #f9f9f9;
   --page-background: #f9f9f9;
 
+  --gradiant-bg: linear-gradient(to top, #414345 0%, #232526 50%, #414345 100%);
+
   --book: #333333;
 }

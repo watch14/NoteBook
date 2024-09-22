@@ -9,5 +9,7 @@
   --button-background: #1a1a1a;
   --page-background: #121212;
 
-  --book: #5c5c5c;
+  --gradiant-bg: linear-gradient(to top, #0f0f0f 0%, #232526 50%, #0f0f0f 100%);
+
+  --book: #333333;
 }

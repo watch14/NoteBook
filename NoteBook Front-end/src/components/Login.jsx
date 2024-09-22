@@ -4,6 +4,8 @@ import axios from "axios";
 import { saveUserToLocalStorage, isUserLoggedIn } from "../utils/auth";
 import { Api } from "../utils/api";
 
+import "../css/login.css";
+
 function Login() {
   const [username, setUserName] = useState("");
   const [password, setPassword] = useState("");
@@ -48,27 +50,41 @@ function Login() {
 
   return (
     <div className="login">
-      <h1>Login</h1>
-      <form onSubmit={login}>
-        <input
-          type="text"
-          value={username} // Sync input with state
-          onChange={(e) => setUserName(e.target.value)}
-          placeholder="Username"
-        />
-        <input
-          type="password"
-          value={password} // Sync input with state
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        {error && <p className="error">{error}</p>}
-        <input type="submit" value="Login" />
-      </form>
-      <br />
-      <p>OR</p>
-      <br />
-      <Link to="/register">Register</Link>
+      <div className="left-side">
+        <h1>JP.NoteBook</h1>
+      </div>
+      <div className="mid-side"></div>
+      <div className="right-side">
+        <div className="lll">
+          <h2>Login</h2>
+          <form onSubmit={login}>
+            <p>Username or Email:</p>
+            <input
+              type="text"
+              value={username} // Sync input with state
+              onChange={(e) => setUserName(e.target.value)}
+              placeholder="Username or Email"
+            />
+            <p>Password:</p>
+            <input
+              type="password"
+              value={password} // Sync input with state
+              onChange={(e) => setPassword(e.target.value)}
+              placeholder="Password"
+            />
+
+            {error && <p className="error">{error}</p>}
+            <Link className="forget">Forget Password?</Link>
+            <button className="login-btn" type="submit" value="Login">
+              Login
+            </button>
+          </form>
+          <br />
+          <Link className="l-register-bnt" to="/register">
+            Register
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }
