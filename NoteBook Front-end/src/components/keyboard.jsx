@@ -192,11 +192,12 @@ export default function Keyboard() {
           />
           <div className="t-butt">
             {translation && (
-              <label
-                className="t-show-tra"
-                onClick={() => setShowTranslation((prev) => !prev)}
-              >
-                {showTranslation ? "Hide Translation" : "Show Translation"}
+              <label className="t-show-tra">
+                Translation
+                <input
+                  type="checkbox"
+                  onClick={() => setShowTranslation((prev) => !prev)}
+                />
               </label>
             )}
             <button onClick={handleTranslate}>Translate</button>
@@ -214,7 +215,7 @@ export default function Keyboard() {
 
                 <div className="res-block">
                   <p>{translation}</p>
-                  <p className="res-right">Translation</p>
+                  <p className="res-right">English</p>
                 </div>
 
                 <div className="res-block">
@@ -250,12 +251,12 @@ export default function Keyboard() {
           <div className="t-translate-k">
             {kanjiSuggestions.length > 0 && (
               <label>
+                Definitions
                 <input
                   type="checkbox"
                   checked={showDefinitions}
                   onChange={() => setShowDefinitions((prev) => !prev)}
                 />
-                Definitions
               </label>
             )}
             <button onClick={fetchKanjiSuggestionsData}>Get Kanji</button>
