@@ -11,6 +11,7 @@ import TextPage from "./components/TextPage.jsx";
 import Sketch from "./components/sketch.jsx";
 import Page from "./components/page.jsx";
 import Translate from "./components/Trasnlate.jsx";
+import HomePage from "./components/HomePage.jsx";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +20,8 @@ const router = createBrowserRouter([
     children: [
       { path: "/login", element: <Login /> },
       { path: "/register", element: <Register /> },
+
+      { path: "/", element: <HomePage /> },
       { path: "/notebooks", element: <Notebooks /> },
       { path: "/keyboard", element: <Keyboard /> },
       { path: "/traslate", element: <Translate /> },
