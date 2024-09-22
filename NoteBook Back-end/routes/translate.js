@@ -17,7 +17,7 @@ const router = expresss.Router();
  * @swagger
  * /translate:
  *   post:
- *     summary: Translate text
+ *     summary: Translate Japanese text to other formats and languages
  *     tags: [Translate]
  *     requestBody:
  *       required: true
@@ -29,9 +29,16 @@ const router = expresss.Router();
  *               text:
  *                 type: string
  *                 example: どこ 勤め先 何 です か?
+ *               languages:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   description: Target languages for translation (ISO 639-1 codes)
+ *                   example: en
+ *                   enum: [en, ar, es, fr, zh] # List of language codes (add as many as needed)
  *     responses:
  *       200:
- *         description: Translate successful
+ *         description: Translation successful
  *         content:
  *           application/json:
  *             schema:
@@ -42,10 +49,25 @@ const router = expresss.Router();
  *                   example: 200
  *                 message:
  *                   type: string
- *                   example: Translate successful
+ *                   example: Translation successful
  *                 data:
- *                   type: string
- *                   example: add japanese text to trasnlate
+ *                   type: object
+ *                   properties:
+ *                     hiragana:
+ *                       type: string
+ *                       example: どこ つとめさき なに です か?
+ *                     katakana:
+ *                       type: string
+ *                       example: ドコ ツトメサキ ナニ デス カ?
+ *                     romaji:
+ *                       type: string
+ *                       example: doko tsutomesaki nani desu ka?
+ *                     translations:
+ *                       type: object
+ *                       description: Translated texts based on the selected languages
+ *                       additionalProperties:
+ *                         type: string
+ *                         example: Where is your workplace?
  *       400:
  *         description: Bad request
  *       500:

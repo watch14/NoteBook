@@ -212,25 +212,19 @@ export default function Keyboard() {
               <div className="t-resault">
                 <h2>Translation Result</h2>
 
-                <div className="res-block">
-                  <p>{translation}</p>
-                  <p className="res-right">Translation</p>
-                </div>
-
-                <div className="res-block">
-                  <p>{romaji}</p>
-                  <p className="res-right">Romaji</p>
-                </div>
-
-                <div className="res-block">
-                  <p>{hiragana}</p>
-                  <p className="res-right">Hiragana</p>
-                </div>
-
-                <div className="res-block">
-                  <p>{katakana}</p>
-                  <p className="res-right">Katakana</p>
-                </div>
+                {Object.entries({
+                  translation,
+                  romaji,
+                  hiragana,
+                  katakana,
+                }).map(([key, value]) => (
+                  <div className="res-block" key={key}>
+                    <p>{value}</p>
+                    <p className="res-right">
+                      {key.charAt(0).toUpperCase() + key.slice(1)}
+                    </p>
+                  </div>
+                ))}
               </div>
             )
           )}

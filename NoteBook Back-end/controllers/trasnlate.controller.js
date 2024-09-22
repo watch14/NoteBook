@@ -6,12 +6,12 @@ import { toKanji } from "../utils/translateEng.js";
 // Translate
 export const translate = async (req, res, next) => {
   try {
-    const { text } = req.body;
-    if (!text) {
-      return next(CreateError(400, "text is required!"));
+    const { text, languages } = req.body; // Expecting languages as an array
+    if (!text || !languages || !Array.isArray(languages)) {
+      return next(CreateError(400, "text and languages are required!"));
     }
 
-    const result = await convertAndTranslate(text);
+    const result = await convertAndTranslate(text, languages);
 
     return next(CreateSuccess(200, "Translation successful!", result));
   } catch (err) {
