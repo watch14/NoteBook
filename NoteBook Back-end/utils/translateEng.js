@@ -24,7 +24,7 @@ async function testProxy(proxyUrl) {
   }
 }
 
-async function fetchWithBackoff(fetchFunction, retries = 5) {
+async function fetchWithBackoff(fetchFunction, retries = 1) {
   for (let i = 0; i < retries; i++) {
     try {
       return await fetchFunction();
