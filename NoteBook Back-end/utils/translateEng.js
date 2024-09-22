@@ -24,23 +24,6 @@ async function testProxy(proxyUrl) {
   }
 }
 
-async function fetchWithBackoff(fetchFunction, retries = 1) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      return await fetchFunction();
-    } catch (err) {
-      if (err.message.includes("Too Many Requests")) {
-        const waitTime = Math.pow(2, i) * 1000; // Exponential backoff
-        console.warn(`Rate limit reached. Retrying in ${waitTime} ms...`);
-        await delay(waitTime);
-      } else {
-        throw err; // Rethrow other errors
-      }
-    }
-  }
-  throw new Error("Max retries reached");
-}
-
 export async function convertAndTranslate(text) {
   await initKuroshiro();
 
@@ -62,13 +45,10 @@ export async function convertAndTranslate(text) {
   try {
     const agent = new HttpsProxyAgent(proxyUrl);
 
-    const { text: translatedText } = await fetchWithBackoff(() =>
-      translate.translate(text, {
-        from: "ja",
-        to: "en",
-        // fetchOptions: { agent },
-      })
-    );
+    const { text: translatedText } = await translate.translate(text, {
+      to: "en",
+      // fetchOptions: { agent },
+    });
 
     return {
       hiragana: resultHiragana,
@@ -77,7 +57,8 @@ export async function convertAndTranslate(text) {
       translation: translatedText,
     };
   } catch (err) {
-    if (err.message.includes("Too Many Requests")) {
+    console.error("Translation error:", err);
+    if (err.message.includes("TooManyRequestsError")) {
       console.warn("Rate limit reached. Please try again later.");
       return {
         hiragana: resultHiragana,
@@ -86,7 +67,6 @@ export async function convertAndTranslate(text) {
         translation: "Translation unavailable at this time.",
       };
     } else {
-      console.error("Translation error:", err);
       throw err;
     }
   }
