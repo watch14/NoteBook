@@ -125,6 +125,7 @@ function Notebooks() {
       // Update the notebook list
       setNotebooks((prevNotebooks) => [...prevNotebooks, createdNotebook]);
       setShowAddPopup(false);
+      window.location.href = `/page/${createdNotebook._id}`;
     } catch (err) {
       setError(`Failed to add notebook: ${err.message}`);
       console.error(err);
@@ -325,8 +326,7 @@ function Notebooks() {
         <p>No notebooks available.</p>
       )}
 
-      {/* Pagination controls */}
-      {notebooks.length > 20 && (
+      {totalPages > 1 && (
         <div className="pagination">
           <button onClick={handlePreviousPage} disabled={currentPage === 1}>
             Prev
