@@ -136,6 +136,13 @@
   gap: 20px;
 }
 
+@media screen and (min-width: 1024px) {
+  .p-pagination,
+  .page-buttons {
+    opacity: 0;
+  }
+}
+
 @media screen and (max-width: 1024px) {
   .page {
     display: grid;
