@@ -8,10 +8,11 @@ import GetNotebookPages, {
   getNotebook,
   createPage,
   updateNotebook,
+  deletePage, // Import the deletePage function
 } from "../utils/api";
 import { PuffLoader, BounceLoader } from "react-spinners";
 
-import { ChevronRight, ChevronLeft } from "lucide-react";
+import { ChevronRight, ChevronLeft, Plus } from "lucide-react";
 import "../css/page.css";
 
 const Page = () => {
@@ -157,6 +158,23 @@ const Page = () => {
     setShowSketch((prev) => !prev);
   };
 
+  const handleDeletePage = async () => {
+    const currentPage = pages[currentPageIndex];
+    if (currentPage) {
+      try {
+        await deletePage(currentPage._id);
+        // Update state after deletion
+        setPages((prevPages) =>
+          prevPages.filter((_, index) => index !== currentPageIndex)
+        );
+        setCurrentPageIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 0));
+        console.log("Page deleted successfully.");
+      } catch (error) {
+        console.error("Error deleting page:", error);
+      }
+    }
+  };
+
   if (loading)
     return (
       <div className="loader">
@@ -237,6 +255,9 @@ const Page = () => {
                 {index + 1}
               </button>
             ))}
+            <button className="p-plus" onClick={handleCreateNewPage}>
+              <Plus />
+            </button>
           </div>
         </div>
       </div>
@@ -246,8 +267,11 @@ const Page = () => {
         {saving ? "Saving..." : "Save Page"}
       </button>
       <button onClick={handleCreateNewPage}>Create New Page</button>
+      <button onClick={handleDeletePage} disabled={pages.length === 0}>
+        Delete Current Page
+      </button>
 
-      <div className="page-buttons">
+      {/* <div className="page-buttons">
         {pages.map((_, index) => (
           <button
             key={index}
@@ -257,9 +281,9 @@ const Page = () => {
             Page {index + 1}
           </button>
         ))}
-      </div>
+      </div> */}
 
-      <div className="p-pagination">
+      {/* <div className="p-pagination">
         <button
           className="pagin"
           onClick={handlePreviousPage}
@@ -267,9 +291,9 @@ const Page = () => {
         >
           Prev Page
         </button>
-        {/* <span>
+        <span>
           Page {currentPageIndex + 1} of {pages.length}
-        </span> */}
+        </span>
         <button
           className="pagin"
           onClick={handleNextPage}
@@ -277,7 +301,7 @@ const Page = () => {
         >
           Next Page
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { isUserLoggedIn, getUserId } from "../utils/auth";
 import { Api, updateNotebook, getNotebook } from "../utils/api"; // Import API functions
-import { Trash2, Pencil } from "lucide-react";
+import { Trash2, Pencil, Plus } from "lucide-react";
 import AddNotebook from "./AddNotebook";
 import UpdateNotebook from "./UpdateNotebook"; // Import UpdateNotebook component
 
@@ -286,7 +286,7 @@ function Notebooks() {
       {notebooks.length > 0 ? (
         <ul className="notebooks">
           <div className="add" onClick={() => setShowAddPopup(true)}>
-            +
+            <Plus size={40} />
           </div>
           {notebooks.map((notebook) => (
             <li
