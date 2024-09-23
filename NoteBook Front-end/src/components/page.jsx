@@ -8,8 +8,20 @@ import GetNotebookPages, {
   getNotebook,
   createPage,
   updateNotebook,
+  deletePage, // Import the deletePage function
 } from "../utils/api";
 import { PuffLoader, BounceLoader } from "react-spinners";
+
+import {
+  ChevronRight,
+  ChevronLeft,
+  Plus,
+  Save,
+  SaveAll,
+  Trash2,
+  Languages,
+  Brush,
+} from "lucide-react";
 import "../css/page.css";
 
 const Page = () => {
@@ -155,6 +167,32 @@ const Page = () => {
     setShowSketch((prev) => !prev);
   };
 
+  const handleDeletePage = async () => {
+    const currentPage = pages[currentPageIndex];
+    if (currentPage) {
+      // Show a confirmation dialog
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this page?"
+      );
+      if (!confirmDelete) {
+        console.log("Page deletion canceled.");
+        return; // Exit the function if the user cancels
+      }
+
+      try {
+        await deletePage(currentPage._id);
+        // Update state after deletion
+        setPages((prevPages) =>
+          prevPages.filter((_, index) => index !== currentPageIndex)
+        );
+        setCurrentPageIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 0));
+        console.log("Page deleted successfully.");
+      } catch (error) {
+        console.error("Error deleting page:", error);
+      }
+    }
+  };
+
   if (loading)
     return (
       <div className="loader">
@@ -181,12 +219,38 @@ const Page = () => {
             {title || "Loading Title..."}
           </h1>
         )}
-      </div>
 
-      <div className="view-toggle-buttons">
-        <button onClick={handleToggleView}>
-          {showSketch ? "Show Keyboard" : "Show Sketch"}
-        </button>
+        <div className="utils">
+          {/* <button onClick={printData}>Print Data</button> */}
+
+          <button className="p-save" onClick={handleSavePage} disabled={saving}>
+            {saving ? <SaveAll /> : <Save />}
+          </button>
+
+          <button
+            className="p-del"
+            onClick={handleDeletePage}
+            disabled={pages.length === 0}
+          >
+            <Trash2 />
+          </button>
+
+          {pages.length <= 15 && (
+            <button
+              className="p-plus"
+              disabled={pages.length === 18}
+              onClick={handleCreateNewPage}
+            >
+              <Plus />
+            </button>
+          )}
+
+          <div className="view-toggle-buttons">
+            <button onClick={handleToggleView}>
+              {showSketch ? <Languages /> : <Brush />}
+            </button>
+          </div>
+        </div>
       </div>
 
       <div className="page">
@@ -195,6 +259,12 @@ const Page = () => {
             onContentChange={handleTiptapContentChange}
             textContent={text}
           />
+
+          {pages.length > 0 && currentPageIndex > 0 && (
+            <button className="pagin1" onClick={handlePreviousPage}>
+              <ChevronLeft />
+            </button>
+          )}
         </div>
 
         <div className="mid-page"></div>
@@ -210,16 +280,93 @@ const Page = () => {
               <Keyboard />
             )}
           </div>
+
+          {pages.length > 0 &&
+            pages.length < 16 &&
+            (currentPageIndex < pages.length - 1 ? (
+              <button className="pagin1" onClick={handleNextPage}>
+                <ChevronRight />
+              </button>
+            ) : (
+              <button
+                className="pagin1"
+                onClick={handleCreateNewPage}
+                disabled={pages.length >= 16} // Disable the button when there are 16 pages
+              >
+                <Plus />
+              </button>
+            ))}
+
+          <div className="pages-buttons">
+            {pages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handleGoToPage(index)}
+                className={
+                  index === currentPageIndex
+                    ? "active page-button"
+                    : "page-button"
+                } // Add conditional class
+              >
+                {index + 1}
+              </button>
+            ))}
+
+            {pages.length <= 15 && (
+              <button
+                className="p-plus"
+                disabled={pages.length === 18}
+                onClick={handleCreateNewPage}
+              >
+                <Plus />
+              </button>
+            )}
+          </div>
         </div>
       </div>
 
-      <button onClick={printData}>Print Data</button>
-      <button onClick={handleSavePage} disabled={saving}>
-        {saving ? "Saving..." : "Save Page"}
-      </button>
-      <button onClick={handleCreateNewPage}>Create New Page</button>
+      <div className="utils2">
+        <button
+          className="pagin"
+          onClick={handlePreviousPage}
+          disabled={currentPageIndex === 0}
+        >
+          <ChevronLeft />
+        </button>
 
-      <div className="page-buttons">
+        {/* <button onClick={printData}>Print Data</button> */}
+        <button className="p-save" onClick={handleSavePage} disabled={saving}>
+          {saving ? "Saving..." : "Save Page"}
+        </button>
+
+        <button
+          className="p-del"
+          onClick={handleDeletePage}
+          disabled={pages.length === 0}
+        >
+          Delete Page
+        </button>
+
+        {pages.length <= 15 && (
+          <button
+            className="p-plus"
+            disabled={pages.length === 18}
+            onClick={handleCreateNewPage}
+          >
+            New Page
+          </button>
+        )}
+
+        <button
+          className="pagin"
+          onClick={handleNextPage}
+          disabled={currentPageIndex === pages.length - 1}
+        >
+          <ChevronRight />
+        </button>
+      </div>
+
+      {/* <div className="page-buttons">
         {pages.map((_, index) => (
           <button
             key={index}
@@ -229,22 +376,27 @@ const Page = () => {
             Page {index + 1}
           </button>
         ))}
-      </div>
+      </div> */}
 
-      <div className="pagination">
-        <button onClick={handlePreviousPage} disabled={currentPageIndex === 0}>
-          Previous
+      {/* <div className="p-pagination">
+        <button
+          className="pagin"
+          onClick={handlePreviousPage}
+          disabled={currentPageIndex === 0}
+        >
+          Prev Page
         </button>
         <span>
           Page {currentPageIndex + 1} of {pages.length}
         </span>
         <button
+          className="pagin"
           onClick={handleNextPage}
           disabled={currentPageIndex === pages.length - 1}
         >
-          Next
+          Next Page
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

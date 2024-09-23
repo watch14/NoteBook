@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { isUserLoggedIn, getUserId } from "../utils/auth";
 import { Api, updateNotebook, getNotebook } from "../utils/api"; // Import API functions
-import { Trash2, Pencil } from "lucide-react";
+import { Trash2, Pencil, Plus } from "lucide-react";
 import AddNotebook from "./AddNotebook";
 import UpdateNotebook from "./UpdateNotebook"; // Import UpdateNotebook component
 
@@ -26,7 +26,7 @@ function Notebooks() {
   const [selectedNotebookId, setSelectedNotebookId] = useState(null); // State for selected notebook ID
   const [sortField, setSortField] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("asc");
-  const [titleFilter, setTitleFilter] = useState(""); // State for title filter
+  const [titleFilter, setTitleFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [itemsPerPage] = useState(20); // Limit per page
@@ -125,6 +125,7 @@ function Notebooks() {
       // Update the notebook list
       setNotebooks((prevNotebooks) => [...prevNotebooks, createdNotebook]);
       setShowAddPopup(false);
+      window.location.href = `/page/${createdNotebook._id}`;
     } catch (err) {
       setError(`Failed to add notebook: ${err.message}`);
       console.error(err);
@@ -286,8 +287,9 @@ function Notebooks() {
       {notebooks.length > 0 ? (
         <ul className="notebooks">
           <div className="add" onClick={() => setShowAddPopup(true)}>
-            +
+            <Plus size={40} />
           </div>
+
           {notebooks.map((notebook) => (
             <li
               key={notebook._id}
@@ -324,8 +326,7 @@ function Notebooks() {
         <p>No notebooks available.</p>
       )}
 
-      {/* Pagination controls */}
-      {notebooks.length > 0 && (
+      {totalPages > 1 && (
         <div className="pagination">
           <button onClick={handlePreviousPage} disabled={currentPage === 1}>
             Prev

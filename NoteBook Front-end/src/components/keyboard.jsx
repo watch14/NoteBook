@@ -215,7 +215,7 @@ export default function Keyboard() {
             placeholder="Type Romaji here (Hiragana and Katakana)"
           />
           <div className="t-butt">
-            {Object.keys(translationResults).length > 0 && (
+            {translation && (
               <label
                 className="t-show-tra"
                 onClick={() => setShowTranslation((prev) => !prev)}
@@ -231,28 +231,15 @@ export default function Keyboard() {
               <PuffLoader color="#E60012" size={100} />
             </div>
           ) : (
-            <>
-              {showTranslation && (
-                <div className="t-resault">
-                  <h2>Translation Result</h2>
-                  <p>Hiragana: {translationResults.hiragana}</p>
-                  <p>Katakana: {translationResults.katakana}</p>
-                  <p>Romaji: {translationResults.romaji}</p>
+            showTranslation &&
+            translation && (
+              <div className="t-resault">
+                <h2>Translation Result</h2>
 
-                  <h3>Translations:</h3>
-                  {translationResults.translations &&
-                  Object.entries(translationResults.translations).length > 0 ? (
-                    Object.entries(translationResults.translations).map(
-                      ([lang, value]) => (
-                        <div className="res-block" key={lang}>
-                          <p>{value}</p>
-                          <p className="res-right">{lang.toUpperCase()}</p>
-                        </div>
-                      )
-                    )
-                  ) : (
-                    <p>No translations available.</p>
-                  )}
+                <div className="res-block">
+                  <p>{translation}</p>
+                  <p className="res-right">Translation</p>
+                </div>
 
                   {/* Display the entire translation results for debugging */}
                   <pre>{JSON.stringify(translationResults, null, 2)}</pre>
@@ -276,12 +263,12 @@ export default function Keyboard() {
           <div className="t-translate-k">
             {kanjiSuggestions.length > 0 && (
               <label>
+                Definitions
                 <input
                   type="checkbox"
                   checked={showDefinitions}
                   onChange={() => setShowDefinitions((prev) => !prev)}
                 />
-                Definitions
               </label>
             )}
             <button onClick={fetchKanjiSuggestionsData}>Get Kanji</button>

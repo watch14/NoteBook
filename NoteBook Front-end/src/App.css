@@ -10,6 +10,7 @@
   max-width: 1680px;
   margin: 0 auto;
   text-align: center;
+  padding: 0 20px;
 }
 
 /* Define Theme Variables */
@@ -63,11 +64,6 @@ button {
   color: var(--text-color);
   cursor: pointer;
   transition: border-color 0.25s ease, background-color 0.3s ease;
-}
-
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
 }
 
 /* Responsive and Media Queries */

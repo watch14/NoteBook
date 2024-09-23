@@ -38,7 +38,7 @@
 
 .filters input {
   display: flex;
-  max-width: 360px;
+  min-width: 240px;
   width: 100%;
   height: 44px;
   padding: 0 20px;
@@ -101,7 +101,7 @@
 .notebooks .add,
 .notebooks li,
 .placeholder {
-  background-color: rgb(90, 90, 90);
+  background-color: var(--background-color2);
   color: white;
   height: 320px;
   width: 236px;
@@ -119,11 +119,30 @@
   cursor: pointer;
   margin-inline: auto;
 
-  border: 1.5px solid var(--background-color3);
+  transition: 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notebooks li:hover {
+  transition: 0.3s ease;
+  background-color: var(--book);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .notebooks .add {
   justify-content: center;
+  background-color: var(--background-color2);
+
+  transition: 0.3s ease;
+}
+.notebooks .add:hover {
+  background-color: var(--book);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  transition: 0.3s ease;
+
+  color: var(--primary-color);
 }
 
 .date {

@@ -3,11 +3,21 @@
   --background-color2: #dbdbdb;
   --background-color3: rgb(199, 199, 199);
 
+  --secondary-color: #333333;
+
   --text-color: #333333;
   --primary-color: #e60012;
   --primary-hover-color: #f9f9f9;
   --button-background: #f9f9f9;
   --page-background: #f9f9f9;
 
+  --gradiant-bg: linear-gradient(to top, #414345 0%, #232526 50%, #414345 100%);
+
   --book: #333333;
+
+  --blue: #45a9b6;
+  --blue2: #03a3b8;
+
+  --green: #008e64;
+  --green2: #03b680;
 }

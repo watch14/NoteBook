@@ -100,7 +100,7 @@ header {
   line-height: normal;
 
   border: none;
-  transition: 0.5s;
+  transition: 0.1s;
 }
 
 .theme {
@@ -117,11 +117,8 @@ header {
   background-color: var(--text-color);
   color: var(--background-color);
 
-  font-family: "Open Sans";
   font-size: 16px;
-  font-style: normal;
   font-weight: 600;
-  line-height: normal;
 
   border: none;
   transition: 0.5s;

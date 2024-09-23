@@ -5,45 +5,134 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.692);
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
 .popup-content {
-  background: rgb(59, 59, 59);
-  padding: 20px;
-  border-radius: 5px;
-  width: 300px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+
+  gap: 20px;
+
+  max-height: 90%; /* Limit height to allow scrolling */
+  overflow-y: auto; /* Enable vertical scrolling */
+
+  background: var(--background-color);
+
+  padding: 60px;
+  border-radius: 12px;
+  min-width: 480px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
 .popup-content h2 {
-  margin-top: 0;
+  font-size: 28px;
 }
 
 .popup-content label {
   display: block;
-  margin-bottom: 10px;
 }
 
 .popup-content input,
 .popup-content select {
   width: 100%;
-  padding: 8px;
-  margin-top: 5px;
-}
+  padding: 12px 16px;
+  font-size: 16px;
 
-.popup-content button {
-  margin-top: 10px;
+  border-radius: 8px;
 }
 
 .theme-preview {
-  margin-top: 10px;
   height: 100px;
   border-radius: 8px;
   border: 1px solid #ccc;
   background-size: cover;
   background-position: center;
+}
+
+.notebook-form,
+.theme-selector {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  label {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    color: var(--text-color);
+    text-align: center;
+
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+  }
+}
+
+.theme-buttons {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 20px;
+  width: 100%;
+}
+
+.popup-content button {
+  min-height: 50px;
+  padding: 0 12px;
+  min-width: 50px;
+  width: 100%;
+  font-size: 14px;
+  font-weight: 550;
+  color: var(--book);
+}
+
+.theme-buttons .theme-buttons button {
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.theme-buttons button:hover {
+  transition: transform 0.2s ease;
+
+  transform: scale(1.02); /* Slight hover effect */
+}
+
+.theme-buttons button.active {
+  border: var(--background-color3) 2px solid;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.buttns {
+  margin-top: 16px;
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  gap: 20px;
+
+  button {
+    padding: 16px 16px;
+    width: 100%;
+    min-height: 50px;
+
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-color);
+    transition: transform 0.2s ease;
+    font-size: 16px;
+    font-weight: 600;
+  }
+
+  .ad-c {
+    background-color: var(--primary-color);
+    color: white;
+  }
 }

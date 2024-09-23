@@ -3,11 +3,21 @@
   --background-color2: #5c5c5c;
   --background-color3: #808080;
 
+  --secondary-color: #333333;
+
   --text-color: rgb(255, 255, 255);
   --primary-color: #e60012;
   --primary-hover-color: #1a1a1a;
   --button-background: #1a1a1a;
   --page-background: #121212;
 
-  --book: #5c5c5c;
+  --gradiant-bg: linear-gradient(to top, #0f0f0f 0%, #232526 50%, #0f0f0f 100%);
+
+  --book: #333333;
+
+  --blue: #45a9b6;
+  --blue2: #03a3b8;
+
+  --green: #008e64;
+  --green2: #03b680;
 }

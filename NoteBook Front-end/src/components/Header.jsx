@@ -31,6 +31,8 @@ function Header() {
             </>
           ) : (
             <>
+              <Link to="/keyboard">Keyboard</Link>
+
               <Link to="/login">Login</Link>
               <Link to="/register">Register</Link>
             </>

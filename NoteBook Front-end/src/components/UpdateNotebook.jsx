@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getNotebook, updateNotebook } from "../utils/api";
-import "../css/addNotebook.css";
+import "../css/addNotebook.css"; // Make sure this contains styles for gradients and themes
 
-// Define a mapping from theme names to actual CSS properties
 const themeStyles = {
   sakura: "linear-gradient(to right, #ff9a9e, #fad0c4)",
   mountFuji: "linear-gradient(to right, #a1c4fd, #c2e9fb)",
@@ -28,8 +27,8 @@ function UpdateNotebook({ notebookId, onUpdate, onClose }) {
         const notebook = await getNotebook(notebookId);
         setTitle(notebook.title);
         setTheme(notebook.theme);
-        setExistingTitle(notebook.title); // Store existing title
-        setExistingTheme(notebook.theme); // Store existing theme
+        setExistingTitle(notebook.title);
+        setExistingTheme(notebook.theme);
       } catch (err) {
         setError(err.message);
       } finally {
@@ -44,17 +43,16 @@ function UpdateNotebook({ notebookId, onUpdate, onClose }) {
     e.preventDefault();
     const themeStyle = themeStyles[theme];
 
-    // Check if there are any changes
+    // Check for changes
     if (title === existingTitle && themeStyle === themeStyles[existingTheme]) {
-      // No changes detected, just close the popup
       onClose();
       return;
     }
 
     try {
       await updateNotebook(notebookId, { title, theme: themeStyle });
-      onUpdate({ _id: notebookId, title, theme: themeStyle }); // Pass the updated notebook correctly
-      onClose(); // Close the popup after update
+      onUpdate({ _id: notebookId, title, theme: themeStyle });
+      onClose();
     } catch (err) {
       setError(err.message);
     }
@@ -67,7 +65,7 @@ function UpdateNotebook({ notebookId, onUpdate, onClose }) {
     <div className="popup-overlay">
       <div className="popup-content">
         <h2>Update Notebook</h2>
-        <form onSubmit={handleSubmit}>
+        <form className="notebook-form" onSubmit={handleSubmit}>
           <label>
             Title:
             <input
@@ -78,22 +76,27 @@ function UpdateNotebook({ notebookId, onUpdate, onClose }) {
             />
           </label>
 
-          <label>
-            Theme:
-            <select
-              value={theme}
-              onChange={(e) => setTheme(e.target.value)} // Update theme on selection
-            >
-              <option value="sakura">Sakura (Cherry Blossom)</option>
-              <option value="mountFuji">Mount Fuji</option>
-              <option value="bambooForest">Bamboo Forest</option>
-              <option value="koiFish">Koi Fish</option>
-              <option value="washiPaper">Washi Paper Texture</option>
-              <option value="templeRed">Temple Red</option>
-              <option value="zenGarden">Zen Garden</option>
-              <option value="plumBlossom">Plum Blossom</option>
-            </select>
-          </label>
+          <div className="theme-selector">
+            <label>Theme:</label>
+            <div className="theme-buttons">
+              {Object.keys(themeStyles).map((themeKey) => (
+                <button
+                  key={themeKey}
+                  type="button" // Prevent form submission
+                  onClick={() => setTheme(themeKey)} // Set the selected theme
+                  className={theme === themeKey ? "active" : ""}
+                  style={{
+                    background: themeStyles[themeKey], // Apply the theme background
+                    color: theme === themeKey ? "white" : "black", // Change text color when active
+                  }}
+                >
+                  {themeKey
+                    .replace(/([A-Z])/g, " ") // Add spaces to camel case names
+                    .replace(/^\w/, (c) => c.toUpperCase())}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <div
             className="theme-preview"
@@ -109,10 +112,14 @@ function UpdateNotebook({ notebookId, onUpdate, onClose }) {
             }}
           ></div>
 
-          <button type="submit">Update</button>
-          <button type="button" onClick={onClose}>
-            Cancel
-          </button>
+          <div className="buttns">
+            <button type="button" onClick={onClose}>
+              Cancel
+            </button>
+            <button className="ad-c" type="submit">
+              Update
+            </button>
+          </div>
         </form>
       </div>
     </div>

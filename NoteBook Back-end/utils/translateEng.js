@@ -1,8 +1,8 @@
 import Kuroshiro from "kuroshiro";
 import KuromojiAnalyzer from "kuroshiro-analyzer-kuromoji";
 import translate from "@vitalets/google-translate-api";
+import { HttpsProxyAgent } from "https-proxy-agent";
 
-// Initialize Kuroshiro instance
 const kuroshiro = new Kuroshiro();
 let isInitialized = false;
 
@@ -12,8 +12,8 @@ async function initKuroshiro() {
     isInitialized = true;
   }
 }
-// translate
-export async function convertAndTranslate(text, targetLanguages = [en]) {
+
+export default async function convertAndTranslate(text) {
   await initKuroshiro(); // Ensure Kuroshiro is initialized
 
   // Convert Japanese text to Hiragana, Katakana, and Romaji
@@ -24,48 +24,22 @@ export async function convertAndTranslate(text, targetLanguages = [en]) {
     mode: "spaced",
   });
 
-  // Object to store translations in different languages
-  const translations = {};
-
-  // Loop through each target language and translate
-  for (const lang of targetLanguages) {
-    let attempts = 0;
-    const maxAttempts = 3; // Max retry attempts
-    const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-
-    while (attempts < maxAttempts) {
-      try {
-        const { text: translatedText } = await translate.translate(text, {
-          from: "ja",
-          to: lang,
-        });
-        translations[lang] = translatedText; // Store the translation with the language key
-        break; // Break out of the retry loop on success
-      } catch (err) {
-        console.error(`Translation error for ${lang}:`, err);
-        translations[lang] = `Error translating to ${lang}`; // Handle error gracefully
-
-        if (err.message.includes("Too Many Requests")) {
-          attempts++;
-          if (attempts < maxAttempts) {
-            await delay(1000 * attempts); // Exponential backoff
-          } else {
-            translations[lang] = `Too many requests for ${lang}`; // Final error message after retries
-          }
-        } else {
-          // If it's a different error, break out of the loop
-          break;
-        }
-      }
-    }
+  // Translate from Japanese to English
+  try {
+    const { text: translatedText } = await translate.translate(text, {
+      from: "ja",
+      to: "en",
+    });
+    return {
+      hiragana: resultHiragana,
+      katakana: resultKatakana,
+      romaji: resultRomaji,
+      translation: translatedText,
+    };
+  } catch (err) {
+    console.error("Translation error:", err);
+    throw err; // Re-throw error to handle it in the calling function
   }
-
-  return {
-    hiragana: resultHiragana,
-    katakana: resultKatakana,
-    romaji: resultRomaji,
-    translations, // Return all translations in an object
-  };
 }
 
 // convert to kanji

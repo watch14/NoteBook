@@ -121,6 +121,22 @@ export const createPage = async (
   }
 };
 
+// Function to delete a page
+export const deletePage = async (pageId) => {
+  try {
+    const response = await axios.delete(`${Api}pages/delete/${pageId}`);
+    if (response.data.success) {
+      console.log("Page deleted successfully:", response.data.message);
+      return response.data; // Optionally return success data
+    } else {
+      throw new Error(response.data.message || "Error deleting page");
+    }
+  } catch (error) {
+    console.error("API Error:", error.message);
+    throw new Error("Failed to delete page.");
+  }
+};
+
 ///////////////////////
 //////////////////////
 //translating
