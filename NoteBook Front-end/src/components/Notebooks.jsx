@@ -26,7 +26,7 @@ function Notebooks() {
   const [selectedNotebookId, setSelectedNotebookId] = useState(null); // State for selected notebook ID
   const [sortField, setSortField] = useState("createdAt");
   const [sortOrder, setSortOrder] = useState("asc");
-  const [titleFilter, setTitleFilter] = useState(""); // State for title filter
+  const [titleFilter, setTitleFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [itemsPerPage] = useState(20); // Limit per page
