@@ -223,16 +223,6 @@ const Page = () => {
         <div className="utils">
           {/* <button onClick={printData}>Print Data</button> */}
 
-          {pages.length <= 15 && (
-            <button
-              className="p-plus"
-              disabled={pages.length === 18}
-              onClick={handleCreateNewPage}
-            >
-              <Plus />
-            </button>
-          )}
-
           <button className="p-save" onClick={handleSavePage} disabled={saving}>
             {saving ? <SaveAll /> : <Save />}
           </button>
@@ -244,6 +234,17 @@ const Page = () => {
           >
             <Trash2 />
           </button>
+
+          {pages.length <= 15 && (
+            <button
+              className="p-plus"
+              disabled={pages.length === 18}
+              onClick={handleCreateNewPage}
+            >
+              <Plus />
+            </button>
+          )}
+
           <div className="view-toggle-buttons">
             <button onClick={handleToggleView}>
               {showSketch ? <Languages /> : <Brush />}
@@ -258,13 +259,12 @@ const Page = () => {
             onContentChange={handleTiptapContentChange}
             textContent={text}
           />
-          <button
-            className="pagin1"
-            onClick={handlePreviousPage}
-            disabled={currentPageIndex === 0}
-          >
-            <ChevronLeft />
-          </button>
+
+          {pages.length > 0 && currentPageIndex > 0 && (
+            <button className="pagin1" onClick={handlePreviousPage}>
+              <ChevronLeft />
+            </button>
+          )}
         </div>
 
         <div className="mid-page"></div>
@@ -280,13 +280,16 @@ const Page = () => {
               <Keyboard />
             )}
           </div>
-          <button
-            className="pagin1"
-            onClick={handleNextPage}
-            disabled={currentPageIndex === pages.length - 1}
-          >
-            <ChevronRight />
-          </button>
+
+          {pages.length > 0 && currentPageIndex < pages.length - 1 && (
+            <button
+              className="pagin1"
+              onClick={handleNextPage}
+              disabled={currentPageIndex === pages.length - 1}
+            >
+              <ChevronRight />
+            </button>
+          )}
 
           <div className="pages-buttons">
             {pages.map((_, index) => (
@@ -320,15 +323,7 @@ const Page = () => {
         >
           <ChevronLeft />
         </button>
-        {pages.length <= 15 && (
-          <button
-            className="p-plus"
-            disabled={pages.length === 18}
-            onClick={handleCreateNewPage}
-          >
-            New Page
-          </button>
-        )}
+
         {/* <button onClick={printData}>Print Data</button> */}
         <button className="p-save" onClick={handleSavePage} disabled={saving}>
           {saving ? "Saving..." : "Save Page"}
@@ -341,6 +336,16 @@ const Page = () => {
         >
           Delete Page
         </button>
+
+        {pages.length <= 15 && (
+          <button
+            className="p-plus"
+            disabled={pages.length === 18}
+            onClick={handleCreateNewPage}
+          >
+            New Page
+          </button>
+        )}
 
         <button
           className="pagin"
