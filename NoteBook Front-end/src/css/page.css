@@ -89,25 +89,31 @@
   position: absolute;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 12px;
 
-  right: -16px;
+  right: -20px;
 
   button {
     display: flex;
-    width: 32px;
-    height: 44px;
+    width: 40px;
+    height: 48px;
     padding: 15px 18px;
     justify-content: center;
     align-items: center;
     border-radius: 0px 8px 8px 0px;
-    background: #e60012;
+    background: var(--primary-color);
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     color: #faf3e0;
 
     font-size: 14px;
     font-weight: 600;
+    transition: 0.3s;
   }
+}
+.pages-buttons button:hover {
+  transition: 0.3s;
+  right: 40px;
+  margin-left: 6px;
 }
 
 .mid-page {
@@ -131,7 +137,7 @@
   gap: 20px;
 }
 
-/* @media screen and (max-width: 1024px) {
+@media screen and (max-width: 1024px) {
   .page {
     display: grid;
     grid-template-columns: 1fr;
@@ -140,4 +146,4 @@
   .mid-page {
     opacity: 0;
   }
-} */
+}
