@@ -178,6 +178,39 @@
   }
 }
 
+.utils2 {
+  margin-top: 20px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+  padding: 12px 40px;
+  border-radius: 12px;
+  background-color: var(--text-color);
+
+  button {
+    display: flex;
+    height: 40px;
+    padding: 12px 20px;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    background: var(--background-color);
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: 600;
+    transition: 0.3s ease;
+  }
+
+  button:hover {
+    transition: 0.3s ease;
+    background-color: var(--primary-color);
+    color: #faf3e0;
+  }
+}
+
 @media screen and (min-width: 1024px) {
 }
 

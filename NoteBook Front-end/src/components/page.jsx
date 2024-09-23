@@ -312,7 +312,7 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="utils">
+      <div className="utils2">
         <button
           className="pagin"
           onClick={handlePreviousPage}
