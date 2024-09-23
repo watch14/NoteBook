@@ -13,7 +13,7 @@ async function initKuroshiro() {
   }
 }
 
-export default async function convertAndTranslate(text) {
+export async function convertAndTranslate(text) {
   await initKuroshiro(); // Ensure Kuroshiro is initialized
 
   // Convert Japanese text to Hiragana, Katakana, and Romaji
