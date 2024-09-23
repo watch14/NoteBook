@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import "../css/addNotebook.css"; // Make sure this contains styles for gradients and themes
 
-// Define a mapping from theme names to actual CSS properties
 const themeStyles = {
   sakura: "linear-gradient(to right, #ff9a9e, #fad0c4)",
   mountFuji: "linear-gradient(to right, #a1c4fd, #c2e9fb)",
@@ -19,19 +18,17 @@ function AddNotebook({ onAdd, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Save the actual theme style, not just the name
     const themeStyle = themeStyles[theme];
     onAdd({ title, theme: themeStyle });
     setTitle(""); // Clear the form
     setTheme("sakura"); // Reset theme to default
-    console.log(themeStyle); // Check the selected theme style
   };
 
   return (
     <div className="popup-overlay">
       <div className="popup-content">
         <h2>Add Notebook</h2>
-        <form onSubmit={handleSubmit}>
+        <form className="notebook-form" onSubmit={handleSubmit}>
           <label>
             Title:
             <input
@@ -42,22 +39,27 @@ function AddNotebook({ onAdd, onClose }) {
             />
           </label>
 
-          <label>
-            Theme:
-            <select
-              value={theme}
-              onChange={(e) => setTheme(e.target.value)} // Update theme on selection
-            >
-              <option value="sakura">Sakura (Cherry Blossom)</option>
-              <option value="mountFuji">Mount Fuji</option>
-              <option value="bambooForest">Bamboo Forest</option>
-              <option value="koiFish">Koi Fish</option>
-              <option value="washiPaper">Washi Paper Texture</option>
-              <option value="templeRed">Temple Red</option>
-              <option value="zenGarden">Zen Garden</option>
-              <option value="plumBlossom">Plum Blossom</option>
-            </select>
-          </label>
+          <div className="theme-selector">
+            <label>Theme:</label>
+            <div className="theme-buttons">
+              {Object.keys(themeStyles).map((themeKey) => (
+                <button
+                  key={themeKey}
+                  type="button" // Prevent form submission
+                  onClick={() => setTheme(themeKey)} // Set the selected theme
+                  className={theme === themeKey ? "active" : ""}
+                  style={{
+                    background: themeStyles[themeKey], // Apply the theme background
+                    color: theme === themeKey ? "white" : "black", // Change text color when active
+                  }}
+                >
+                  {themeKey
+                    .replace(/([A-Z])/g, " ") // Add spaces to camel case names
+                    .replace(/^\w/, (c) => c.toUpperCase())}
+                </button>
+              ))}
+            </div>
+          </div>
 
           <div
             className="theme-preview"
@@ -68,8 +70,8 @@ function AddNotebook({ onAdd, onClose }) {
               marginTop: "10px",
               borderRadius: "8px",
               border: "1px solid #ccc",
-              backgroundSize: "cover", // Set the background size separately
-              backgroundPosition: "center", // Set the background position separately
+              backgroundSize: "cover",
+              backgroundPosition: "center",
             }}
           ></div>
 
