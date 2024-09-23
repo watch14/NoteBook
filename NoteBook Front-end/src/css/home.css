@@ -38,7 +38,7 @@
   width: 100%;
   padding-bottom: 40px;
 
-  border-bottom: solid 2px #333333;
+  border-bottom: solid 2px var(--book);
 }
 
 .features {

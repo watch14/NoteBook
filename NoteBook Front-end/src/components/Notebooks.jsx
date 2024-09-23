@@ -288,6 +288,7 @@ function Notebooks() {
           <div className="add" onClick={() => setShowAddPopup(true)}>
             <Plus size={40} />
           </div>
+
           {notebooks.map((notebook) => (
             <li
               key={notebook._id}
@@ -325,7 +326,7 @@ function Notebooks() {
       )}
 
       {/* Pagination controls */}
-      {notebooks.length > 0 && (
+      {notebooks.length > 20 && (
         <div className="pagination">
           <button onClick={handlePreviousPage} disabled={currentPage === 1}>
             Prev
