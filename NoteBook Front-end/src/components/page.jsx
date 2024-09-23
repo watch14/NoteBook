@@ -302,7 +302,11 @@ const Page = () => {
               <button
                 key={index}
                 onClick={() => handleGoToPage(index)}
-                className={index === currentPageIndex ? "active" : ""}
+                className={
+                  index === currentPageIndex
+                    ? "active page-button"
+                    : "page-button"
+                } // Add conditional class
               >
                 {index + 1}
               </button>

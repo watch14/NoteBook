@@ -107,7 +107,7 @@
     justify-content: center;
     align-items: center;
     border-radius: 0px 8px 8px 0px;
-    background: #b90111;
+    background: #74030b;
     box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
     color: #faf3e0;
 
@@ -118,7 +118,13 @@
   .p-plus {
     font-size: 0px;
   }
+  .page-button.active {
+    background-color: var(--primary-color); /* Active page background color */
+    color: #fff; /* Active page text color */
+    border-color: #4caf50; /* Border color for active page */
+  }
 }
+
 .pages-buttons button:hover {
   transition: 0.3s ease;
   width: 48px;
@@ -149,8 +155,8 @@
 .utils {
   display: flex;
   flex-wrap: wrap;
-  justify-content: space-around;
-  align-items: flex-start;
+  justify-content: center;
+  align-items: center;
   gap: 20px;
   width: 100%;
   /* padding: 12px 40px; */
