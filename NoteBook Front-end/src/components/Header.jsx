@@ -20,11 +20,12 @@ function Header() {
           <Link to="/">JP.NoteBook</Link>
         </div>
         <nav className="navs">
+          <Link to="/keyboard">Keyboard</Link>
+
           {isUserLoggedIn() ? (
             <>
               <Link to="/">Home</Link>
               <Link to="/notebooks">NoteBook</Link>
-              <Link to="/keyboard">Keyboard</Link>
               <button className="user" onClick={handleLogout}>
                 <LogOut />
               </button>
