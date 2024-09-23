@@ -219,36 +219,36 @@ const Page = () => {
             {title || "Loading Title..."}
           </h1>
         )}
-      </div>
 
-      <div className="utils">
-        {/* <button onClick={printData}>Print Data</button> */}
+        <div className="utils">
+          {/* <button onClick={printData}>Print Data</button> */}
 
-        {pages.length <= 15 && (
+          {pages.length <= 15 && (
+            <button
+              className="p-plus"
+              disabled={pages.length === 18}
+              onClick={handleCreateNewPage}
+            >
+              <Plus />
+            </button>
+          )}
+
+          <button className="p-save" onClick={handleSavePage} disabled={saving}>
+            {saving ? <SaveAll /> : <Save />}
+          </button>
+
           <button
-            className="p-plus"
-            disabled={pages.length === 18}
-            onClick={handleCreateNewPage}
+            className="p-del"
+            onClick={handleDeletePage}
+            disabled={pages.length === 0}
           >
-            <Plus />
+            <Trash2 />
           </button>
-        )}
-
-        <button className="p-save" onClick={handleSavePage} disabled={saving}>
-          {saving ? <SaveAll /> : <Save />}
-        </button>
-
-        <button
-          className="p-del"
-          onClick={handleDeletePage}
-          disabled={pages.length === 0}
-        >
-          <Trash2 />
-        </button>
-        <div className="view-toggle-buttons">
-          <button onClick={handleToggleView}>
-            {showSketch ? <Languages /> : <Brush />}
-          </button>
+          <div className="view-toggle-buttons">
+            <button onClick={handleToggleView}>
+              {showSketch ? <Languages /> : <Brush />}
+            </button>
+          </div>
         </div>
       </div>
 
