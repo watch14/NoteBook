@@ -223,13 +223,7 @@ const Page = () => {
 
       <div className="utils">
         {/* <button onClick={printData}>Print Data</button> */}
-        <button
-          className="p-del"
-          onClick={handleDeletePage}
-          disabled={pages.length === 0}
-        >
-          <Trash2 />
-        </button>
+
         {pages.length <= 15 && (
           <button
             className="p-plus"
@@ -244,6 +238,13 @@ const Page = () => {
           {saving ? <SaveAll /> : <Save />}
         </button>
 
+        <button
+          className="p-del"
+          onClick={handleDeletePage}
+          disabled={pages.length === 0}
+        >
+          <Trash2 />
+        </button>
         <div className="view-toggle-buttons">
           <button onClick={handleToggleView}>
             {showSketch ? <Languages /> : <Brush />}
@@ -297,6 +298,7 @@ const Page = () => {
                 {index + 1}
               </button>
             ))}
+
             {pages.length <= 15 && (
               <button
                 className="p-plus"
@@ -310,21 +312,13 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="utils1">
+      <div className="utils">
         <button
           className="pagin"
           onClick={handlePreviousPage}
           disabled={currentPageIndex === 0}
         >
           <ChevronLeft />
-        </button>
-        {/* <button onClick={printData}>Print Data</button> */}
-        <button
-          className="p-del"
-          onClick={handleDeletePage}
-          disabled={pages.length === 0}
-        >
-          Delete Page
         </button>
         {pages.length <= 15 && (
           <button
@@ -335,9 +329,17 @@ const Page = () => {
             New Page
           </button>
         )}
-
+        {/* <button onClick={printData}>Print Data</button> */}
         <button className="p-save" onClick={handleSavePage} disabled={saving}>
           {saving ? "Saving..." : "Save Page"}
+        </button>
+
+        <button
+          className="p-del"
+          onClick={handleDeletePage}
+          disabled={pages.length === 0}
+        >
+          Delete Page
         </button>
 
         <button
