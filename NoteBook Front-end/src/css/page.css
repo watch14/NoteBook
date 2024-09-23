@@ -69,7 +69,7 @@
 
 .pagin1 {
   display: flex;
-  width: 68px;
+  width: 62px;
   padding: 8px;
   justify-content: center;
   align-items: center;
@@ -81,14 +81,14 @@
   position: absolute;
   bottom: -22px;
   margin-inline: auto;
-  transform: 0.3s ease;
+  transition: 0.3s ease;
 }
 
 .pagin1:hover {
-  transform: 0.3s ease;
+  transition: 0.3s ease;
   background-color: var(--primary-color);
-  padding-top: 14px;
-  bottom: -28px;
+  padding-top: 12px;
+  bottom: -26px;
 }
 
 .pages-buttons {
