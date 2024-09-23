@@ -119,8 +119,15 @@
   cursor: pointer;
   margin-inline: auto;
 
-  border: 2px solid var(--background-color3);
-  transition: 0.3s;
+  transition: 0.3s ease;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.notebooks li:hover {
+  transition: 0.3s ease;
+  background-color: var(--book);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .notebooks .add {
@@ -128,9 +135,8 @@
 }
 .notebooks .add:hover {
   justify-content: center;
-  background-color: var(--book);
-  color: var(--primary-color);
-  border: 2px solid var(--primary-color);
+  transform: translateY(-5px);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
 }
 
 .date {
