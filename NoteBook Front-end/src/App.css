@@ -66,11 +66,6 @@ button {
   transition: border-color 0.25s ease, background-color 0.3s ease;
 }
 
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
 /* Responsive and Media Queries */
 @media (prefers-color-scheme: dark) {
   :root {

@@ -30,7 +30,7 @@ function AddNotebook({ onAdd, onClose }) {
         <h2>Add Notebook</h2>
         <form className="notebook-form" onSubmit={handleSubmit}>
           <label>
-            Title:
+            Add Title:
             <input
               type="text"
               value={title}
@@ -40,7 +40,7 @@ function AddNotebook({ onAdd, onClose }) {
           </label>
 
           <div className="theme-selector">
-            <label>Theme:</label>
+            <label>Select Theme:</label>
             <div className="theme-buttons">
               {Object.keys(themeStyles).map((themeKey) => (
                 <button
@@ -50,12 +50,9 @@ function AddNotebook({ onAdd, onClose }) {
                   className={theme === themeKey ? "active" : ""}
                   style={{
                     background: themeStyles[themeKey], // Apply the theme background
-                    color: theme === themeKey ? "white" : "black", // Change text color when active
                   }}
                 >
-                  {themeKey
-                    .replace(/([A-Z])/g, " ") // Add spaces to camel case names
-                    .replace(/^\w/, (c) => c.toUpperCase())}
+                  {themeKey.replace(/^\w/, (c) => c.toUpperCase())}
                 </button>
               ))}
             </div>
@@ -66,7 +63,7 @@ function AddNotebook({ onAdd, onClose }) {
             style={{
               backgroundImage: themeStyles[theme], // Use the actual theme style
               width: "100%",
-              height: "100px",
+              height: "60px",
               marginTop: "10px",
               borderRadius: "8px",
               border: "1px solid #ccc",
@@ -74,11 +71,14 @@ function AddNotebook({ onAdd, onClose }) {
               backgroundPosition: "center",
             }}
           ></div>
-
-          <button type="submit">Add</button>
-          <button type="button" onClick={onClose}>
-            Cancel
-          </button>
+          <div className="buttns">
+            <button type="button" onClick={onClose}>
+              Cancel
+            </button>
+            <button className="ad-c" type="submit">
+              Create
+            </button>
+          </div>
         </form>
       </div>
     </div>

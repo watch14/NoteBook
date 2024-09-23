@@ -112,10 +112,14 @@ function UpdateNotebook({ notebookId, onUpdate, onClose }) {
             }}
           ></div>
 
-          <button type="submit">Update</button>
-          <button type="button" onClick={onClose}>
-            Cancel
-          </button>
+          <div className="buttns">
+            <button type="button" onClick={onClose}>
+              Cancel
+            </button>
+            <button className="ad-c" type="submit">
+              Update
+            </button>
+          </div>
         </form>
       </div>
     </div>
