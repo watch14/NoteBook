@@ -12,7 +12,16 @@ import GetNotebookPages, {
 } from "../utils/api";
 import { PuffLoader, BounceLoader } from "react-spinners";
 
-import { ChevronRight, ChevronLeft, Plus } from "lucide-react";
+import {
+  ChevronRight,
+  ChevronLeft,
+  Plus,
+  Save,
+  SaveAll,
+  Trash2,
+  Languages,
+  Brush,
+} from "lucide-react";
 import "../css/page.css";
 
 const Page = () => {
@@ -212,10 +221,34 @@ const Page = () => {
         )}
       </div>
 
-      <div className="view-toggle-buttons">
-        <button onClick={handleToggleView}>
-          {showSketch ? "Show Keyboard" : "Show Sketch"}
+      <div className="utils">
+        {/* <button onClick={printData}>Print Data</button> */}
+        <button
+          className="p-del"
+          onClick={handleDeletePage}
+          disabled={pages.length === 0}
+        >
+          <Trash2 />
         </button>
+        {pages.length <= 15 && (
+          <button
+            className="p-plus"
+            disabled={pages.length === 18}
+            onClick={handleCreateNewPage}
+          >
+            <Plus />
+          </button>
+        )}
+
+        <button className="p-save" onClick={handleSavePage} disabled={saving}>
+          {saving ? <SaveAll /> : <Save />}
+        </button>
+
+        <div className="view-toggle-buttons">
+          <button onClick={handleToggleView}>
+            {showSketch ? <Languages /> : <Brush />}
+          </button>
+        </div>
       </div>
 
       <div className="page">
@@ -277,7 +310,7 @@ const Page = () => {
         </div>
       </div>
 
-      <div className="utils">
+      <div className="utils1">
         <button
           className="pagin"
           onClick={handlePreviousPage}
