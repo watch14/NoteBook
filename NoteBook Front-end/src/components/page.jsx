@@ -281,15 +281,21 @@ const Page = () => {
             )}
           </div>
 
-          {pages.length > 0 && currentPageIndex < pages.length - 1 && (
-            <button
-              className="pagin1"
-              onClick={handleNextPage}
-              disabled={currentPageIndex === pages.length - 1}
-            >
-              <ChevronRight />
-            </button>
-          )}
+          {pages.length > 0 &&
+            pages.length < 16 &&
+            (currentPageIndex < pages.length - 1 ? (
+              <button className="pagin1" onClick={handleNextPage}>
+                <ChevronRight />
+              </button>
+            ) : (
+              <button
+                className="pagin1"
+                onClick={handleCreateNewPage}
+                disabled={pages.length >= 16} // Disable the button when there are 16 pages
+              >
+                <Plus />
+              </button>
+            ))}
 
           <div className="pages-buttons">
             {pages.map((_, index) => (
