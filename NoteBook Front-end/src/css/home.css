@@ -20,9 +20,10 @@
 }
 
 .header h1 {
-  font-size: 40px;
-  color: var(--primary-color);
-  margin-bottom: 0.5rem;
+  font-size: 48px;
+  font-weight: 800;
+  color: var(--text-color);
+  padding-bottom: 12px;
 }
 
 .header p {
@@ -38,7 +39,7 @@
   width: 100%;
   padding-bottom: 40px;
 
-  border-bottom: solid 2px var(--book);
+  border-bottom: solid 2px var(--background-color2);
 }
 
 .features {
@@ -87,11 +88,12 @@
 }
 
 .cta-button {
-  display: inline-block;
   background-color: var(--primary-color);
   color: white;
-  padding: 0.8rem 1.5rem;
-  border-radius: 4px;
+  padding: 16px 24px;
+  border-radius: 8px;
+  margin-inline: auto;
+  width: 250px;
   text-decoration: none;
   font-weight: bold;
   transition: background-color 0.3s ease, transform 0.3s ease;
@@ -99,6 +101,7 @@
 
 .cta-button:hover {
   background-color: #cc0000;
+  color: white;
   transform: scale(1.05);
 }
 
