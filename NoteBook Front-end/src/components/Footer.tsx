@@ -55,14 +55,14 @@ export default function Footer() {
             </li>
           </ul>
         </div>
-        <div className="footer-section">
+        {/* <div className="footer-section">
           <h3>Newsletter</h3>
           <p>Stay updated with our latest features and tips!</p>
           <form className="newsletter-form">
             <input type="email" placeholder="Enter your email" required />
             <button type="submit">Subscribe</button>
           </form>
-        </div>
+        </div> */}
       </div>
       <div className="footer-bottom">
         <p>&copy; 2024 JP.Notebook. All rights reserved.</p>
