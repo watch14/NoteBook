@@ -10,6 +10,8 @@ import GetNotebookPages, {
   updateNotebook,
 } from "../utils/api";
 import { PuffLoader, BounceLoader } from "react-spinners";
+
+import { ChevronRight, ChevronLeft } from "lucide-react";
 import "../css/page.css";
 
 const Page = () => {
@@ -195,6 +197,13 @@ const Page = () => {
             onContentChange={handleTiptapContentChange}
             textContent={text}
           />
+          <button
+            className="pagin1"
+            onClick={handlePreviousPage}
+            disabled={currentPageIndex === 0}
+          >
+            <ChevronLeft />
+          </button>
         </div>
 
         <div className="mid-page"></div>
@@ -209,6 +218,25 @@ const Page = () => {
             ) : (
               <Keyboard />
             )}
+          </div>
+          <button
+            className="pagin1"
+            onClick={handleNextPage}
+            disabled={currentPageIndex === pages.length - 1}
+          >
+            <ChevronRight />
+          </button>
+
+          <div className="pages-buttons">
+            {pages.map((_, index) => (
+              <button
+                key={index}
+                onClick={() => handleGoToPage(index)}
+                className={index === currentPageIndex ? "active" : ""}
+              >
+                {index + 1}
+              </button>
+            ))}
           </div>
         </div>
       </div>
@@ -231,18 +259,23 @@ const Page = () => {
         ))}
       </div>
 
-      <div className="pagination">
-        <button onClick={handlePreviousPage} disabled={currentPageIndex === 0}>
-          Previous
-        </button>
-        <span>
-          Page {currentPageIndex + 1} of {pages.length}
-        </span>
+      <div className="p-pagination">
         <button
+          className="pagin"
+          onClick={handlePreviousPage}
+          disabled={currentPageIndex === 0}
+        >
+          Prev Page
+        </button>
+        {/* <span>
+          Page {currentPageIndex + 1} of {pages.length}
+        </span> */}
+        <button
+          className="pagin"
           onClick={handleNextPage}
           disabled={currentPageIndex === pages.length - 1}
         >
-          Next
+          Next Page
         </button>
       </div>
     </div>

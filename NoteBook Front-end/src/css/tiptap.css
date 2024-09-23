@@ -15,7 +15,7 @@
 .tiptap-editor {
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
   height: 100%;
-  min-height: 750px;
+  min-height: 748px;
   width: 100%;
 
   display: flex;
@@ -24,7 +24,6 @@
 
   text-align: justify;
   padding: 24px;
-  margin: 2px 0;
 
   font-size: 18px;
   border: #000 2px solid;
