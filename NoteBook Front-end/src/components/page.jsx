@@ -161,6 +161,15 @@ const Page = () => {
   const handleDeletePage = async () => {
     const currentPage = pages[currentPageIndex];
     if (currentPage) {
+      // Show a confirmation dialog
+      const confirmDelete = window.confirm(
+        "Are you sure you want to delete this page?"
+      );
+      if (!confirmDelete) {
+        console.log("Page deletion canceled.");
+        return; // Exit the function if the user cancels
+      }
+
       try {
         await deletePage(currentPage._id);
         // Update state after deletion
@@ -255,21 +264,57 @@ const Page = () => {
                 {index + 1}
               </button>
             ))}
-            <button className="p-plus" onClick={handleCreateNewPage}>
-              <Plus />
-            </button>
+            {pages.length <= 15 && (
+              <button
+                className="p-plus"
+                disabled={pages.length === 18}
+                onClick={handleCreateNewPage}
+              >
+                <Plus />
+              </button>
+            )}
           </div>
         </div>
       </div>
 
-      <button onClick={printData}>Print Data</button>
-      <button onClick={handleSavePage} disabled={saving}>
-        {saving ? "Saving..." : "Save Page"}
-      </button>
-      <button onClick={handleCreateNewPage}>Create New Page</button>
-      <button onClick={handleDeletePage} disabled={pages.length === 0}>
-        Delete Current Page
-      </button>
+      <div className="utils">
+        <button
+          className="pagin"
+          onClick={handlePreviousPage}
+          disabled={currentPageIndex === 0}
+        >
+          <ChevronLeft />
+        </button>
+        {/* <button onClick={printData}>Print Data</button> */}
+        <button
+          className="p-del"
+          onClick={handleDeletePage}
+          disabled={pages.length === 0}
+        >
+          Delete Page
+        </button>
+        {pages.length <= 15 && (
+          <button
+            className="p-plus"
+            disabled={pages.length === 18}
+            onClick={handleCreateNewPage}
+          >
+            New Page
+          </button>
+        )}
+
+        <button className="p-save" onClick={handleSavePage} disabled={saving}>
+          {saving ? "Saving..." : "Save Page"}
+        </button>
+
+        <button
+          className="pagin"
+          onClick={handleNextPage}
+          disabled={currentPageIndex === pages.length - 1}
+        >
+          <ChevronRight />
+        </button>
+      </div>
 
       {/* <div className="page-buttons">
         {pages.map((_, index) => (
