@@ -112,8 +112,7 @@
 }
 .pages-buttons button:hover {
   transition: 0.3s;
-  right: 40px;
-  margin-left: 6px;
+  background: var(--book);
 }
 
 .mid-page {
