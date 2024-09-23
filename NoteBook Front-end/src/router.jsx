@@ -17,21 +17,41 @@ const router = createBrowserRouter([
     path: "/",
     element: <App />, // Main app with header and outlet
     children: [
-      { path: "/login", element: <Login /> },
-      { path: "/register", element: <Register /> },
+      {
+        path: "/login",
+        element: <ProtectedRoute element={<Login />} isRestricted={true} />,
+      },
+      {
+        path: "/register",
+        element: <ProtectedRoute element={<Register />} isRestricted={true} />,
+      },
       { path: "/", element: <HomePage /> },
       {
         path: "/notebooks",
-        element: <ProtectedRoute element={<Notebooks />} />,
+        element: (
+          <ProtectedRoute element={<Notebooks />} isRestricted={false} />
+        ),
       },
       { path: "/keyboard", element: <Keyboard /> },
+
       {
         path: "/traslate",
-        element: <ProtectedRoute element={<Translate />} />,
+        element: (
+          <ProtectedRoute element={<Translate />} isRestricted={false} />
+        ),
       },
-      { path: "/text", element: <ProtectedRoute element={<TextPage />} /> },
-      { path: "/sketch", element: <ProtectedRoute element={<Sketch />} /> },
-      { path: "/page/:id", element: <ProtectedRoute element={<Page />} /> },
+      {
+        path: "/text",
+        element: <ProtectedRoute element={<TextPage />} isRestricted={false} />,
+      },
+      {
+        path: "/sketch",
+        element: <ProtectedRoute element={<Sketch />} isRestricted={false} />,
+      },
+      {
+        path: "/page/:id",
+        element: <ProtectedRoute element={<Page />} isRestricted={false} />,
+      },
     ],
   },
 ]);
