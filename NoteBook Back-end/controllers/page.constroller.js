@@ -94,49 +94,65 @@ export const getAllPages = async (req, res, next) => {
 // Update page
 export const updatePage = async (req, res, next) => {
   try {
-    const pageId = req.params.id;
-    const userId = decodeToken(req.headers.authorization).id;
+    // Log the authorization header
+
+    // Decode the token
+    const token = req.headers.authorization.split(" ")[1];
+    const decodedToken = decodeToken(token);
+
+    const userId = decodedToken.id;
 
     console.log(
-      `[${new Date().toISOString()}] INFO: Updating page with ID ${pageId} for user ${userId}`
+      `[${new Date().toISOString()}] INFO: Updating page with ID ${
+        req.params.id
+      } for user ${userId}`
     );
 
     // Find the page
-    const page = await Page.findById(pageId).populate("notebookId");
+    const page = await Page.findById(req.params.id).populate("notebookId");
     if (!page) {
       console.log(
-        `[${new Date().toISOString()}] ERROR: Page with ID ${pageId} not found.`
+        `[${new Date().toISOString()}] ERROR: Page with ID ${
+          req.params.id
+        } not found.`
       );
       return next(CreateError(404, "Page Not Found!"));
     }
 
+    // Find the notebook associated with the page
     const notebook = await Notebook.findById(page.notebookId);
     if (!notebook) {
       console.log(
-        `[${new Date().toISOString()}] ERROR: Notebook for page ID ${pageId} not found.`
+        `[${new Date().toISOString()}] ERROR: Notebook for page ID ${
+          req.params.id
+        } not found.`
       );
       return next(CreateError(404, "Notebook Not Found!"));
     }
 
-    // Check if the user owns the notebook
+    // Check if the user is the owner of the notebook
     if (notebook.userId.toString() !== userId) {
       console.log(
-        `[${new Date().toISOString()}] ERROR: User ${userId} is not authorized to update page ${pageId}.`
+        `[${new Date().toISOString()}] ERROR: User ${userId} is not authorized to update page ${
+          req.params.id
+        }.`
       );
       return next(
         CreateError(403, "You are not authorized to update this page.")
       );
     }
 
-    // Update the page if authorized
+    // Update the page
     const updatedPage = await Page.findByIdAndUpdate(
-      pageId,
+      req.params.id,
       { $set: req.body },
       { new: true }
     );
 
     console.log(
-      `[${new Date().toISOString()}] INFO: Page with ID ${pageId} updated successfully.`
+      `[${new Date().toISOString()}] INFO: Page with ID ${
+        req.params.id
+      } updated successfully.`
     );
     return next(CreateSuccess(200, "Page Updated!", updatedPage));
   } catch (err) {

@@ -1,27 +1,45 @@
-// api urls
 import axios from "axios";
 import { getToken, getUserId } from "./auth";
 
-export const Api = "http://localhost:5000/api/";
+// Create the Axios instance with a base URL
+export const Api = axios.create({
+  baseURL: "http://localhost:5000/api/", // Your API base URL
+});
 
+// Add a request interceptor to include the token in every request
+Api.interceptors.request.use(
+  (config) => {
+    const token = getToken(); // Get token from localStorage
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`; // Attach token
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Function to fetch a notebook by its ID
 export const getNotebook = async (id) => {
   try {
-    const response = await axios.get(Api + `notebooks/get/${id}`);
+    const response = await Api.get(`notebooks/get/${id}`);
     if (response.data.success) {
       return response.data.data; // Return the notebook data
     } else {
       throw new Error(response.data.message || "Error fetching notebook");
     }
   } catch (error) {
-    console.error("API Error:", error.message); // Improved error logging
-    throw new Error(error.message || "Error fetching notebook");
+    console.error("API Error:", error.message);
+    throw new Error("Error fetching notebook.");
   }
 };
 
+// Function to update a notebook
 export const updateNotebook = async (notebookId, updatedData) => {
   try {
-    const response = await axios.put(
-      Api + `notebooks/update/${notebookId}`,
+    const response = await Api.put(
+      `notebooks/update/${notebookId}`,
       updatedData
     );
     if (response.data.success) {
@@ -30,13 +48,13 @@ export const updateNotebook = async (notebookId, updatedData) => {
       throw new Error(response.data.message || "Error updating notebook");
     }
   } catch (error) {
-    console.error("API Error:", error.message); // Improved error logging
-    throw new Error(error.message || "Error updating notebook");
+    console.error("API Error:", error.message);
+    throw new Error("Error updating notebook.");
   }
 };
 
 // Function to delete a notebook
-const handleDeleteNotebook = async (notebookId) => {
+export const deleteNotebook = async (notebookId, setNotebooks, setError) => {
   const confirmDelete = window.confirm(
     "Are you sure you want to delete this notebook? This action cannot be undone."
   );
@@ -44,26 +62,30 @@ const handleDeleteNotebook = async (notebookId) => {
   if (!confirmDelete) return;
 
   try {
-    await axios.delete(`${Api}notebooks/delete/${notebookId}`);
+    await Api.delete(`notebooks/delete/${notebookId}`);
 
     // Update the state by filtering out the deleted notebook
     setNotebooks((prevNotebooks) =>
       prevNotebooks.filter((notebook) => notebook._id !== notebookId)
     );
-  } catch (err) {
-    setError(`Failed to delete notebook: ${err.message}`);
-    console.error(err);
+  } catch (error) {
+    setError(`Failed to delete notebook: ${error.message}`);
+    console.error("Error deleting notebook:", error.message);
   }
 };
 
-export default async function GetNotebookPages(id) {
-  const res = await axios.get(Api + `pages/notebook/${id}`);
-
-  if (res.data.error) {
-    throw new Error(res.data.error);
-  }
-  if (res.data.success) {
-    return res.data.data;
+// Function to get pages of a notebook by notebook ID
+export default async function getNotebookPages(id) {
+  try {
+    const response = await Api.get(`pages/notebook/${id}`);
+    if (response.data.success) {
+      return response.data.data; // Return the pages data
+    } else {
+      throw new Error(response.data.message || "Error fetching pages");
+    }
+  } catch (error) {
+    console.error("API Error:", error.message);
+    throw new Error("Error fetching pages.");
   }
 }
 
@@ -75,32 +97,25 @@ export const savePage = async (
   tiptapContent
 ) => {
   const pageData = {
-    notebookId, // The notebook ID where the page belongs
-    text: tiptapContent, // The content from the Tiptap editor
-    sketch: JSON.stringify(sketchElements), // The sketch content as a string
+    notebookId,
+    text: tiptapContent,
+    sketch: JSON.stringify(sketchElements), // Save sketch elements as a string
   };
 
-  // Get the token from localStorage
-  const token = getToken();
-  const userId = getUserId();
-  console.log("UserId:", userId);
-  console.log("Token:", token);
-
   try {
-    const response = await axios({
+    const response = await Api({
       method: pageId ? "put" : "post",
-      url: pageId ? `${Api}pages/update/${pageId}` : `${Api}pages/create`,
+      url: pageId ? `pages/update/${pageId}` : `pages/create`,
       data: pageData,
       headers: {
         "Content-Type": "application/json",
-        Authorization: token, // Attach token for authorization
       },
     });
     console.log("Page saved:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error saving page:", error);
-    throw error;
+    console.error("Error saving page:", error.message);
+    throw new Error("Error saving page.");
   }
 };
 
@@ -117,24 +132,21 @@ export const createPage = async (
   };
 
   try {
-    const response = await axios({
-      method: "post",
-      url: `${Api}pages/create`,
-      data: pageData,
+    const response = await Api.post(`pages/create`, pageData, {
       headers: { "Content-Type": "application/json" },
     });
     console.log("New page created:", response.data);
     return response.data;
   } catch (error) {
-    console.error("Error creating page:", error);
-    throw error;
+    console.error("Error creating page:", error.message);
+    throw new Error("Error creating page.");
   }
 };
 
-// Function to delete a page
+// Function to delete a page by its ID
 export const deletePage = async (pageId) => {
   try {
-    const response = await axios.delete(`${Api}pages/delete/${pageId}`);
+    const response = await Api.delete(`pages/delete/${pageId}`);
     if (response.data.success) {
       console.log("Page deleted successfully:", response.data.message);
       return response.data; // Optionally return success data
@@ -147,16 +159,13 @@ export const deletePage = async (pageId) => {
   }
 };
 
-///////////////////////
-//////////////////////
-//translating
+// Function to translate text using an API
 export const translateText = async (text) => {
   try {
-    const response = await axios.post(`${Api}translate`, { text });
+    const response = await Api.post(`translate`, { text });
 
-    // Check if the response contains the expected structure
-    if (response.data && response.data.success && response.data.data) {
-      return response.data.data; // Return the full data object
+    if (response.data.success && response.data.data) {
+      return response.data.data; // Return the translation result
     } else {
       throw new Error(response.data.message || "Translation failed.");
     }

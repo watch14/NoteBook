@@ -3,6 +3,7 @@ import {
   convertToKanji,
   translate,
 } from "../controllers/trasnlate.controller.js";
+import { verifyToken } from "../utils/auth.js";
 
 const router = expresss.Router();
 

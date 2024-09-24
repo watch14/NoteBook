@@ -22,6 +22,7 @@ export const verifyToken = (req, res, next) => {
 
 export const decodeToken = (token) => {
   try {
+    // split token
     // Decode the token without verification
     const decoded = jwt.decode(token);
     return decoded;
@@ -29,3 +30,23 @@ export const decodeToken = (token) => {
     throw new Error("Failed to decode token");
   }
 };
+
+// export const decodeToken = (authorizationHeader) => {
+//   if (!authorizationHeader) {
+//     throw new Error("Authorization header is missing!");
+//   }
+
+//   // Ensure the token contains the 'Bearer ' prefix
+//   const token = authorizationHeader.split(" ")[1];
+//   if (!token) {
+//     throw new Error("Token not found in the authorization header!");
+//   }
+
+//   // Verify and decode the token using the secret key
+//   const secretKey = process.env.JWT_SECRET; // Ensure this is defined in your environment variables
+//   if (!secretKey) {
+//     throw new Error("JWT secret key is not defined!");
+//   }
+
+//   return jwt.verify(token, secretKey); // Verify and decode the token
+// };

@@ -59,7 +59,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.post("/create", createNotebook);
+router.post("/create", verifyToken, createNotebook);
 
 /**
  * @swagger
@@ -95,7 +95,7 @@ router.post("/create", createNotebook);
  *       500:
  *         description: Internal server error
  */
-router.get("/get/:id", getNotebookById);
+router.get("/get/:id", verifyToken, getNotebookById);
 
 /**
  * @swagger
@@ -162,7 +162,7 @@ router.get("/get/:id", getNotebookById);
  *       500:
  *         description: Internal server error
  */
-router.get("/all", getAllNotebooks);
+router.get("/all", verifyToken, getAllNotebooks);
 
 /**
  * @swagger
@@ -211,7 +211,7 @@ router.get("/all", getAllNotebooks);
  *       500:
  *         description: Internal server error
  */
-router.put("/update/:id", updateNotebook);
+router.put("/update/:id", verifyToken, updateNotebook);
 
 /**
  * @swagger
@@ -245,7 +245,7 @@ router.put("/update/:id", updateNotebook);
  *       500:
  *         description: Internal server error
  */
-router.delete("/delete/:id", deleteNotebook);
+router.delete("/delete/:id", verifyToken, deleteNotebook);
 
 /**
  * @swagger
@@ -332,7 +332,7 @@ router.delete("/delete/:id", deleteNotebook);
  *       500:
  *         description: Internal server error
  */
-router.get("/user/:id", getUserNotebooks);
+router.get("/user/:id", verifyToken, getUserNotebooks);
 
 /**
  * @swagger

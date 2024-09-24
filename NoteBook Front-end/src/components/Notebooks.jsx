@@ -45,7 +45,7 @@ function Notebooks() {
       }
 
       try {
-        const response = await axios.get(`${Api}notebooks/user/${userId}`, {
+        const response = await Api.get(`notebooks/user/${userId}`, {
           params: {
             title: titleFilter,
             sortBy: sortField,

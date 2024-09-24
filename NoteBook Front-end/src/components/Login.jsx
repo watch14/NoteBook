@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { saveUserToLocalStorage, isUserLoggedIn } from "../utils/auth";
-import { Api } from "../utils/api";
+import { Api } from "../utils/api"; // Import the Axios instance with interceptor
+import { saveUserToLocalStorage } from "../utils/auth"; // Utility to save user data in local storage
 
 import "../css/login.css";
 
@@ -13,22 +12,23 @@ function Login() {
 
   async function login(e) {
     e.preventDefault();
-    setError("");
+    setError(""); // Reset error on new attempt
 
     try {
-      const response = await axios.post(Api + "users/login", {
+      // Post request to the login endpoint using Api instance
+      const response = await Api.post("users/login", {
         userName: username,
         password,
       });
 
       if (response.data.success) {
-        console.log(response.data);
+        // Destructure the token and userId from the response
+        const { userId, token } = response.data.data;
 
         // Save user ID and token to local storage
-        const { userId, token } = response.data.data;
         saveUserToLocalStorage(userId, token);
 
-        //////////////////////////////////////
+        // Redirect to home page after successful login
         window.location.href = "/";
       } else {
         // Display error message from API response
@@ -36,6 +36,7 @@ function Login() {
         alert(response.data.message); // Optional: Alert for user feedback
       }
     } catch (error) {
+      // Log and display error
       console.error(
         "Error during login:",
         error.response ? error.response.data.message : error.message

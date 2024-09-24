@@ -7,6 +7,7 @@ import {
   getPagesByNotebookId,
   updatePage,
 } from "../controllers/page.constroller.js";
+import { verifyToken } from "../utils/auth.js";
 
 const router = express.Router();
 
@@ -60,7 +61,7 @@ const router = express.Router();
  *       500:
  *         description: Internal server error
  */
-router.post("/create", createPage);
+router.post("/create", verifyToken, createPage);
 
 /**
  * @swagger
@@ -96,7 +97,7 @@ router.post("/create", createPage);
  *       500:
  *         description: Internal server error
  */
-router.get("/get/:id", getPageById);
+router.get("/get/:id", verifyToken, getPageById);
 
 /**
  * @swagger
@@ -125,7 +126,7 @@ router.get("/get/:id", getPageById);
  *       500:
  *         description: Internal server error
  */
-router.get("/all", getAllPages);
+router.get("/all", verifyToken, getAllPages);
 
 /**
  * @swagger
@@ -177,7 +178,7 @@ router.get("/all", getAllPages);
  *       500:
  *         description: Internal server error
  */
-router.put("/update/:id", updatePage);
+router.put("/update/:id", verifyToken, updatePage);
 
 /**
  * @swagger
@@ -211,7 +212,7 @@ router.put("/update/:id", updatePage);
  *       500:
  *         description: Internal server error
  */
-router.delete("/delete/:id", deletePage);
+router.delete("/delete/:id", verifyToken, deletePage);
 
 /**
  * @swagger
@@ -264,7 +265,7 @@ router.delete("/delete/:id", deletePage);
  *       500:
  *         description: Internal server error
  */
-router.get("/notebook/:id", getPagesByNotebookId);
+router.get("/notebook/:id", verifyToken, getPagesByNotebookId);
 
 /**
  * @swagger
