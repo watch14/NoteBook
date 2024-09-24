@@ -11,7 +11,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  padding: 11px 199px;
+  padding: 12px 20px;
   border-radius: 12px;
   background-color: var(--text-color);
 }
@@ -252,6 +252,11 @@
 
 @media (max-width: 1024px) {
   .t-main {
+    flex-wrap: wrap;
+  }
+}
+@media (max-width: 1400px) {
+  .page .t-main {
     flex-wrap: wrap;
   }
 }
