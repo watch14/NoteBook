@@ -1,0 +1,134 @@
+.not-found-container {
+  background-color: var(--background-color);
+  padding: 40px;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: "Noto Sans JP";
+}
+
+.not-found-content {
+  text-align: center;
+  color: var(--text-color);
+}
+.not {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+.japanese-text {
+  font-size: 40px;
+  font-weight: 300;
+}
+
+.english-text {
+  font-size: 16px;
+  font-weight: 300;
+}
+
+.zen-circle {
+  width: 200px;
+  height: 200px;
+  border: 2px solid var(--primary-color);
+  border-radius: 50%;
+  margin: 2rem auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.zen-circle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background-color: var(--primary-color);
+  border-radius: 45%;
+  animation: wave 8s infinite linear;
+}
+
+@keyframes wave {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.returnhome {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+.haiku {
+  font-size: 18px;
+  line-height: 1.7;
+  font-style: italic;
+}
+
+.home-button {
+  display: inline-block;
+  background-color: var(--primary-color);
+  color: white;
+  padding: 16px 48px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s ease;
+}
+
+.home-button:hover {
+  color: white;
+  transition: 0.3s ease;
+  transform: translateY(-5px);
+  scale: 1.01;
+}
+
+.home-button .english-text {
+  font-size: 16px;
+}
+
+.not {
+  position: relative; /* Establish a positioning context */
+
+  display: flex; /* Use flexbox for alignment */
+  flex-direction: column; /* Stack items vertically */
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  text-align: center; /* Center text */
+  gap: 40px;
+
+  top: -40px; /* Add some space at the top */
+}
+
+.not .zen-circle {
+  position: absolute; /* Position it absolutely */
+  top: 50%; /* Center it vertically */
+  left: 50%; /* Center it horizontally */
+  width: 400px; /* Width of the circle */
+  height: 400px; /* Height of the circle */
+  border-radius: 50%; /* Make it a circle */
+  transform: translate(-50%, -50%); /* Adjust centering */
+  z-index: 1; /* Behind the text */
+}
+
+.not .japanese-text {
+  position: relative; /* Position relative to the parent */
+  z-index: 2; /* Above the circle */
+  font-size: 60px;
+}
+
+.not .english-text {
+  position: relative; /* Position relative to the parent */
+  z-index: 2; /* Above the circle */
+  color: white;
+  font-size: 32px;
+}

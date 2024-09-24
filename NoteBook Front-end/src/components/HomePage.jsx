@@ -46,7 +46,7 @@ export default function HomePage() {
         <section className="why-choose-us">
           <h2>Why Choose JP.Notebook?</h2>
           <div className="why-choose-us-content">
-            <h1>JP.NoteBook</h1>
+            <div className="zen-circle"></div>
             {/* <div className="demo-image">
               <img src="./img/img.png" alt="JP.Notebook Demo" />
             </div> */}
