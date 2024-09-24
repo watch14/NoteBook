@@ -22,6 +22,8 @@ import {
   Languages,
   Brush,
 } from "lucide-react";
+
+import { getUserId } from "../utils/auth";
 import "../css/page.css";
 
 const Page = () => {
@@ -56,6 +58,13 @@ const Page = () => {
       setLoading(true);
       try {
         const notebookData = await getNotebook(id);
+
+        if (notebookData.userId != getUserId()) {
+          console.log("User not authorized to view this notebook.");
+          window.location.href = "/notebooks";
+          return;
+        }
+
         setTitle(notebookData.title);
         setNewTitle(notebookData.title);
 

@@ -283,7 +283,13 @@ function Notebooks() {
           onClose={() => setShowUpdatePopup(false)}
         />
       )}
-
+      {notebooks.length === 0 && (
+        <div className="notebooks">
+          <div className="add" onClick={() => setShowAddPopup(true)}>
+            <Plus size={40} />
+          </div>
+        </div>
+      )}
       {notebooks.length > 0 ? (
         <ul className="notebooks">
           <div className="add" onClick={() => setShowAddPopup(true)}>
