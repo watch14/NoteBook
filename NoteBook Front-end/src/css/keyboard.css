@@ -255,7 +255,7 @@
     flex-wrap: wrap;
   }
 }
-@media (max-width: 1400px) {
+@media (max-width: 2000px) {
   .page .t-main {
     flex-wrap: wrap;
   }
