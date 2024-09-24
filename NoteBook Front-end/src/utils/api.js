@@ -1,5 +1,6 @@
 // api urls
 import axios from "axios";
+import { getToken, getUserId } from "./auth";
 
 export const Api = "http://localhost:5000/api/";
 
@@ -79,12 +80,21 @@ export const savePage = async (
     sketch: JSON.stringify(sketchElements), // The sketch content as a string
   };
 
+  // Get the token from localStorage
+  const token = getToken();
+  const userId = getUserId();
+  console.log("UserId:", userId);
+  console.log("Token:", token);
+
   try {
     const response = await axios({
       method: pageId ? "put" : "post",
       url: pageId ? `${Api}pages/update/${pageId}` : `${Api}pages/create`,
       data: pageData,
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: token, // Attach token for authorization
+      },
     });
     console.log("Page saved:", response.data);
     return response.data;

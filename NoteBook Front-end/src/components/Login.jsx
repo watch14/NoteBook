@@ -25,8 +25,8 @@ function Login() {
         console.log(response.data);
 
         // Save user ID and token to local storage
-        const { user, token } = response.data.data;
-        saveUserToLocalStorage(user._id, token);
+        const { userId, token } = response.data.data;
+        saveUserToLocalStorage(userId, token);
 
         //////////////////////////////////////
         window.location.href = "/";

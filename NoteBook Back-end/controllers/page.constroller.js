@@ -2,6 +2,7 @@ import Page from "../models/Page.js";
 import { CreateSuccess } from "../utils/success.js";
 import { CreateError } from "../utils/error.js";
 import Notebook from "../models/Notebook.js";
+import { decodeToken } from "../utils/auth.js";
 
 // Create page
 export const createPage = async (req, res, next) => {
@@ -58,18 +59,42 @@ export const getAllPages = async (req, res, next) => {
 // Update page
 export const updatePage = async (req, res, next) => {
   try {
+    console.log("aaaaaaaaaa");
+
     const pageId = req.params.id;
-    const page = await Page.findById(pageId);
+    const userId = decodeToken(req.headers.authorization).id;
+    console.log(userId);
+    // Find the page
+    const page = await Page.findById(pageId).populate("notebookId"); // Populate to get notebook data
     if (!page) {
       return next(CreateError(404, "Page Not Found!"));
     }
+
+    const notebook = await Notebook.findById(page.notebookId);
+    if (!notebook) {
+      return next(CreateError(404, "Page Not Found!"));
+    }
+
+    // Check if the user owns the notebook
+    if (notebook.userId.toString() !== userId) {
+      return next(
+        CreateError(403, "You are not authorized to update this page.")
+      );
+    }
+
+    console.log(notebook);
+
+    // Update the page if authorized
     const updatedPage = await Page.findByIdAndUpdate(
       pageId,
       { $set: req.body },
       { new: true }
     );
+
     return next(CreateSuccess(200, "Page Updated!", updatedPage));
   } catch (err) {
+    console.log(err);
+
     return next(CreateError(500, "Internal Server Error for updating a Page!"));
   }
 };
@@ -92,6 +117,7 @@ export const deletePage = async (req, res, next) => {
 
     return next(CreateSuccess(200, "Page Deleted!"));
   } catch (err) {
+    console.log(err);
     return next(CreateError(500, "Internal Server Error for deleting a Page!"));
   }
 };

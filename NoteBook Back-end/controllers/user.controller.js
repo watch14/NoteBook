@@ -84,7 +84,7 @@ export const loginUser = async (req, res, next) => {
     // });
 
     const userData = {
-      user,
+      userId: user._id,
       token,
     };
 

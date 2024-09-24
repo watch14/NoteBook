@@ -21,9 +21,9 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Your Vite frontend URL
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    allowedHeaders: ["Content-Type", "Authorization"],
+    origin: "http://localhost:5173", // Adjust this to your frontend's URL
+    methods: ["GET", "POST", "PUT", "DELETE"], // Allow these methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
   })
 );
 
