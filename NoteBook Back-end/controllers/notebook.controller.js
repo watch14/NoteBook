@@ -13,22 +13,38 @@ export const createNotebook = async (req, res, next) => {
     const user = await User.findById(userId);
 
     if (!user) {
+      console.log(
+        `[${new Date().toISOString()}] ERROR: User with ID ${userId} not found.`
+      );
       return next(CreateError(404, "User not found!"));
     }
 
     if (!title || !userId) {
-      return next(CreateError(400, "title nad userId are required!"));
+      console.log(
+        `[${new Date().toISOString()}] ERROR: title and userId are required.`
+      );
+      return next(CreateError(400, "title and userId are required!"));
     }
 
     const notebook = new Notebook({
-      title: req.body.title,
-      userId: req.body.userId,
+      title,
+      userId,
       theme: req.body.theme,
     });
 
     await notebook.save();
+    console.log(
+      `[${new Date().toISOString()}] INFO: Notebook created successfully with ID ${
+        notebook._id
+      }`
+    );
     return next(CreateSuccess(200, "Notebook created successfully!", notebook));
   } catch (err) {
+    console.error(
+      `[${new Date().toISOString()}] ERROR: Internal server error for creating a notebook! Details: ${
+        err.message
+      }`
+    );
     return next(
       CreateError(500, "Internal server error for creating a notebook!")
     );
@@ -40,18 +56,31 @@ export const getNotebookById = async (req, res, next) => {
   try {
     const notebookId = req.params.id;
     const notebook = await Notebook.findById(notebookId);
+
     if (!notebook) {
+      console.log(
+        `[${new Date().toISOString()}] ERROR: Notebook with ID ${notebookId} not found.`
+      );
       return next(CreateError(404, "Notebook Not Found!"));
     }
 
+    console.log(
+      `[${new Date().toISOString()}] INFO: Notebook fetched successfully with ID ${notebookId}`
+    );
     return next(CreateSuccess(200, "Notebook fetched successfully", notebook));
   } catch (err) {
+    console.error(
+      `[${new Date().toISOString()}] ERROR: Internal Server Error for fetching a Notebook! Details: ${
+        err.message
+      }`
+    );
     return next(
       CreateError(500, "Internal Server Error for fetching a Notebook!")
     );
   }
 };
 
+// Get all notebooks
 export const getAllNotebooks = async (req, res, next) => {
   try {
     const {
@@ -71,7 +100,6 @@ export const getAllNotebooks = async (req, res, next) => {
 
     // Construct filter object
     const filter = {};
-
     if (title) {
       filter.title = new RegExp(title, "i"); // Case-insensitive search
     }
@@ -88,10 +116,20 @@ export const getAllNotebooks = async (req, res, next) => {
       .limit(limitNumber)
       .skip(skipNumber);
 
+    console.log(
+      `[${new Date().toISOString()}] INFO: All notebooks fetched successfully. Total notebooks: ${
+        notebooks.length
+      }`
+    );
     return next(
       CreateSuccess(200, "All notebooks fetched successfully", notebooks)
     );
   } catch (err) {
+    console.error(
+      `[${new Date().toISOString()}] ERROR: Internal Server Error for fetching all Notebooks! Details: ${
+        err.message
+      }`
+    );
     return next(
       CreateError(500, "Internal Server Error for fetching all Notebooks!")
     );
@@ -105,6 +143,9 @@ export const updateNotebook = async (req, res, next) => {
     const notebook = await Notebook.findById(notebookId);
 
     if (!notebook) {
+      console.log(
+        `[${new Date().toISOString()}] ERROR: Notebook with ID ${notebookId} not found.`
+      );
       return next(CreateError(404, "Notebook Not Found!"));
     }
 
@@ -114,8 +155,16 @@ export const updateNotebook = async (req, res, next) => {
       { new: true }
     );
 
+    console.log(
+      `[${new Date().toISOString()}] INFO: Notebook with ID ${notebookId} updated successfully.`
+    );
     return next(CreateSuccess(200, "Notebook Updated!", updatedNotebook));
   } catch (err) {
+    console.error(
+      `[${new Date().toISOString()}] ERROR: Internal Server Error for Updating a Notebook! Details: ${
+        err.message
+      }`
+    );
     return next(
       CreateError(500, "Internal Server Error for Updating a Notebook!")
     );
@@ -130,25 +179,36 @@ export const deleteNotebook = async (req, res, next) => {
     // Find the notebook
     const notebook = await Notebook.findById(notebookId);
     if (!notebook) {
+      console.log(
+        `[${new Date().toISOString()}] ERROR: Notebook with ID ${notebookId} not found.`
+      );
       return next(CreateError(404, "Notebook Not Found!"));
     }
 
-    // Log the notebook that is being deleted
-
     // Find and delete all pages associated with the notebook
     const deletedPages = await Page.deleteMany({ notebookId: notebookId });
+    console.log(
+      `[${new Date().toISOString()}] INFO: Deleted ${
+        deletedPages.deletedCount
+      } pages associated with notebook ID ${notebookId}.`
+    );
 
     // Delete the notebook itself
     await Notebook.findByIdAndDelete(notebookId);
+    console.log(
+      `[${new Date().toISOString()}] INFO: Notebook with ID ${notebookId} deleted successfully.`
+    );
 
     // Send success response
     return next(
       CreateSuccess(200, "Notebook and its pages deleted!", notebook)
     );
   } catch (err) {
-    // Log the error for debugging
-    console.error("Error during notebook deletion:", err);
-
+    console.error(
+      `[${new Date().toISOString()}] ERROR: Internal Server Error while deleting the notebook! Details: ${
+        err.message
+      }`
+    );
     return next(
       CreateError(500, "Internal Server Error while deleting the notebook!")
     );
@@ -176,7 +236,6 @@ export const getUserNotebooks = async (req, res, next) => {
 
     // Construct filter object
     const filter = { userId };
-
     if (title) {
       filter.title = new RegExp(title, "i"); // Case-insensitive search
     }
@@ -201,13 +260,26 @@ export const getUserNotebooks = async (req, res, next) => {
 
     // Check if the array is empty
     if (notebooks.length === 0) {
+      console.log(
+        `[${new Date().toISOString()}] INFO: No Notebooks Found for user ID ${userId}.`
+      );
       return next(CreateSuccess(204, "No Notebooks Found!"));
     }
 
+    console.log(
+      `[${new Date().toISOString()}] INFO: Notebooks fetched successfully for user ID ${userId}. Total notebooks: ${
+        notebooks.length
+      }`
+    );
     return next(
       CreateSuccess(200, "Notebooks fetched successfully", notebooksData)
     );
   } catch (err) {
+    console.error(
+      `[${new Date().toISOString()}] ERROR: Internal Server Error for fetching user Notebooks! Details: ${
+        err.message
+      }`
+    );
     return next(
       CreateError(500, "Internal Server Error for fetching all Notebooks!")
     );
