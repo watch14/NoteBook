@@ -382,3 +382,43 @@ export const MAP_KATA = [
   [",", "、"],
   ["-", "ー"],
 ];
+
+// Function to escape special characters in regex
+const escapeRegExp = (string) => {
+  return string.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+};
+
+// Convert Romaji to Kana based on the case
+export function convertRomajiToKana(input, type) {
+  const map = type === "hira" ? MAP_HIRA : MAP_KATA;
+  let val = "";
+  let tempInput = input;
+
+  while (tempInput.length > 0) {
+    const char = tempInput[0];
+    const isUpper = char === char.toUpperCase() && char !== char.toLowerCase();
+    const mapToUse = isUpper ? MAP_KATA : MAP_HIRA;
+
+    let matched = false;
+    for (const [romaji, kana] of mapToUse.sort(
+      ([a], [b]) => b.length - a.length
+    )) {
+      const escapedRomaji = escapeRegExp(romaji);
+      const regex = new RegExp(`^${escapedRomaji}`, "i");
+
+      if (regex.test(tempInput)) {
+        val += kana;
+        tempInput = tempInput.substring(romaji.length);
+        matched = true;
+        break;
+      }
+    }
+
+    if (!matched) {
+      val += char;
+      tempInput = tempInput.substring(1);
+    }
+  }
+
+  return val;
+}
