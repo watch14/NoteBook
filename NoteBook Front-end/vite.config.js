@@ -5,7 +5,7 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   build: {
-    sourcemap: true, // Ensure source maps are generated
+    sourcemap: false, // Ensure source maps are generated
   },
   define: {
     "process.env": {}, // Provide an empty object to avoid ReferenceError

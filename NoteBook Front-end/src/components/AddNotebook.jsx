@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import "../css/addNotebook.css"; // Make sure this contains styles for gradients and themes
 
 const themeStyles = {
   sakura: "linear-gradient(to right, #ff9a9e, #fad0c4)",
