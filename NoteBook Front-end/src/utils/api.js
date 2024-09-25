@@ -176,3 +176,18 @@ export const translateText = async (text) => {
     throw new Error("Error translating text.");
   }
 };
+
+//getpage by id
+export const getPageById = async (id) => {
+  try {
+    const response = await Api.get(`pages/get/${id}`);
+    if (response.data.success) {
+      return response.data.data; // Return the page data
+    } else {
+      throw new Error(response.data.message || "Error fetching page");
+    }
+  } catch (error) {
+    console.error("API Error:", error.message);
+    throw new Error("Error fetching page.");
+  }
+};

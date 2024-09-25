@@ -9,6 +9,7 @@ import GetNotebookPages, {
   createPage,
   updateNotebook,
   deletePage,
+  getPageById,
 } from "../utils/api";
 import { PuffLoader, BounceLoader } from "react-spinners";
 
@@ -25,6 +26,7 @@ import {
 
 import { getUserId } from "../utils/auth";
 import "../css/page.css";
+import { co } from "google-translate-api-jp/languages";
 
 const Page = () => {
   const { id } = useParams();
@@ -39,9 +41,9 @@ const Page = () => {
   const [newTitle, setNewTitle] = useState("");
   const [showSketch, setShowSketch] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [localVersion, setLocalVersion] = useState(1);
-  const [webVersion, setWebVersion] = useState(1);
-  const [version, setVersion] = useState(1);
+  const [localVersion, setLocalVersion] = useState(0);
+  const [webVersion, setWebVersion] = useState(0);
+  const [version, setVersion] = useState(0);
 
   const LOCAL_STORAGE_KEY = `notebook_${id}_page_${currentPageIndex}`;
 
@@ -60,13 +62,28 @@ const Page = () => {
 
   const getLocalStorageVersion = () => {
     const savedContent = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    setLocalVersion(savedContent.version);
-    return savedContent?.version;
+    if (savedContent) {
+      setLocalVersion(savedContent.version);
+      console.log("Local version:", savedContent.version);
+      return savedContent.version;
+    } else {
+      console.warn("No local storage content found for this page.");
+      setLocalVersion(1);
+      return 1;
+    }
   };
 
-  const getServerVersion = () => {
-    setWebVersion(pages[currentPageIndex]?.version);
-    return pages[currentPageIndex]?.version;
+  const getServerVersion = async () => {
+    try {
+      const currentPage = pages[currentPageIndex];
+      if (currentPage) {
+        const page = await getPageById(currentPage._id);
+        console.log("Server version:", page.version);
+        setVersion(page.version);
+      }
+    } catch (error) {
+      console.error("Error fetching server version:", error);
+    }
   };
 
   useEffect(() => {
@@ -88,9 +105,18 @@ const Page = () => {
           const savedContent = JSON.parse(
             localStorage.getItem(LOCAL_STORAGE_KEY)
           );
+          await getLocalStorageVersion();
+          await getServerVersion();
+
+          // if (updatedPage.data.version < localVersion) {
+          //   console.log("Local version is ahead of server version.");
+          // } else if (updatedPage.data.version > localVersion) {
+          //   console.log("Server version is ahead of local version.");
+          // } else {
+          //   console.log("Local and server versions are in sync.");
+          // }
 
           // Load content based on the current page index
-
           if (savedContent) {
             setText(savedContent.text || "<p></p>");
             setSketch(savedContent.sketch || []);
@@ -98,9 +124,12 @@ const Page = () => {
             setText(data[currentPageIndex]?.text || "<p></p>");
             setSketch(JSON.parse(data[currentPageIndex]?.sketch || "[]") || []);
           }
+          //load server version
+          setText(data[currentPageIndex]?.text || "<p></p>");
+          setSketch(JSON.parse(data[currentPageIndex]?.sketch || "[]") || []);
         }
       } catch (error) {
-        setError("Error fetching notebook data.");
+        setError("Error fetching notebook data. Please try again later.");
         console.error("Error fetching notebook data:", error);
       } finally {
         setLoading(false);
@@ -112,9 +141,10 @@ const Page = () => {
 
   const handleSavePage = async () => {
     const currentPage = pages[currentPageIndex];
+
     setSaving(true);
     try {
-      const newVersion = version + 1; // Increment local version
+      const newVersion = version; // Increment local version
       const updatedPage = await savePage(
         id,
         currentPage?._id,
@@ -127,7 +157,7 @@ const Page = () => {
         console.log("Page saved successfully to the database.");
 
         // Update local version to match server version
-        setVersion(updatedPage.data.version + 1);
+        setVersion(updatedPage.data.version);
 
         // Save the current page content to local storage
         localStorage.setItem(
@@ -135,12 +165,14 @@ const Page = () => {
           JSON.stringify({
             text: text || "<p></p>",
             sketch: Array.isArray(sketch) ? sketch : [],
-            version: updatedPage.data.version + 1,
+            version: localVersion + 1,
           })
         );
         console.log("Page saved to local storage.");
-        console.log("Local Version:", updatedPage.data.version);
-        console.log("Web Version:", updatedPage.data.version);
+        const loc = await getLocalStorageVersion();
+
+        console.log("web -> V", updatedPage.data.version);
+        console.log("Loc Version:", loc);
       } else {
         console.error("Error saving page:", updatedPage.message);
       }
