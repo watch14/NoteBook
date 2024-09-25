@@ -67,9 +67,10 @@ const Page = () => {
       console.log("Local version:", savedContent.version);
       return savedContent.version;
     } else {
+      // Handle the case where savedContent is null
       console.warn("No local storage content found for this page.");
-      setLocalVersion(1);
-      return 1;
+      setLocalVersion(1); // Default version or any other logic
+      return 1; // Default value for version if nothing is found
     }
   };
 
@@ -79,7 +80,7 @@ const Page = () => {
       if (currentPage) {
         const page = await getPageById(currentPage._id);
         console.log("Server version:", page.version);
-        setVersion(page.version);
+        setWebVersion(page.version);
       }
     } catch (error) {
       console.error("Error fetching server version:", error);
@@ -105,16 +106,21 @@ const Page = () => {
           const savedContent = JSON.parse(
             localStorage.getItem(LOCAL_STORAGE_KEY)
           );
+
           await getLocalStorageVersion();
           await getServerVersion();
 
-          // if (updatedPage.data.version < localVersion) {
-          //   console.log("Local version is ahead of server version.");
-          // } else if (updatedPage.data.version > localVersion) {
-          //   console.log("Server version is ahead of local version.");
-          // } else {
-          //   console.log("Local and server versions are in sync.");
-          // }
+          console.log("..........Local Version:", localVersion);
+          console.log("..........Server Version:", webVersion);
+
+          ///////////// test
+          if (webVersion > localVersion) {
+            console.log("Server version is ahead of Local version.");
+          } else if (webVersion < localVersion) {
+            console.log("Local version is ahead of Server version.");
+          } else {
+            console.log("Local and server versions are in sync.");
+          }
 
           // Load content based on the current page index
           if (savedContent) {

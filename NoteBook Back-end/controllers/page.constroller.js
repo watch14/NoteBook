@@ -149,7 +149,6 @@ export const updatePage = async (req, res, next) => {
       },
       { new: true }
     );
-
     console.log(
       `[${new Date().toISOString()}] INFO: Page with ID ${
         req.params.id
