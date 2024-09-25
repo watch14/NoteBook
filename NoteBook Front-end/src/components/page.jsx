@@ -23,10 +23,10 @@ import {
   Languages,
   Brush,
 } from "lucide-react";
+import ConfirmModal from "./ConfirmModal.jsx";
 
 import { getUserId } from "../utils/auth";
 import "../css/page.css";
-import { co } from "google-translate-api-jp/languages";
 
 const Page = () => {
   const { id } = useParams();
@@ -44,6 +44,8 @@ const Page = () => {
   const [localVersion, setLocalVersion] = useState(1);
   const [webVersion, setWebVersion] = useState(1);
   const [version, setVersion] = useState(1);
+
+  const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
 
   const LOCAL_STORAGE_KEY = `notebook_${id}_page_${currentPageIndex}`;
 
@@ -151,6 +153,7 @@ const Page = () => {
                 JSON.parse(data[currentPageIndex]?.sketch || "[]") || []
               );
             }
+            console.log(pages.length);
           }
         } catch (error) {
           console.error("Error fetching notebook pages:", error);
@@ -221,6 +224,16 @@ const Page = () => {
     }
   };
 
+  //auto save
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     handleSavePage(); // Call the handleSavePage function every 10 seconds
+  //   }, 5000); // 10,000 milliseconds = 10 seconds
+
+  //   // Clean up the interval when the component unmounts
+  //   return () => clearInterval(interval);
+  // }, [handleSavePage]);
+
   const handleCreateNewPage = async () => {
     try {
       const newPage = await createPage(id, [], "<p></p>");
@@ -237,17 +250,20 @@ const Page = () => {
 
   const handleNextPage = () => {
     if (currentPageIndex < pages.length - 1) {
+      handleSavePage();
       setCurrentPageIndex((prevIndex) => prevIndex + 1);
     }
   };
 
   const handlePreviousPage = () => {
     if (currentPageIndex > 0) {
+      handleSavePage();
       setCurrentPageIndex((prevIndex) => prevIndex - 1);
     }
   };
 
   const handleGoToPage = (index) => {
+    handleSavePage();
     setCurrentPageIndex(index);
   };
 
@@ -293,6 +309,47 @@ const Page = () => {
         return;
       }
 
+      if (pages.length === 1) {
+        // alert cant delete last page
+        alert("You can't delete the last page.");
+      } else {
+        try {
+          await deletePage(currentPage._id);
+          setPages((prevPages) =>
+            prevPages.filter((_, index) => index !== currentPageIndex)
+          );
+          setCurrentPageIndex((prevIndex) =>
+            prevIndex > 0 ? prevIndex - 1 : 0
+          );
+
+          // Remove from localStorage
+          localStorage.removeItem(LOCAL_STORAGE_KEY);
+
+          console.log("Page deleted successfully.");
+        } catch (error) {
+          console.error("Error deleting page:", error);
+        }
+      }
+    }
+  };
+
+  const handleOpenDeleteModal = () => {
+    setIsModalOpen(true); // Open the modal when delete is clicked
+  };
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false); // Close the modal
+  };
+
+  const confirmDeletePage = async () => {
+    setIsModalOpen(false); // Close modal after confirming
+    const currentPage = pages[currentPageIndex];
+    if (currentPage) {
+      if (pages.length === 1) {
+        alert("You can't delete the last page.");
+        return;
+      }
+
       try {
         await deletePage(currentPage._id);
         setPages((prevPages) =>
@@ -302,6 +359,7 @@ const Page = () => {
 
         // Remove from localStorage
         localStorage.removeItem(LOCAL_STORAGE_KEY);
+
         console.log("Page deleted successfully.");
       } catch (error) {
         console.error("Error deleting page:", error);
@@ -327,7 +385,7 @@ const Page = () => {
             value={newTitle}
             onChange={handleTitleChange}
             onBlur={handleTitleUpdate}
-            onKeyPress={handleTitleKeyPress}
+            onKeyPress={(e) => e.key === "Enter" && handleTitleUpdate()}
             autoFocus
           />
         ) : (
@@ -337,15 +395,13 @@ const Page = () => {
         )}
 
         <div className="utils">
-          {/* <button onClick={printData}>Print Data</button> */}
-
           <button className="p-save" onClick={handleSavePage} disabled={saving}>
             {saving ? <SaveAll /> : <Save />}
           </button>
 
           <button
             className="p-del"
-            onClick={handleDeletePage}
+            onClick={handleOpenDeleteModal} // Open modal instead of default confirm
             disabled={pages.length === 0}
           >
             <Trash2 />
@@ -407,7 +463,7 @@ const Page = () => {
               <button
                 className="pagin1"
                 onClick={handleCreateNewPage}
-                disabled={pages.length >= 16} // Disable the button when there are 16 pages
+                disabled={pages.length >= 16}
               >
                 <Plus />
               </button>
@@ -422,7 +478,7 @@ const Page = () => {
                   index === currentPageIndex
                     ? "active page-button"
                     : "page-button"
-                } // Add conditional class
+                }
               >
                 {index + 1}
               </button>
@@ -441,6 +497,15 @@ const Page = () => {
         </div>
       </div>
 
+      {/* ConfirmModal Component */}
+      <ConfirmModal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal} // Close modal on No
+        onConfirm={confirmDeletePage} // Confirm delete on Yes
+        title="Confirm Deletion"
+        message="Are you sure you want to delete this page?"
+      />
+
       <div className="utils2">
         <button
           className="pagin"
@@ -450,26 +515,25 @@ const Page = () => {
           <ChevronLeft />
         </button>
 
-        {/* <button onClick={printData}>Print Data</button> */}
         <button className="p-save" onClick={handleSavePage} disabled={saving}>
-          {saving ? "Saving..." : "Save Page"}
+          {saving ? "Saving..." : "Save"}
         </button>
 
         <button
           className="p-del"
-          onClick={handleDeletePage}
+          onClick={handleOpenDeleteModal}
           disabled={pages.length === 0}
         >
-          Delete Page
+          <Trash2 />
         </button>
 
-        {pages.length <= 15 && (
+        {pages.length < 16 && (
           <button
-            className="p-plus"
-            disabled={pages.length === 18}
+            className="pagin"
+            disabled={pages.length === 16}
             onClick={handleCreateNewPage}
           >
-            New Page
+            <Plus />
           </button>
         )}
 
@@ -481,38 +545,6 @@ const Page = () => {
           <ChevronRight />
         </button>
       </div>
-
-      {/* <div className="page-buttons">
-        {pages.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => handleGoToPage(index)}
-            className={index === currentPageIndex ? "active" : ""}
-          >
-            Page {index + 1}
-          </button>
-        ))}
-      </div> */}
-
-      {/* <div className="p-pagination">
-        <button
-          className="pagin"
-          onClick={handlePreviousPage}
-          disabled={currentPageIndex === 0}
-        >
-          Prev Page
-        </button>
-        <span>
-          Page {currentPageIndex + 1} of {pages.length}
-        </span>
-        <button
-          className="pagin"
-          onClick={handleNextPage}
-          disabled={currentPageIndex === pages.length - 1}
-        >
-          Next Page
-        </button>
-      </div> */}
     </div>
   );
 };
