@@ -113,7 +113,6 @@ const Tiptap = ({ onContentChange, textContent }) => {
         editor={editor}
       />
       <EditorContent editor={editor} />
-      <EditorMenu editor={editor} />
     </div>
   );
 };

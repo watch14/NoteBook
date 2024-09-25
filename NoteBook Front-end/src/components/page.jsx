@@ -41,9 +41,9 @@ const Page = () => {
   const [newTitle, setNewTitle] = useState("");
   const [showSketch, setShowSketch] = useState(true);
   const [saving, setSaving] = useState(false);
-  const [localVersion, setLocalVersion] = useState(0);
-  const [webVersion, setWebVersion] = useState(0);
-  const [version, setVersion] = useState(0);
+  const [localVersion, setLocalVersion] = useState(1);
+  const [webVersion, setWebVersion] = useState(1);
+  const [version, setVersion] = useState(1);
 
   const LOCAL_STORAGE_KEY = `notebook_${id}_page_${currentPageIndex}`;
 
@@ -61,13 +61,12 @@ const Page = () => {
   };
 
   const getLocalStorageVersion = () => {
-    const savedContent = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
-    if (savedContent) {
-      setLocalVersion(savedContent.version);
-      console.log("Local version:", savedContent.version);
-      return savedContent.version;
+    const localContent = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    if (localContent) {
+      setLocalVersion(localContent.version);
+      return localContent.version;
     } else {
-      // Handle the case where savedContent is null
+      // Handle the case where localContent is null
       console.warn("No local storage content found for this page.");
       setLocalVersion(1); // Default version or any other logic
       return 1; // Default value for version if nothing is found
@@ -103,36 +102,56 @@ const Page = () => {
         const data = await GetNotebookPages(id);
         if (data && data.length > 0) {
           setPages(data);
-          const savedContent = JSON.parse(
+          const localContent = JSON.parse(
             localStorage.getItem(LOCAL_STORAGE_KEY)
           );
 
-          await getLocalStorageVersion();
-          await getServerVersion();
-
-          console.log("..........Local Version:", localVersion);
-          console.log("..........Server Version:", webVersion);
-
-          ///////////// test
-          if (webVersion > localVersion) {
-            console.log("Server version is ahead of Local version.");
-          } else if (webVersion < localVersion) {
-            console.log("Local version is ahead of Server version.");
+          //////////// SET VERSIONS ////////////
+          if (localContent) {
+            setLocalVersion(localContent.version);
+            console.log(
+              "..........Local Version:",
+              JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)).version
+            );
           } else {
+            setLocalVersion(1);
+            console.log("..........Local Version:", localVersion);
+          }
+
+          setWebVersion(data[currentPageIndex]?.version);
+          console.log(
+            "..........Server Version:",
+            data[currentPageIndex]?.version
+          );
+
+          ///////////// versions /////////////
+          if (webVersion > localVersion) {
+            //// WEB VERSION
+            console.log("Server version is ahead of Local version.");
+            setText(data[currentPageIndex]?.text || "<p></p>");
+            setSketch(JSON.parse(data[currentPageIndex]?.sketch || "[]") || []);
+          } else if (webVersion < localVersion) {
+            //// LOCAL VERSION
+            console.log("Local version is ahead of Server version.");
+            if (localContent) {
+              setText(localContent.text || "<p></p>");
+              setSketch(localContent.sketch || []);
+            }
+          } else if (webVersion == localVersion) {
             console.log("Local and server versions are in sync.");
           }
 
           // Load content based on the current page index
-          if (savedContent) {
-            setText(savedContent.text || "<p></p>");
-            setSketch(savedContent.sketch || []);
-          } else {
-            setText(data[currentPageIndex]?.text || "<p></p>");
-            setSketch(JSON.parse(data[currentPageIndex]?.sketch || "[]") || []);
-          }
-          //load server version
-          setText(data[currentPageIndex]?.text || "<p></p>");
-          setSketch(JSON.parse(data[currentPageIndex]?.sketch || "[]") || []);
+          // if (localContent) {
+          //   setText(localContent.text || "<p></p>");
+          //   setSketch(localContent.sketch || []);
+          // } else {
+          //   setText(data[currentPageIndex]?.text || "<p></p>");
+          //   setSketch(JSON.parse(data[currentPageIndex]?.sketch || "[]") || []);
+          // }
+          // //load server version
+          // setText(data[currentPageIndex]?.text || "<p></p>");
+          // setSketch(JSON.parse(data[currentPageIndex]?.sketch || "[]") || []);
         }
       } catch (error) {
         setError("Error fetching notebook data. Please try again later.");
