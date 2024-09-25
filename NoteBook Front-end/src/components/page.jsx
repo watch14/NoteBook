@@ -99,69 +99,62 @@ const Page = () => {
         setTitle(notebookData.title);
         setNewTitle(notebookData.title);
 
-        const data = await GetNotebookPages(id);
-        if (data && data.length > 0) {
-          setPages(data);
-          const localContent = JSON.parse(
-            localStorage.getItem(LOCAL_STORAGE_KEY)
-          );
-
-          //////////// SET VERSIONS ////////////
-          if (localContent) {
-            setLocalVersion(localContent.version);
-            console.log(
-              "..........Local Version:",
-              JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)).version
+        try {
+          const data = await GetNotebookPages(id);
+          if (data && data.length > 0) {
+            setPages(data);
+            const localContent = JSON.parse(
+              localStorage.getItem(LOCAL_STORAGE_KEY)
             );
-          } else {
-            setLocalVersion(1);
-            console.log("..........Local Version:", localVersion);
-          }
 
-          setWebVersion(data[currentPageIndex]?.version);
-          console.log(
-            "..........Server Version:",
-            data[currentPageIndex]?.version
-          );
-          const web = data[currentPageIndex]?.version;
-          const loc =
-            JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)).version || 1;
+            //////////// SET VERSIONS ////////////
+            if (localContent) {
+              setLocalVersion(localContent.version || 1);
+              console.log("..........Local Version:", localContent.version);
+            } else {
+              setLocalVersion(1);
+              console.log("..........Local Version:", localVersion);
+            }
 
-          ///////////// versions /////////////
-          if (localContent) {
-            if (web > loc) {
-              //// WEB VERSION
-              console.log("Server version is ahead of Local version.");
-              setText(data[currentPageIndex]?.text || "<p></p>");
-              setSketch(
-                JSON.parse(data[currentPageIndex]?.sketch || "[]") || []
-              );
-            } else if (web < loc) {
-              //// LOCAL VERSION
-              console.log("Local version is ahead of Server version.");
-              if (localContent) {
+            setWebVersion(data[currentPageIndex]?.version);
+            console.log(
+              "..........Server Version:",
+              data[currentPageIndex]?.version
+            );
+            const web = data[currentPageIndex]?.version;
+            const loc = localContent?.version || 1;
+
+            ///////////// versions /////////////
+            if (localContent) {
+              if (web > loc) {
+                //// WEB VERSION
+                console.log("Server version is ahead of Local version.");
+                setText(data[currentPageIndex]?.text || "<p></p>");
+                setSketch(
+                  JSON.parse(data[currentPageIndex]?.sketch || "[]") || []
+                );
+              } else if (web < loc) {
+                //// LOCAL VERSION
+                console.log("Local version is ahead of Server version.");
+                if (localContent) {
+                  setText(localContent.text || "<p></p>");
+                  setSketch(localContent.sketch || []);
+                }
+              } else {
+                console.log("Local and server versions are in sync.");
                 setText(localContent.text || "<p></p>");
                 setSketch(localContent.sketch || []);
               }
             } else {
-              console.log("Local and server versions are in sync.");
+              setText(data[currentPageIndex]?.text || "<p></p>");
+              setSketch(
+                JSON.parse(data[currentPageIndex]?.sketch || "[]") || []
+              );
             }
-          } else {
-            setText(data[currentPageIndex]?.text || "<p></p>");
-            setSketch(JSON.parse(data[currentPageIndex]?.sketch || "[]") || []);
           }
-
-          // Load content based on the current page index
-          // if (localContent) {
-          //   setText(localContent.text || "<p></p>");
-          //   setSketch(localContent.sketch || []);
-          // } else {
-          //   setText(data[currentPageIndex]?.text || "<p></p>");
-          //   setSketch(JSON.parse(data[currentPageIndex]?.sketch || "[]") || []);
-          // }
-          // //load server version
-          // setText(data[currentPageIndex]?.text || "<p></p>");
-          // setSketch(JSON.parse(data[currentPageIndex]?.sketch || "[]") || []);
+        } catch (error) {
+          console.error("Error fetching notebook pages:", error);
+          setError("Error fetching notebook pages. Please try again later.");
         }
       } catch (error) {
         setError("Error fetching notebook data. Please try again later.");
@@ -190,35 +183,39 @@ const Page = () => {
         setVersion(localVersion);
       }
 
-      const updatedPage = await savePage(
-        id,
-        currentPage?._id,
-        Array.isArray(sketch) ? sketch : [],
-        text || "<p></p>"
-      );
-
-      if (updatedPage.success) {
-        console.log("Page saved successfully to the database.");
-
-        // Update local version to match server version
-        setVersion(updatedPage.data.version);
-
-        // Save the current page content to local storage
-        localStorage.setItem(
-          LOCAL_STORAGE_KEY,
-          JSON.stringify({
-            text: text || "<p></p>",
-            sketch: Array.isArray(sketch) ? sketch : [],
-            version: version + 1,
-          })
+      try {
+        const updatedPage = await savePage(
+          id,
+          currentPage?._id,
+          Array.isArray(sketch) ? sketch : [],
+          text || "<p></p>"
         );
-        console.log("Page saved to local storage.");
-        const loc = await getLocalStorageVersion();
-      } else {
-        console.error("Error saving page:", updatedPage.message);
+
+        if (updatedPage.success) {
+          console.log("Page saved successfully to the database.");
+
+          // Update local version to match server version
+          setVersion(updatedPage.data.version);
+
+          // Save the current page content to local storage
+          localStorage.setItem(
+            LOCAL_STORAGE_KEY,
+            JSON.stringify({
+              text: text || "<p></p>",
+              sketch: Array.isArray(sketch) ? sketch : [],
+              version: version + 1,
+            })
+          );
+          console.log("Page saved to local storage.");
+          const loc = await getLocalStorageVersion();
+        } else {
+          console.error("Error saving page:", updatedPage.message);
+        }
+      } catch (error) {
+        console.error("Error saving page to server:", error);
       }
     } catch (error) {
-      console.error("Error saving page:", error);
+      console.error("Error during save operation:", error);
     } finally {
       setSaving(false);
     }
