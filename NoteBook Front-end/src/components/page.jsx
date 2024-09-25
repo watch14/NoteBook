@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import Sketch from "./sketch";
-import Keyboard from "./Keyboard"; // Import Keyboard component
+import Keyboard from "./Keyboard";
 import Tiptap from "../utils/Tiptap";
 import GetNotebookPages, {
   savePage,
   getNotebook,
   createPage,
   updateNotebook,
-  deletePage, // Import the deletePage function
+  deletePage,
 } from "../utils/api";
 import { PuffLoader, BounceLoader } from "react-spinners";
 
@@ -38,7 +38,12 @@ const Page = () => {
   const [isEditingTitle, setIsEditingTitle] = useState(false);
   const [newTitle, setNewTitle] = useState("");
   const [showSketch, setShowSketch] = useState(true);
-  const [saving, setSaving] = useState(false); // State for saving loader
+  const [saving, setSaving] = useState(false);
+  const [localVersion, setLocalVersion] = useState(1);
+  const [webVersion, setWebVersion] = useState(1);
+  const [version, setVersion] = useState(1);
+
+  const LOCAL_STORAGE_KEY = `notebook_${id}_page_${currentPageIndex}`;
 
   const handleSketchElementsChange = (elements) => {
     setSketch(elements);
@@ -53,13 +58,25 @@ const Page = () => {
     console.log("Tiptap Content HTML:", text);
   };
 
+  const getLocalStorageVersion = () => {
+    const savedContent = JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY));
+    setLocalVersion(savedContent.version);
+    return savedContent?.version;
+  };
+
+  const getServerVersion = () => {
+    const currentPage = pages[currentPageIndex];
+    setWebVersion(pages[currentPageIndex]?.version);
+    return pages[currentPageIndex]?.version;
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       try {
         const notebookData = await getNotebook(id);
 
-        if (notebookData.userId != getUserId()) {
+        if (notebookData.userId !== getUserId()) {
           console.log("User not authorized to view this notebook.");
           window.location.href = "/notebooks";
           return;
@@ -69,20 +86,34 @@ const Page = () => {
         setNewTitle(notebookData.title);
 
         const data = await GetNotebookPages(id);
+        console.log("Server Pages Data:", data);
+
         if (data && data.length > 0) {
           setPages(data);
-          setText(data[currentPageIndex]?.text || "<p></p>");
-          const sketchData = data[currentPageIndex]?.sketch;
 
-          if (sketchData && sketchData.trim() !== "") {
-            try {
-              setSketch(JSON.parse(sketchData));
-            } catch (error) {
-              console.error("Error parsing sketch data:", error);
-              setSketch([]);
+          setVersion(data[currentPageIndex].version);
+
+          getServerVersion();
+          console.log("Server Version:", getServerVersion());
+          console.log("Local Version:", getLocalStorageVersion());
+
+          // Load from local storage if available
+          const savedContent = JSON.parse(
+            localStorage.getItem(LOCAL_STORAGE_KEY)
+          );
+          if (savedContent) {
+            const localVersion = getLocalStorageVersion();
+            const serverVersion = getServerVersion();
+
+            // Compare versions to determine which data to use
+            if (serverVersion > localVersion) {
+              setText(data[currentPageIndex]?.text || "<p></p>");
+              const sketchData = data[currentPageIndex]?.sketch;
+              setSketch(sketchData ? JSON.parse(sketchData) : []);
+            } else {
+              setText(savedContent.text || "<p></p>");
+              setSketch(savedContent.sketch || []);
             }
-          } else {
-            setSketch([]);
           }
         }
       } catch (error) {
@@ -98,21 +129,46 @@ const Page = () => {
 
   const handleSavePage = async () => {
     const currentPage = pages[currentPageIndex];
-    console.log("Saving content:", text || "<empty>");
-    setSaving(true); // Start saving loader
+    setSaving(true);
 
     try {
-      await savePage(
+      const newVersion = version + 1; // Increment local version
+      const updatedPage = await savePage(
         id,
         currentPage?._id,
         Array.isArray(sketch) ? sketch : [],
-        text || "<p></p>"
+        text || "<p></p>",
+        newVersion // Send the incremented version
       );
-      console.log("Page saved successfully.✅");
+
+      if (updatedPage.success) {
+        console.log("Page saved successfully to the database.");
+
+        // Set local version to server version
+        setVersion(updatedPage.data.version + 1);
+
+        // Save to local storage with the updated version
+        localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify({
+            text: text || "<p></p>",
+            sketch: Array.isArray(sketch) ? sketch : [],
+            version: updatedPage.data.version + 1, // Save the new version
+          })
+        );
+
+        console.log("Sending version:", newVersion);
+        console.log("Received version from server:", updatedPage.data.version);
+        console.log("local", getLocalStorageVersion());
+        console.log("server", getServerVersion());
+        console.log("Page saved successfully to localStorage.");
+      } else {
+        console.error("Error saving page:", updatedPage.message);
+      }
     } catch (error) {
       console.error("Error saving page:", error);
     } finally {
-      setSaving(false); // End saving loader
+      setSaving(false);
     }
   };
 
@@ -123,6 +179,7 @@ const Page = () => {
       setCurrentPageIndex(pages.length);
       setText("<p></p>");
       setSketch([]);
+      setVersion(1);
       console.log("New page created successfully.");
     } catch (error) {
       console.error("Error creating new page:", error);
@@ -179,22 +236,23 @@ const Page = () => {
   const handleDeletePage = async () => {
     const currentPage = pages[currentPageIndex];
     if (currentPage) {
-      // Show a confirmation dialog
       const confirmDelete = window.confirm(
         "Are you sure you want to delete this page?"
       );
       if (!confirmDelete) {
         console.log("Page deletion canceled.");
-        return; // Exit the function if the user cancels
+        return;
       }
 
       try {
         await deletePage(currentPage._id);
-        // Update state after deletion
         setPages((prevPages) =>
           prevPages.filter((_, index) => index !== currentPageIndex)
         );
         setCurrentPageIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 0));
+
+        // Remove from localStorage
+        localStorage.removeItem(LOCAL_STORAGE_KEY);
         console.log("Page deleted successfully.");
       } catch (error) {
         console.error("Error deleting page:", error);

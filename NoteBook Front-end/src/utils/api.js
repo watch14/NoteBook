@@ -94,12 +94,14 @@ export const savePage = async (
   notebookId,
   pageId,
   sketchElements,
-  tiptapContent
+  tiptapContent,
+  version // Accept the version as a parameter
 ) => {
   const pageData = {
     notebookId,
     text: tiptapContent,
     sketch: JSON.stringify(sketchElements), // Save sketch elements as a string
+    version, // Include the version in the request body
   };
 
   try {
@@ -112,7 +114,7 @@ export const savePage = async (
       },
     });
     console.log("Page saved:", response.data);
-    return response.data;
+    return response.data; // Return the response data, which should include the updated page
   } catch (error) {
     console.error("Error saving page:", error.message);
     throw new Error("Error saving page.");

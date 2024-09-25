@@ -94,12 +94,8 @@ export const getAllPages = async (req, res, next) => {
 // Update page
 export const updatePage = async (req, res, next) => {
   try {
-    // Log the authorization header
-
-    // Decode the token
     const token = req.headers.authorization.split(" ")[1];
     const decodedToken = decodeToken(token);
-
     const userId = decodedToken.id;
 
     console.log(
@@ -142,17 +138,22 @@ export const updatePage = async (req, res, next) => {
       );
     }
 
-    // Update the page
-    const updatedPage = await Page.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
+    // Increment the version by 1 before updating
+    const updatedPage = await Page.findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        $set: {
+          ...req.body,
+          version: page.version + 1, // Increment the version here
+        },
+      },
       { new: true }
     );
 
     console.log(
       `[${new Date().toISOString()}] INFO: Page with ID ${
         req.params.id
-      } updated successfully.`
+      } updated successfully. Version: ${updatedPage.version}`
     );
     return next(CreateSuccess(200, "Page Updated!", updatedPage));
   } catch (err) {

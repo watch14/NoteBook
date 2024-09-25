@@ -22,12 +22,19 @@ const PageSchema = new Schema(
       required: true,
       default: 0,
     },
+    version: {
+      // New version field
+      type: Number,
+      required: true,
+      default: 1, // Initialize with version 1
+    },
   },
   {
     timestamps: true,
   }
 );
 
+// Pre-save hook for setting the order of the page
 PageSchema.pre("save", async function (next) {
   const page = this;
 
@@ -46,5 +53,7 @@ PageSchema.pre("save", async function (next) {
 
   next();
 });
+
+// Pre-update hook to increment version on each update
 
 export default mongoose.model("Page", PageSchema);
