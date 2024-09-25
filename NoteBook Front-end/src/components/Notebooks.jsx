@@ -5,6 +5,7 @@ import { Api, updateNotebook, getNotebook } from "../utils/api"; // Import API f
 import { Trash2, Pencil, Plus } from "lucide-react";
 import AddNotebook from "./AddNotebook";
 import UpdateNotebook from "./UpdateNotebook"; // Import UpdateNotebook component
+import ConfirmModal from "./ConfirmModal"; // Import ConfirmModal component
 
 import "../css/notebooks.css";
 
@@ -30,6 +31,9 @@ function Notebooks() {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [itemsPerPage] = useState(20); // Limit per page
+
+  const [confirmModalOpen, setConfirmModalOpen] = useState(false);
+  const [notebookToDelete, setNotebookToDelete] = useState(null);
 
   useEffect(() => {
     async function fetchNotebooks() {
@@ -159,24 +163,32 @@ function Notebooks() {
     }
   };
 
-  const handleDeleteNotebook = async (notebookId) => {
-    const confirmDelete = window.confirm(
-      "Are you sure you want to delete this notebook? This action cannot be undone."
-    );
+  const handleDeleteNotebook = (notebookId) => {
+    setNotebookToDelete(notebookId);
+    setConfirmModalOpen(true); // Open the confirmation modal
+  };
 
-    if (!confirmDelete) return;
+  const confirmDeleteNotebook = async () => {
+    if (!notebookToDelete) return; // Prevent any action if no notebook is selected
 
     try {
-      await Api.delete(`notebooks/delete/${notebookId}`);
-
-      // Update the state by filtering out the deleted notebook
+      await Api.delete(`notebooks/delete/${notebookToDelete}`);
       setNotebooks((prevNotebooks) =>
-        prevNotebooks.filter((notebook) => notebook._id !== notebookId)
+        prevNotebooks.filter((notebook) => notebook._id !== notebookToDelete)
       );
+      setConfirmModalOpen(false); // Close the modal after deletion
+      setNotebookToDelete(null); // Reset the notebook ID
     } catch (err) {
       setError(`Failed to delete notebook: ${err.message}`);
       console.error(err);
+      setConfirmModalOpen(false); // Close the modal on error
+      setNotebookToDelete(null); // Reset the notebook ID
     }
+  };
+
+  const cancelDeleteNotebook = () => {
+    setConfirmModalOpen(false); // Close the modal without action
+    setNotebookToDelete(null); // Reset the notebook ID
   };
 
   const sendNoteBookId = (id) => {
@@ -290,6 +302,15 @@ function Notebooks() {
           </div>
         </div>
       )}
+
+      <ConfirmModal
+        isOpen={confirmModalOpen}
+        onClose={cancelDeleteNotebook}
+        onConfirm={confirmDeleteNotebook}
+        title="Confirm Deletion"
+        message="Are you sure you want to delete this notebook? This action cannot be undone."
+      />
+
       {notebooks.length > 0 ? (
         <ul className="notebooks">
           <div className="add" onClick={() => setShowAddPopup(true)}>
