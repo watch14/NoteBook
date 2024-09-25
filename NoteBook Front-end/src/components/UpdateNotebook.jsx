@@ -2,16 +2,7 @@ import React, { useEffect, useState } from "react";
 import { getNotebook, updateNotebook } from "../utils/api";
 import "../css/addNotebook.css"; // Make sure this contains styles for gradients and themes
 
-const themeStyles = {
-  sakura: "linear-gradient(to right, #ff9a9e, #fad0c4)",
-  mountFuji: "linear-gradient(to right, #a1c4fd, #c2e9fb)",
-  bambooForest: "linear-gradient(to right, #d4fc79, #96e6a1)",
-  koiFish: "linear-gradient(to right, #ff6e7f, #bfe9ff)",
-  washiPaper: "linear-gradient(to right, #f3f4f6, #e6e8eb)",
-  templeRed: "linear-gradient(to right, #ff7e5f, #feb47b)",
-  zenGarden: "linear-gradient(to right, #a8c0ff, #3f2b96)",
-  plumBlossom: "linear-gradient(to right, #d5aaff, #e5c1d9)",
-};
+import themeStyles from "../utils/notebooktheme"; // Import the theme styles
 
 function UpdateNotebook({ notebookId, onUpdate, onClose }) {
   const [title, setTitle] = useState("");
@@ -110,7 +101,9 @@ function UpdateNotebook({ notebookId, onUpdate, onClose }) {
               backgroundSize: "cover",
               backgroundPosition: "center",
             }}
-          ></div>
+          >
+            {title || "Your Notebook Title"}
+          </div>
 
           <div className="buttns">
             <button type="button" onClick={onClose}>

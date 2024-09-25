@@ -53,6 +53,15 @@
   border: 1px solid #ccc;
   background-size: cover;
   background-position: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  font-size: 24px;
+  font-weight: 600;
+
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+  color: white;
 }
 
 .notebook-form,
