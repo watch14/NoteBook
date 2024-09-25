@@ -113,7 +113,6 @@ export const savePage = async (
         "Content-Type": "application/json",
       },
     });
-    console.log("Page saved:", response.data);
     return response.data; // Return the response data, which should include the updated page
   } catch (error) {
     console.error("Error saving page:", error.message);

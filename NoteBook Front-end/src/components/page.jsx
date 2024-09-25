@@ -123,22 +123,32 @@ const Page = () => {
             "..........Server Version:",
             data[currentPageIndex]?.version
           );
+          const web = data[currentPageIndex]?.version;
+          const loc =
+            JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)).version || 1;
 
           ///////////// versions /////////////
-          if (webVersion > localVersion) {
-            //// WEB VERSION
-            console.log("Server version is ahead of Local version.");
+          if (localContent) {
+            if (web > loc) {
+              //// WEB VERSION
+              console.log("Server version is ahead of Local version.");
+              setText(data[currentPageIndex]?.text || "<p></p>");
+              setSketch(
+                JSON.parse(data[currentPageIndex]?.sketch || "[]") || []
+              );
+            } else if (web < loc) {
+              //// LOCAL VERSION
+              console.log("Local version is ahead of Server version.");
+              if (localContent) {
+                setText(localContent.text || "<p></p>");
+                setSketch(localContent.sketch || []);
+              }
+            } else {
+              console.log("Local and server versions are in sync.");
+            }
+          } else {
             setText(data[currentPageIndex]?.text || "<p></p>");
             setSketch(JSON.parse(data[currentPageIndex]?.sketch || "[]") || []);
-          } else if (webVersion < localVersion) {
-            //// LOCAL VERSION
-            console.log("Local version is ahead of Server version.");
-            if (localContent) {
-              setText(localContent.text || "<p></p>");
-              setSketch(localContent.sketch || []);
-            }
-          } else if (webVersion == localVersion) {
-            console.log("Local and server versions are in sync.");
           }
 
           // Load content based on the current page index
@@ -169,13 +179,22 @@ const Page = () => {
 
     setSaving(true);
     try {
-      const newVersion = version; // Increment local version
+      const newVersion = version;
+      console.log("Loc -> V", localVersion);
+      console.log("web -> V", webVersion);
+      console.log("new -> V", version);
+
+      if (webVersion > localVersion) {
+        setVersion(webVersion);
+      } else {
+        setVersion(localVersion);
+      }
+
       const updatedPage = await savePage(
         id,
         currentPage?._id,
         Array.isArray(sketch) ? sketch : [],
-        text || "<p></p>",
-        newVersion // Send the incremented version
+        text || "<p></p>"
       );
 
       if (updatedPage.success) {
@@ -190,14 +209,11 @@ const Page = () => {
           JSON.stringify({
             text: text || "<p></p>",
             sketch: Array.isArray(sketch) ? sketch : [],
-            version: localVersion + 1,
+            version: version + 1,
           })
         );
         console.log("Page saved to local storage.");
         const loc = await getLocalStorageVersion();
-
-        console.log("web -> V", updatedPage.data.version);
-        console.log("Loc Version:", loc);
       } else {
         console.error("Error saving page:", updatedPage.message);
       }
