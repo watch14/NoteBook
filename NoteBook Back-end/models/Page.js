@@ -54,6 +54,4 @@ PageSchema.pre("save", async function (next) {
   next();
 });
 
-// Pre-update hook to increment version on each update
-
 export default mongoose.model("Page", PageSchema);

@@ -81,7 +81,7 @@ function Notebooks() {
   // Function to create a new page after notebook creation
   const createPageForNotebook = async (notebookId) => {
     try {
-      const response = await axios.post(`${Api}pages/create`, {
+      const response = await Api.post(`pages/create`, {
         notebookId: notebookId,
         text: "<p></p>", // Default empty content for new page
         sketch: "[]", // Default empty sketch content
@@ -107,7 +107,7 @@ function Notebooks() {
     }
 
     try {
-      const response = await axios.post(`${Api}notebooks/create`, {
+      const response = await Api.post(`notebooks/create`, {
         title: newNotebook.title,
         userId: userId,
         theme: newNotebook.theme,
@@ -167,7 +167,7 @@ function Notebooks() {
     if (!confirmDelete) return;
 
     try {
-      await axios.delete(`${Api}notebooks/delete/${notebookId}`);
+      await Api.delete(`notebooks/delete/${notebookId}`);
 
       // Update the state by filtering out the deleted notebook
       setNotebooks((prevNotebooks) =>
