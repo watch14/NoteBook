@@ -29,7 +29,15 @@ function AddNotebook({ onAdd, onClose }) {
             <input
               id="title"
               value={title}
-              onChange={(e) => setTitle(e.target.value)}
+              onChange={(e) => {
+                // Capitalize the first letter of each word
+                const formattedTitle = e.target.value
+                  .split(" ")
+                  .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                  .join(" ");
+
+                setTitle(formattedTitle); // Update the state with the formatted title
+              }}
               required
               className="text-lg"
               placeholder="Enter your notebook title"

@@ -127,7 +127,7 @@
 
   position: relative;
 
-  border-left: 24px solid rgba(0, 0, 0, 0.7);
+  border-left: 24px solid rgba(0, 0, 0, 0.9);
 
   transition: 0.3s ease;
 
@@ -185,8 +185,6 @@
   background-color: var(--book);
   transform: translateY(-5px);
   transition: 0.3s ease;
-
-  color: var(--primary-color);
 }
 
 .pagination {
