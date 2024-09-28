@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import "../css/addNotebook.css"; // Make sure this contains styles for gradients and themes
-
 import themeStyles from "../utils/notebooktheme"; // Import the theme styles
 
 function AddNotebook({ onAdd, onClose }) {
@@ -15,9 +14,14 @@ function AddNotebook({ onAdd, onClose }) {
     setTheme("sakura"); // Reset theme to default
   };
 
+  // Stop propagation when clicking inside the popup content
+  const handlePopupClick = (e) => {
+    e.stopPropagation();
+  };
+
   return (
-    <div className="popup-overlay">
-      <div className="popup-content">
+    <div className="popup-overlay" onClick={onClose}>
+      <div className="popup-content" onClick={handlePopupClick}>
         <h2>Add Notebook</h2>
         <form className="notebook-form" onSubmit={handleSubmit}>
           <label>
