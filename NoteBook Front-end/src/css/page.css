@@ -221,10 +221,7 @@
   }
 }
 
-@media screen and (min-width: 1024px) {
-}
-
-@media screen and (max-width: 1024px) {
+@media screen and (max-width: 1200px) {
   .page {
     display: grid;
     grid-template-columns: 1fr;
