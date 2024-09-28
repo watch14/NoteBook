@@ -124,6 +124,33 @@
   white-space: wrap;
   overflow: hidden;
   text-overflow: clip;
+
+  position: relative;
+
+  .n-trash {
+    position: absolute;
+    font-size: 24px;
+    bottom: 16px;
+    right: 20px;
+    padding: 5px;
+  }
+  .n-trash:hover {
+    background-color: var(--primary-color);
+    opacity: 0.7;
+    border-radius: 50%;
+  }
+  .n-pencil {
+    position: absolute;
+    bottom: 16px;
+    left: 20px;
+    padding: 6px;
+  }
+  .n-pencil:hover {
+    background-color: var(--primary-color);
+    opacity: 0.7;
+    padding: 4px;
+    border-radius: 50%;
+  }
 }
 
 .notebooks li:hover {

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { isUserLoggedIn, getUserId } from "../utils/auth";
 import { Api, updateNotebook, getNotebook } from "../utils/api"; // Import API functions
-import { Trash2, Pencil, Plus } from "lucide-react";
+import { Trash2, Pencil, Plus, Settings2 } from "lucide-react";
 import AddNotebook from "./AddNotebook";
 import UpdateNotebook from "./UpdateNotebook"; // Import UpdateNotebook component
 import ConfirmModal from "./ConfirmModal"; // Import ConfirmModal component
@@ -333,7 +333,7 @@ function Notebooks() {
                   handleDeleteNotebook(notebook._id);
                 }}
               >
-                <Trash2 color="white" />
+                <Trash2 size={28} className="n-trash" color="white" />
               </p>
               <p
                 className="edit-button"
@@ -342,7 +342,7 @@ function Notebooks() {
                   handleEditNotebook(notebook._id);
                 }}
               >
-                <Pencil color="white" />
+                <Settings2 size={28} className="n-pencil" color="white" />
               </p>
             </li>
           ))}
