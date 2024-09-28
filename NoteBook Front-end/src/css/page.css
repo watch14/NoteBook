@@ -24,10 +24,12 @@
   text-align: left;
 
   font-size: 32px;
-  font-style: normal;
   font-weight: 1000;
   border: none;
   border-radius: 12px;
+  white-space: wrap;
+  overflow: hidden;
+  text-overflow: clip;
 }
 
 .page {

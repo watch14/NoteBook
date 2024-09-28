@@ -22,10 +22,8 @@
 .toptitle h1 {
   color: var(--background-color);
   text-align: center;
-  font-size: 28px;
-  font-style: normal;
-  font-weight: 800;
-  line-height: normal;
+  font-size: 32px;
+  font-weight: 1000;
 }
 
 .filters {
@@ -122,6 +120,9 @@
 
   transition: 0.3s ease;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .notebooks li:hover {
