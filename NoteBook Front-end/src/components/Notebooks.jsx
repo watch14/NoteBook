@@ -324,7 +324,6 @@ function Notebooks() {
               onClick={() => sendNoteBookId(notebook._id)}
             >
               <div className="title">{notebook.title}</div>
-              <div className="date">{formatDate(notebook.createdAt)}</div>
 
               <p
                 className="delete-button"
@@ -344,9 +343,11 @@ function Notebooks() {
               >
                 <Pencil size={28} className="n-pencil" color="white" />
               </p>
+
+              <div className="date">{formatDate(notebook.createdAt)}</div>
             </li>
           ))}
-          {/* Render placeholders on the last page */}
+
           {getPlaceholders(notebooks, currentPage, totalPages)}
         </ul>
       ) : (

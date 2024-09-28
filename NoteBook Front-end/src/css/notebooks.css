@@ -102,9 +102,9 @@
   color: white;
   height: 320px;
   width: 236px;
-  border-radius: 16px;
+  border-radius: 12px;
 
-  padding: 40px 20px;
+  padding: 20px 32px 20px 16px;
 
   display: flex;
   flex-direction: column;
@@ -119,13 +119,21 @@
   margin-inline: auto;
 
   transition: 0.3s ease;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
 
   white-space: wrap;
   overflow: hidden;
   text-overflow: clip;
 
   position: relative;
+
+  border-left: 24px solid rgba(0, 0, 0, 0.7);
+
+  transition: 0.3s ease;
+
+  .title {
+    padding-top: 16px;
+  }
 
   .n-trash {
     position: absolute;
@@ -150,13 +158,21 @@
     opacity: 0.7;
     border-radius: 50%;
   }
+
+  .date {
+    font-size: 16px;
+    font-weight: normal;
+    text-shadow: 2px 2px 20px rgba(0, 0, 0, 1.9);
+  }
 }
 
-.notebooks li:hover {
+.notebooks li:hover,
+.placeholder:hover,
+.notebooks .add:hover {
   transition: 0.3s ease;
   background-color: var(--book);
   transform: translateY(-5px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.3);
 }
 
 .notebooks .add {
@@ -168,15 +184,9 @@
 .notebooks .add:hover {
   background-color: var(--book);
   transform: translateY(-5px);
-  box-shadow: 0 6px 8px rgba(0, 0, 0, 0.15);
   transition: 0.3s ease;
 
   color: var(--primary-color);
-}
-
-.date {
-  font-size: 16px;
-  font-weight: normal;
 }
 
 .pagination {
