@@ -21,11 +21,11 @@
 .page-title {
   color: var(--background-color);
 
-  text-align: center;
+  text-align: left;
 
   font-size: 32px;
   font-style: normal;
-  font-weight: 800;
+  font-weight: 1000;
   border: none;
   border-radius: 12px;
 }
@@ -159,7 +159,7 @@
 .utils {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: right;
   align-items: center;
   gap: 20px;
   width: 100%;
