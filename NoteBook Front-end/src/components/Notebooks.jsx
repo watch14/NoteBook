@@ -342,7 +342,7 @@ function Notebooks() {
                   handleEditNotebook(notebook._id);
                 }}
               >
-                <Settings2 size={28} className="n-pencil" color="white" />
+                <Pencil size={28} className="n-pencil" color="white" />
               </p>
             </li>
           ))}
