@@ -86,9 +86,7 @@ function UpdateNotebook({ notebookId, onUpdate, onClose }) {
                     color: theme === themeKey ? "white" : "black", // Change text color when active
                   }}
                 >
-                  {themeKey
-                    .replace(/([A-Z])/g, " ") // Add spaces to camel case names
-                    .replace(/^\w/, (c) => c.toUpperCase())}
+                  {themeKey}
                 </button>
               ))}
             </div>
