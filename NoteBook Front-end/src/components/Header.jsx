@@ -2,7 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import { ThemeContext } from "../context/ThemeContext";
 import { isUserLoggedIn, clearUserFromLocalStorage } from "../utils/auth";
-import { Sun, Moon, LogOut, Plus } from "lucide-react"; // Import Plus icon for creating notebooks
+import { Sun, Moon, LogOut, Plus, CirclePlus } from "lucide-react"; // Import Plus icon for creating notebooks
 import { Api } from "../utils/api"; // Import API functions
 import AddNotebook from "./AddNotebook"; // Import the AddNotebook popup
 import { getUserId } from "../utils/auth"; // Import the userId function
@@ -87,7 +87,7 @@ function Header() {
               <Link to="/keyboard">Keyboard</Link>
               {/* Button to show the AddNotebook popup */}
               <a className="add" onClick={() => setShowAddPopup(true)}>
-                <Plus size={24} />
+                <CirclePlus size={24} />
               </a>
               <button className="user" onClick={handleLogout}>
                 <LogOut />
