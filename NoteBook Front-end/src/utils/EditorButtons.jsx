@@ -14,7 +14,7 @@ import {
   Italic,
   Minus,
   List,
-  LetterText, // Optional: Import an icon for paragraph
+  LetterText,
 } from "lucide-react";
 
 const headingOptions = [
