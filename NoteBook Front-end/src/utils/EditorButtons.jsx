@@ -1,8 +1,6 @@
-// src/components/EditorButtons.js
 import React, { useState } from "react";
 import Dropdown from "react-dropdown";
 import "react-dropdown/style.css";
-
 import {
   Heading,
   Heading1,
@@ -16,6 +14,7 @@ import {
   Italic,
   Minus,
   List,
+  LetterText, // Optional: Import an icon for paragraph
 } from "lucide-react";
 
 const headingOptions = [
@@ -55,6 +54,22 @@ const EditorButtons = ({
     editor.chain().focus().setTextAlign(option.value).run();
   };
 
+  // New method to toggle paragraph formatting
+  const toggleParagraph = () => {
+    if (editor) {
+      // Check if currently in paragraph mode
+      const isParagraphActive = editor.isActive("paragraph");
+      if (isParagraphActive) {
+        // If already a paragraph, you can add logic to toggle to another block (e.g., a heading)
+        // Here, we'll toggle to a 'blockquote' as an example; replace with your desired block
+        editor.chain().focus().setNode("heading", { level: 1 }).run();
+      } else {
+        // If not a paragraph, set to paragraph
+        editor.chain().focus().setNode("paragraph").run();
+      }
+    }
+  };
+
   return (
     <div className="control-group">
       <div className="button-group">
@@ -63,22 +78,25 @@ const EditorButtons = ({
           options={headingOptions}
           onChange={handleHeadingChange}
           value={selectedHeading}
-          placeholder=<Heading size={24} />
+          placeholder={<Heading size={24} />}
         />
         <Dropdown
           className="dropdown"
           options={controlOptions}
           onChange={handleTextAlignChange}
           value={selectedTextAlign}
-          placeholder=<AlignLeft size={24} />
+          placeholder={<AlignLeft size={24} />}
         />
-
+        <button onClick={toggleParagraph}>
+          <LetterText />
+        </button>
         <button
           onClick={toggleBold}
           className={editor?.isActive("bold") ? "is-active" : ""}
         >
           <Bold size={24} />
         </button>
+
         <button
           onClick={toggleItalic}
           className={editor?.isActive("italic") ? "is-active" : ""}

@@ -2,21 +2,27 @@ import React, { useEffect } from "react";
 import "../css/tiptap.css";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import Document from "@tiptap/extension-document";
+import Paragraph from "@tiptap/extension-paragraph";
 import TextStyle from "@tiptap/extension-text-style";
 import { Color } from "@tiptap/extension-color";
 import TextAlign from "@tiptap/extension-text-align";
+import Text from "@tiptap/extension-text";
 import EditorButtons from "./EditorButtons";
 import EditorMenu from "./EditorMenu";
 
 const Tiptap = ({ onContentChange, textContent }) => {
   const editor = useEditor({
     extensions: [
+      Document,
+      Paragraph,
       StarterKit.configure({
         heading: {
           levels: [1, 2, 3], // Configure heading levels
         },
       }),
       TextStyle,
+      Text,
       Color,
       TextAlign.configure({
         types: ["heading", "paragraph"],
