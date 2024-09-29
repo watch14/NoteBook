@@ -351,7 +351,7 @@ function Notebooks() {
           {getPlaceholders(notebooks, currentPage, totalPages)}
         </ul>
       ) : (
-        <p>You have no Notebooks. Create one!</p>
+        <p>Cant find any Notebook, create one!</p>
       )}
 
       {totalPages > 1 && (

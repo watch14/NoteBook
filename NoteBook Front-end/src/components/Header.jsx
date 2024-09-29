@@ -105,7 +105,7 @@ function Header() {
             {theme === "light" ? (
               <Moon size={20} /> // Show moon icon for dark mode
             ) : (
-              <Sun size={20} /> // Show sun icon for light mode
+              <Sun Moon size={20} /> // Show sun icon for light mode
             )}
           </button>
         </nav>

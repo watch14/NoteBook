@@ -111,8 +111,8 @@
   justify-content: space-between;
   align-items: center;
 
-  font-size: 28px;
-  text-shadow: 2px 2px 15px rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+  /* text-shadow: 2px 2px 4px rgba(0, 0, 0, 1); */
 
   font-weight: bold;
   cursor: pointer;
@@ -127,12 +127,23 @@
 
   position: relative;
 
-  border-left: 24px solid rgba(0, 0, 0, 0.92);
+  border-left: 22px solid rgba(10, 10, 10, 0.99);
 
   transition: 0.3s ease;
 
   .title {
-    padding-top: 16px;
+    margin-left: 12px;
+    color: var(--background-color);
+    margin-top: 28px;
+    font-size: 22px;
+    font-weight: 800;
+    padding: 8px;
+    width: 100%;
+    background-color: var(--text-color);
+    border-radius: 6px;
+    border: 2px solid var(--background-color3);
+    overflow: hidden;
+    text-overflow: clip;
   }
 
   .n-trash {
@@ -160,7 +171,7 @@
   }
 
   .date {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: normal;
     text-shadow: 2px 2px 20px rgba(0, 0, 0, 1.9);
   }
