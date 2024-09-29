@@ -54,17 +54,12 @@ const EditorButtons = ({
     editor.chain().focus().setTextAlign(option.value).run();
   };
 
-  // New method to toggle paragraph formatting
   const toggleParagraph = () => {
     if (editor) {
-      // Check if currently in paragraph mode
       const isParagraphActive = editor.isActive("paragraph");
       if (isParagraphActive) {
-        // If already a paragraph, you can add logic to toggle to another block (e.g., a heading)
-        // Here, we'll toggle to a 'blockquote' as an example; replace with your desired block
         editor.chain().focus().setNode("heading", { level: 1 }).run();
       } else {
-        // If not a paragraph, set to paragraph
         editor.chain().focus().setNode("paragraph").run();
       }
     }
