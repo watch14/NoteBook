@@ -37,33 +37,6 @@ const EditorMenu = ({ editor }) => {
         >
           {/* Button to convert selected text to Kana */}
           <button onClick={logAndConvertSelectedText}>Convert to Kana</button>
-          <button
-            onClick={() => {
-              logAndConvertSelectedText(); // Log and convert the selected text
-              editor.chain().focus().toggleItalic().run();
-            }}
-            className={editor.isActive("italic") ? "is-active" : ""}
-          >
-            Italic
-          </button>
-          <button
-            onClick={() => {
-              logAndConvertSelectedText(); // Log and convert the selected text
-              editor.chain().focus().toggleBold().run();
-            }}
-            className={editor.isActive("bold") ? "is-active" : ""}
-          >
-            Bold
-          </button>
-          <button
-            onClick={() => {
-              logAndConvertSelectedText(); // Log and convert the selected text
-              editor.chain().focus().toggleStrike().run();
-            }}
-            className={editor.isActive("strike") ? "is-active" : ""}
-          >
-            Strike
-          </button>
         </BubbleMenu>
       )}
     </>

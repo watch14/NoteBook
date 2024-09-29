@@ -112,6 +112,7 @@ const Tiptap = ({ onContentChange, textContent }) => {
         liftListItem={liftListItem}
         editor={editor}
       />
+      <EditorMenu editor={editor} />
       <EditorContent editor={editor} />
     </div>
   );
