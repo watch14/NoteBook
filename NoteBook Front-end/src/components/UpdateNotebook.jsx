@@ -49,12 +49,17 @@ function UpdateNotebook({ notebookId, onUpdate, onClose }) {
     }
   };
 
+  // Stop propagation when clicking inside the popup content
+  const handlePopupClick = (e) => {
+    e.stopPropagation();
+  };
+
   if (loading) return <p>Loading...</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <div className="popup-overlay">
-      <div className="popup-content">
+    <div className="popup-overlay" onClick={onClose}>
+      <div className="popup-content" onClick={handlePopupClick}>
         <h2>Update Notebook</h2>
         <form className="notebook-form" onSubmit={handleSubmit}>
           <label>
@@ -88,7 +93,7 @@ function UpdateNotebook({ notebookId, onUpdate, onClose }) {
               ))}
             </div>
           </div>
-
+          {/* 
           <div
             className="theme-preview"
             style={{
@@ -103,7 +108,7 @@ function UpdateNotebook({ notebookId, onUpdate, onClose }) {
             }}
           >
             {title || "Your Notebook Title"}
-          </div>
+          </div> */}
 
           <div className="buttns">
             <button type="button" onClick={onClose}>

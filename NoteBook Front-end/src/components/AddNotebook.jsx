@@ -63,7 +63,7 @@ function AddNotebook({ onAdd, onClose }) {
             </div>
           </div>
 
-          <div
+          {/* <div
             className="theme-preview"
             style={{
               backgroundImage: themeStyles[theme], // Use the actual theme style
@@ -77,7 +77,7 @@ function AddNotebook({ onAdd, onClose }) {
             }}
           >
             {title || "Your Notebook Title"}
-          </div>
+          </div> */}
           <div className="buttns">
             <button type="button" onClick={onClose}>
               Cancel

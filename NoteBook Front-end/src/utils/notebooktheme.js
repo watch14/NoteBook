@@ -1,21 +1,26 @@
 const themeStyles = {
   sakura:
-    "#ffd1dc url('img/sakura.svg?height=200&width=200') no-repeat center/cover",
+    "#ffd1dc url('img/sakura.png?height=200&width=200') no-repeat center/cover",
 
   mountFuji:
     "#0072ff url('img/fuji.png?height=200&width=200') no-repeat center/cover",
 
-  koiFish: "radial-gradient(circle at 30% 50%, #ff6e7f 5%, #bfe9ff 60%)",
+  koiFish:
+    "#0072ff url('img/koi.png?height=200&width=200') no-repeat center/cover",
 
   inkWash: "url('img/paint.png?height=200&width=200') no-repeat center/cover",
 
-  cherryBlossom:
-    "#f8d5d0 url('/img/CherryBlossom.svg?height=200&width=200') no-repeat center/cover",
+  samurai:
+    "#f8d5d0 url('/img/samurai.png?height=200&width=200') no-repeat center/cover",
 
   oceanWave:
     "#0072ff url('img/wave.png?height=200&width=200') no-repeat center/cover",
 
-  forestCanopy: "radial-gradient(circle at 40% 60%, #4caf50 5%, #b2ebf2 60%)",
+  Waves:
+    "#0072ff url('img/waves.png?height=200&width=200') no-repeat center/cover",
+
+  bamboo:
+    "#0072ff url('img/bamboo.png?height=200&width=200') no-repeat center/cover",
 
   temple:
     "#0072ff url('img/temple.png?height=200&width=200') no-repeat center/cover",
@@ -40,9 +45,6 @@ const themeStyles = {
 
   sunsetSky:
     "repeating-linear-gradient(45deg, #ffb5e8 0px, #ffb5e8 20px, #b9fbc0 20px, #b9fbc0 40px)",
-
-  desertDunes:
-    "repeating-linear-gradient(45deg, #FAD961 0px, #FAD961 20px, #F76B1C 20px, #F76B1C 40px)",
 
   ninjaShadow:
     "linear-gradient(180deg, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0.5) 100%)",
@@ -73,7 +75,7 @@ const themeStyles = {
   koiPond:
     "radial-gradient(circle at 50% 50%, #b3e5fc 0%, #81d4fa 40%, #4fc3f7 100%)", // A serene koi pond theme
 
-  zenGarden:
-    "repeating-linear-gradient(0deg, #e8eaf6 0px, #e8eaf6 10px, #ffffff 10px, #ffffff 20px)", // Represents the raked sand of a zen garden
+  Orange:
+    "radial-gradient(circle at 50% 50%, #ffcc80 0%, #ffab40 40%, #ff8a65 100%)", // A beautiful cherry blossom theme
 };
 export default themeStyles;
