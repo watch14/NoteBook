@@ -21,9 +21,15 @@
   }
   .english-text {
     transition: 0.5s;
+    padding: 4px 28px;
+    border-radius: 4px;
+
+    font-weight: 600;
   }
   .english-text:hover {
+    transition: 0.5s;
     background-color: #ffffff;
+    color: var(--primary-color);
   }
 }
 .header h1 {

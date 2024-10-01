@@ -11,7 +11,7 @@ export default function HomePage() {
             <h1 className="japanese-text">Hello</h1>
             <p className="japanese-text">日本語の旅を始めよう</p>
             <Link to="/notebooks" className="english-text">
-              JP.NoteBook
+              Start
             </Link>
             <div className="zen-circle"></div>
           </div>
