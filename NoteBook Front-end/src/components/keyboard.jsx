@@ -177,9 +177,12 @@ export default function Keyboard() {
           characters (Hiragana or Katakana).
         </p>
         <p>
-          ▬ <strong>lowercase</strong> Hiragana: "<strong>ひらがな</strong>" ▬{" "}
-          <strong>UPPERCASE</strong>
-          Katakana: "<strong>カタカナ</strong>" ▬
+          ▬ <strong style={{ color: "red" }}> lowercase </strong> Hiragana: "
+          <strong>ひらがな</strong>" ▬
+        </p>
+        <p>
+          ▬ <strong style={{ color: "red" }}>UPPERCASE</strong> Katakana: "
+          <strong>カタカナ</strong>" ▬
         </p>
       </div>
       <div className="t-main">
