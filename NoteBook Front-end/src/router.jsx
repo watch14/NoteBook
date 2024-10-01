@@ -1,10 +1,11 @@
 import { createBrowserRouter } from "react-router-dom";
-
 import App from "./App.jsx"; // Main App layout with Header
-import Login from "./components/Login.jsx"; // Login Component
-import Register from "./components/Register.jsx"; // Register Component
+import ScrollToTop from "./utils/ScrollToTop.jsx"; // Import ScrollToTop Component
+
+import Login from "./components/Login.jsx";
+import Register from "./components/Register.jsx";
 import Notebooks from "./components/Notebooks.jsx";
-import Keyboard from "./components/Keyboard.jsx"; // Keyboard Component
+import Keyboard from "./components/Keyboard.jsx";
 import TextPage from "./components/TextPage.jsx";
 import Sketch from "./components/sketch.jsx";
 import Page from "./components/page.jsx";
@@ -17,7 +18,12 @@ import About from "./components/About.jsx";
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <App />, // Main app with header and outlet
+    element: (
+      <>
+        <ScrollToTop /> {/* Add ScrollToTop here */}
+        <App /> {/* Main app with header and outlet */}
+      </>
+    ),
     children: [
       {
         path: "/login",
@@ -35,7 +41,6 @@ const router = createBrowserRouter([
         ),
       },
       { path: "/keyboard", element: <Keyboard /> },
-
       {
         path: "/traslate",
         element: (

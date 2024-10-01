@@ -19,6 +19,21 @@ export default function Footer() {
           <h3>Quick Links</h3>
           <ul>
             <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/notebooks">Notebooks</Link>
+            </li>
+            <li>
+              <Link to="/keyboard">Keyboard</Link>
+            </li>
+          </ul>
+        </div>
+
+        <div className="footer-section">
+          <h3>App Info</h3>
+          <ul>
+            <li>
               <Link to="/about">About Us</Link>
             </li>
             <li>
@@ -32,33 +47,22 @@ export default function Footer() {
             </li>
           </ul>
         </div>
+
         <div className="footer-section">
-          <h3>Connect With Us</h3>
+          <h3>Social Media</h3>
           <ul>
             <li>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="404" target="_blank" rel="noopener noreferrer">
                 Facebook
               </a>
             </li>
             <li>
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="404" target="_blank" rel="noopener noreferrer">
                 Twitter
               </a>
             </li>
             <li>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href="404" target="_blank" rel="noopener noreferrer">
                 Instagram
               </a>
             </li>
