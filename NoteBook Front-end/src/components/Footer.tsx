@@ -6,6 +6,15 @@ export default function Footer() {
   return (
     <footer className="footer">
       <div className="footer-container">
+        <div className="f-logo">
+          <img
+            className="img-logo"
+            src="/icone/notebook-logo-x4.png"
+            alt="JP.NoteBook"
+          />
+          <img className="text-logo" src="icone/logo-text-1.png" alt="" />
+        </div>
+
         <div className="footer-section">
           <h3>Quick Links</h3>
           <ul>
