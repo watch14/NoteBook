@@ -139,6 +139,12 @@
   color: #000;
 
   font-size: 20px;
+
+  width: 100%;
+
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-align: left;
 }
 
 .res-right {
