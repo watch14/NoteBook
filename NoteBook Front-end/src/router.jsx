@@ -12,6 +12,7 @@ import Translate from "./components/Trasnlate.jsx";
 import HomePage from "./components/HomePage.jsx";
 import ProtectedRoute from "./utils/ProtectedRoute.jsx";
 import NotFound from "./components/NotFound.jsx";
+import About from "./components/About.jsx";
 
 const router = createBrowserRouter([
   {
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
       {
         path: "/page/:id",
         element: <ProtectedRoute element={<Page />} isRestricted={false} />,
+      },
+      {
+        path: "/about",
+        element: <ProtectedRoute element={<About />} isRestricted={false} />,
       },
       {
         path: "*",
