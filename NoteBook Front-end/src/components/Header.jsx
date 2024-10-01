@@ -83,6 +83,7 @@ function Header() {
         <nav className="navs">
           {isUserLoggedIn() ? (
             <>
+              <Link to="/">Home</Link>
               <Link to="/notebooks">NoteBook</Link>
               <Link to="/keyboard">Keyboard</Link>
               {/* Button to show the AddNotebook popup */}
