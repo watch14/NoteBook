@@ -127,12 +127,9 @@
 
   display: flex;
   width: 105px;
-  height: 40px;
-  padding: 16px 20px;
+  padding: 10px 20px;
   justify-content: center;
   align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
   border-radius: 0px 0px 16px 16px;
   background: var(--primary-color);
   box-shadow: 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
@@ -140,6 +137,14 @@
 
   font-size: 16px;
 
-  bottom: -41px;
+  bottom: -44px;
   right: 120px;
+
+  transition: 0.3s;
+}
+
+.l-register-bnt:hover {
+  transition: 0.3s;
+  bottom: -50px;
+  padding-top: 16px;
 }
