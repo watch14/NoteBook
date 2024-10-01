@@ -8,10 +8,10 @@ export default function HomePage() {
       <header className="header">
         <div className="header-content">
           <div className="not">
-            <h1 className="japanese-text">Hello</h1>
+            <h2 className="japanese-text">Hello</h2>
             <p className="japanese-text">日本語の旅を始めよう</p>
             <Link to="/notebooks" className="english-text">
-              Start
+              START
             </Link>
             <div className="zen-circle"></div>
           </div>

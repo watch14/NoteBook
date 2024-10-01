@@ -16,31 +16,38 @@
     color: var(--text-color);
     padding: 80px 0;
   }
+  h2 {
+    font-weight: 600;
+  }
   .japanese-text {
     text-wrap: nowrap;
   }
   .english-text {
+    font-size: 22px;
     transition: 0.5s;
     padding: 4px 28px;
+    margin-bottom: 12px;
     border-radius: 4px;
-
-    font-weight: 600;
   }
   .english-text:hover {
     transition: 0.5s;
-    background-color: #ffffff;
-    color: var(--primary-color);
+    color: black;
+  }
+  .not .zen-circle {
+    position: absolute; /* Position it absolutely */
+    top: 45%; /* Center it vertically */
+    left: 50%; /* Center it horizontally */
+    width: 360px; /* Width of the circle */
+    height: 360px; /* Height of the circle */
+    border-radius: 50%; /* Make it a circle */
+    transform: translate(-50%, -50%); /* Adjust centering */
+    z-index: 1; /* Behind the text */
   }
 }
 .header h1 {
   font-weight: 800;
   color: var(--text-color);
   padding-bottom: 12px;
-}
-
-.header p {
-  font-size: 18px;
-  color: var(--text-color);
 }
 
 .header-content {

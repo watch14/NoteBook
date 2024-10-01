@@ -5,6 +5,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  .not .english-text {
+    font-size: 32px;
+  }
 }
 
 .not-found-content {
@@ -110,7 +113,7 @@
 
 .not .zen-circle {
   position: absolute; /* Position it absolutely */
-  top: 50%; /* Center it vertically */
+  top: 45%; /* Center it vertically */
   left: 50%; /* Center it horizontally */
   width: 400px; /* Width of the circle */
   height: 400px; /* Height of the circle */
@@ -129,5 +132,4 @@
   position: relative; /* Position relative to the parent */
   z-index: 2; /* Above the circle */
   color: white;
-  font-size: 32px;
 }
