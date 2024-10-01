@@ -77,6 +77,7 @@ function Header() {
     <header>
       <div className="navi">
         <div className="logo">
+          {/* <img src="/icone/notebook-logo.png" alt="" className="h-logo" /> */}
           <Link to="/">JP.NoteBook</Link>
         </div>
         <nav className="navs">
