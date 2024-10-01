@@ -7,11 +7,14 @@ export default function HomePage() {
     <div className="home-page">
       <header className="header">
         <div className="header-content">
-          <h1>Welcome to JP.Notebook</h1>
-          <p>Your personal Japanese learning companion</p>
-          <Link to="/notebooks" className="cta-button">
-            Get Started
-          </Link>
+          <div className="not">
+            <h1 className="japanese-text">Hello</h1>
+            <p className="japanese-text">日本語の旅を始めよう</p>
+            <Link to="/notebooks" className="english-text">
+              JP.NoteBook
+            </Link>
+            <div className="zen-circle"></div>
+          </div>
         </div>
       </header>
 
