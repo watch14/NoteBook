@@ -6,6 +6,7 @@ import { Trash2, Pencil, Plus, Settings2 } from "lucide-react";
 import AddNotebook from "./AddNotebook";
 import UpdateNotebook from "./UpdateNotebook"; // Import UpdateNotebook component
 import ConfirmModal from "./ConfirmModal"; // Import ConfirmModal component
+import { PuffLoader } from "react-spinners";
 
 import "../css/notebooks.css";
 
@@ -255,8 +256,19 @@ function Notebooks() {
       <li key={`placeholder-${index}`} className="placeholder"></li>
     ));
   };
+  const styles = {
+    loaderContainer: {
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      height: "100vh", // Full viewport height to ensure it's centered vertically
+    },
+  };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading) return;
+  <div style={styles.loaderContainer}>
+    <PuffLoader color="#E60012" size={140} />
+  </div>;
   if (error) return <p>{error}</p>;
 
   return (
@@ -348,7 +360,7 @@ function Notebooks() {
             </li>
           ))}
 
-          {getPlaceholders(notebooks, currentPage, totalPages)}
+          {/* {getPlaceholders(notebooks, currentPage, totalPages)} */}
         </ul>
       ) : (
         <p>Cant find any Notebook, create one!</p>

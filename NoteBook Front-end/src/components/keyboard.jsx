@@ -163,11 +163,11 @@ export default function Keyboard() {
 
   return (
     <div className="k-cont">
-      {(loading || kanjiLoading) && (
+      {/* {(loading || kanjiLoading) && (
         <div className="loader">
           <BounceLoader color="#E60012" size={100} />
         </div>
-      )}
+      )} */}
       <div className="k-title-bg">
         <h1 className="k-title">Japanese Keyboard</h1>
       </div>

@@ -5,7 +5,7 @@ import ScrollToTop from "./utils/ScrollToTop.jsx"; // Import ScrollToTop Compone
 import Login from "./components/Login.jsx";
 import Register from "./components/Register.jsx";
 import Notebooks from "./components/Notebooks.jsx";
-import Keyboard from "./components/Keyboard.jsx";
+import Keyboard from "./components/keyboard.jsx";
 import TextPage from "./components/TextPage.jsx";
 import Sketch from "./components/sketch.jsx";
 import Page from "./components/page.jsx";
@@ -20,8 +20,8 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <>
-        <ScrollToTop /> {/* Add ScrollToTop here */}
-        <App /> {/* Main app with header and outlet */}
+        <ScrollToTop />
+        <App />
       </>
     ),
     children: [
