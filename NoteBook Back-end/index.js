@@ -21,8 +21,7 @@ app.use(express.json());
 
 app.use(
   cors({
-    origin: "http://localhost:5173", // Adjust this to your frontend's URL
-    methods: ["GET", "POST", "PUT", "DELETE"], // Allow these methods
+    origin: ["https://notebook-back-end.onrender.com", "http://localhost:5173"], // Allow your backend and frontend URLs    methods: ["GET", "POST", "PUT", "DELETE"], // Allow these methods
     allowedHeaders: ["Content-Type", "Authorization"], // Specify allowed headers
   })
 );
