@@ -31,7 +31,7 @@ function Notebooks() {
   const [titleFilter, setTitleFilter] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [itemsPerPage] = useState(20); // Limit per page
+  const [itemsPerPage] = useState(11); // Limit per page
 
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
   const [notebookToDelete, setNotebookToDelete] = useState(null);
