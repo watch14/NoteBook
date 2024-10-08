@@ -1,5 +1,7 @@
 # Personal Japanese Learning Notebook
 
+![JP.NoteBook](Design/UI/logo.png) ![JP.NoteBook](Design/UI/text.png)
+
 The **Personal Japanese Learning Notebook** is a web application designed for individuals studying the Japanese language. It allows users to create a personalized digital notebook where they can write, draw, and manage their learning materials. With features for audio pronunciation and notebook sharing (coming soon), this tool enhances the learning experience by providing a space for creativity and structured study.
 
 ## Table of Contents
